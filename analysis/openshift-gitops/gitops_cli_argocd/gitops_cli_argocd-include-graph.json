@@ -1,0 +1,56 @@
+{
+  "assemblies": [
+    {
+      "assembly": "configuring-argocd-gitops-cli.adoc",
+      "includes": [
+        {
+          "module": "snippets/technology-preview.adoc",
+          "type": "SNIPPET"
+        },
+        {
+          "module": "modules/gitops-argocd-cli-enabling-tab-completion.adoc",
+          "type": "PROCEDURE",
+          "leveloffset": "+1"
+        }
+      ]
+    },
+    {
+      "assembly": "logging-in-to-argocd-server-in-default-mode.adoc",
+      "includes": [
+        {
+          "module": "snippets/technology-preview.adoc",
+          "type": "SNIPPET"
+        },
+        {
+          "module": "modules/gitops-argocd-cli-logging-in-to-argocd-server.adoc",
+          "type": "PROCEDURE",
+          "leveloffset": "+1"
+        }
+      ]
+    },
+    {
+      "assembly": "argocd-gitops-cli-reference.adoc",
+      "includes": [
+        {
+          "module": "snippets/technology-preview.adoc",
+          "type": "SNIPPET"
+        },
+        {
+          "module": "modules/gitops-argocd-cli-basic-syntax.adoc",
+          "type": "REFERENCE",
+          "leveloffset": "+1"
+        },
+        {
+          "module": "modules/gitops-argocd-cli-global-options.adoc",
+          "type": "REFERENCE",
+          "leveloffset": "+1"
+        },
+        {
+          "module": "modules/gitops-argocd-cli-utility-commands.adoc",
+          "type": "REFERENCE",
+          "leveloffset": "+1"
+        }
+      ]
+    }
+  ]
+}

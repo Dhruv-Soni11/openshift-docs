@@ -1,0 +1,312 @@
+[id="argocd-gitops-cli-reference"]
+= GitOps argocd CLI reference
+
+[IMPORTANT]
+====
+The GitOps argocd CLI tool is a Technology Preview feature only. Technology Preview features
+are not supported with Red Hat production service level agreements (SLAs) and
+might not be functionally complete. Red Hat does not recommend using them
+in production. These features provide early access to upcoming product
+features, enabling customers to test functionality and provide feedback during
+the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see link:https://access.redhat.com/support/offerings/techpreview/[Technology Preview Features Support Scope].
+====
+
+This section lists the basic GitOps `argocd` CLI commands.
+
+[id="gitops-argocd-cli-basic-syntax_argocd-gitops-cli-reference"]
+== Basic syntax
+
+The GitOps `argocd` CLI is a tool for configuring and managing GitOps and Argo CD resources from the command line.
+
+=== Default mode
+
+In the default mode, the `argocd` CLI client communicates with the Argo CD server component through API requests. To execute commands, you must log in to the Argo CD server using your Argo CD credentials and remain logged in throughout the session. If the login session times out, you can use the `relogin` command to log in again. When done using the `argocd` commands, you can log out using the `logout` command.
+
+.Command syntax
+`argocd [command or options] [arguments...]`
+
+=== Core mode
+
+In this mode, the CLI communicates directly with the Kubernetes API server through the credentials set in the `kubeconfig` file. The default `kubeconfig` file is available at the `$HOME/.kube/config` location. You can customize this file using the `KUBECONFIG` environment variable. To execute commands in the `core` mode, you can use the `--core` argument and don't need to log in to the Argo CD server for user authentication.
+
+To specify the Repo server component name in the `<argocd-instance-name>-repo-server` format, you can either use the `--repo-server-name` command line option or set the `ARGOCD_REPO_SERVER_NAME` environment variable.
+
+.Command syntax
+`KUBECONFIG=~/.kube/config argocd --core [command or options] [arguments...]`
+
+You can choose one of the following options to execute `argocd` commands in the `core` mode:
+
+[NOTE]
+====
+If multiple Argo CD instances are in use, set the default namespace of the current context to the namespace of the ArgoCD instance you want to interact with.
+====
+
+* Default `kubeconfig` file with the default context:
++
+`argocd --core [command or options] [arguments…​]`
++
+--
+*Example 1: Display a list of applications:*
+[source,terminal]
+-----
+$ argocd --core app list --repo-server-name openshift-gitops-repo-server
+-----
+--
++
+--
+*Example 2: Display a list of applications:*
+[source,terminal]
+-----
+$ ARGOCD_REPO_SERVER_NAME=openshift-gitops-repo-server argocd --core app list
+-----
+--
+* Default `kubeconfig` file with a custom context:
++
+`argocd --core --kube-context [context]  [command or options] [arguments…​]`
++
+--
+*Example 1: Display a list of applications:*
+[source,terminal]
+-----
+$ argocd --core --kube-context kubeadmin-local app list --repo-server-name openshift-gitops-repo-server
+-----
+--
++
+--
+*Example 2: Display a list of applications:*
+[source,terminal]
+-----
+$ ARGOCD_REPO_SERVER_NAME=openshift-gitops-repo-server argocd --core --kube-context kubeadmin-local app list
+-----
+--
+* A custom `kubeconfig` file with the default context:
++
+`KUBECONFIG=~/.kube/custom_config argocd --core [command or options] [arguments…​]`
++
+--
+*Example: Display a list of applications:*
+[source,terminal]
+-----
+$ KUBECONFIG=~/.kube/custom_config argocd --core app list --repo-server-name openshift-gitops-repo-server
+-----
+--
+* A custom `kubeconfig` file with a custom context:
++
+`KUBECONFIG=~/.kube/custom_config argocd --core --kube-context [context] [command or options] [arguments…​]`
++
+--
+*Example: Display a list of applications:*
+[source,terminal]
+-----
+$ KUBECONFIG=~/.kube/custom_config argocd --kube-context kubeadmin-local --core app list --repo-server-name openshift-gitops-repo-server
+-----
+--
+
+[id="gitops-argocd-cli-global-options_argocd-gitops-cli-reference"]
+== Global options
+
+Global options are applicable to all the subcommands of the `argocd`.
+
+.Global options
+[options="header",cols="1,1,1"]
+|===
+|Option |Argument type |Description
+
+|`--auth-token`
+|`string`
+|Authentication token.
+
+|`--client-crt`
+|`string`
+|Client certificate file.
+
+|`--client-crt-key`
+|`string`
+|Client certificate key file.
+
+|`--config`
+|`string`
+|Path to Argo CD configuration file. Defaults to the `/home/user/.config/argocd/config` path.
+
+|`--controller-name`
+|`string`
+|Name of the Argo CD Application Controller component with `argocd-application-controller` as the default label.
+
+If the label of this component's name differs from the default, for example, when you are installing it through the Helm chart, set either the `--controller-name` option or the `ARGOCD_APPLICATION_CONTROLLER_NAME` environment variable to specify the name of the component.
+
+|`--core`
+|N/A
+|If set to `true`, the CLI communicates directly with the Kubernetes API server instead of using the Argo CD API server.
+
+|`--grpc-web`
+|N/A
+|Enable the gRPC-Web protocol for the Argo CD server. This is useful if, for example, the server is behind a proxy that does not support the HTTP/2 protocol.
+
+|`--grpc-web-root-path`
+|`string`
+|Enable the gRPC-Web protocol for the Argo CD server. This is useful if, for example, the server is behind a proxy that does not support the HTTP/2 protocol. Set web root.
+
+|`-H, --header`
+|`string`
+|Configure an additional header to all requests made by the GitOps `argocd` CLI. You can add multiple headers by setting this option multiple times. This option also supports comma-separated headers.
+
+|`-h, --help`
+|N/A
+|Help for the GitOps `argocd` CLI.
+
+|`--http-retry-max`
+|`integer`
+|Set the maximum number of retries to establish an HTTP connection to the Argo CD server.
+
+|`--insecure`
+|N/A
+|Skip server certificate and domain verification.
+
+|`--kube-context`
+|`string`
+|Direct the command to the given kube context.
+
+|`--logformat`
+|`string`
+|Set the logging format to either text or JSON. Defaults to `text`.
+
+|`--loglevel`
+|`string`
+|Set the logging level. Defaults to `info`. The `debug`, `info`, `warn`, and `error` levels are available. The logging levels are listed in decreasing order of verbosity.
+
+|`--plaintext`
+|N/A
+|Disable Transport Layer Security (TLS) protocols.
+
+|`--port-forward`
+|N/A
+|Connect to a random Argo CD server port using port forwarding.
+
+|`--port-forward-namespace`
+|`string`
+|Namespace name to be used for port forwarding.
+
+|`--redis-haproxy-name`
+|`string`
+|Name of the Redis HA Proxy deployment with `argocd-redis-ha-haproxy` as the default label.
+
+If the label of this deployment's name differs from the default, for example, when you are installing HAProxy through the Helm chart, set either the `--redis-haproxy-name` option or the `ARGOCD_REDIS_HAPROXY_NAME` environment variable to specify the name of the deployment.
+
+|`--redis-name`
+|`string`
+|Name of the Redis deployment with `argocd-redis` as the default label.
+
+If the label of this deployment's name differs from the default, for example, when you are installing it through the Helm chart, set either the `--redis-name` option or the `ARGOCD_REDIS_NAME` environment variable to specify the name of the deployment.
+
+|`--repo-server-name`
+|`string`
+|Name of the Argo CD Repo server with `argocd-repo-server` as the default label.
+
+If the label of this Repo server's name differs from the default, for example, when you are installing it through the Helm chart, set either the `--repo-server-name` option or the `ARGOCD_REPO_SERVER_NAME` environment variable to specify the name of the deployment.
+
+|`--server`
+|`string`
+|Argo CD server address.
+
+|`--server-crt`
+|`string`
+|Server certificate file.
+
+|`--server-name`
+|`string`
+|Name of the Argo CD API server with `argocd-server` as the default label.
+
+If the label of this Argo CD API server's name differs from the default, for example, when you are installing it through the Helm chart, set either the `--server-name` option or the `ARGOCD_SERVER_NAME` environment variable to specify the name of the deployment.
+
+|===
+
+[id="gitops-argocd-cli-utility-commands_argocd-gitops-cli-reference"]
+== Utility commands
+
+=== argocd
+Parent command for GitOps `argocd` CLI.
+
+*Example: Display all options:*
+[source,terminal]
+----
+$ argocd
+----
+
+=== version
+Print version information of the CLI.
+
+.Command syntax
+`argocd version [flags]`
+
+*Example: Print the full version of client and server to stdout:*
+[source,terminal]
+----
+$ argocd version
+----
+
+*Example: Print only full version of the client, no connection to server will be made:*
+[source,terminal]
+----
+$ argocd version --client
+----
+
+*Example: Print only full version of the server:*
+[source,terminal]
+----
+$ argocd version --server <server_url>
+----
+
+*Example: Print the full version of client and server in JSON format:*
+[source,terminal]
+----
+$ argocd version -o json
+----
+
+*Example: Print only client and server core version strings in YAML format:*
+[source,terminal]
+----
+$ argocd version --short -o yaml
+----
+
+=== help
+Print the help message about any command in the application.
+
+.Command syntax
+`argocd help [command] [flags]`
+
+*Example: Get the help text for all the available commands:*
+[source,terminal]
+----
+$ argocd help
+----
+
+*Example: Get the help text for `admin` subcommand:*
+[source,terminal]
+----
+$ argocd help admin
+----
+
+=== completion
+Write `bash` or `zsh` shell completion code to standard output.
+
+.Command syntax
+`argocd completion SHELL [flags]`
+
+For `bash`, ensure you have Bash completions installed and enabled. Alternatively, write it to a file and source it in your `.bash_profile`.
+
+*Example: Access completion in your current shell:*
+[source,terminal]
+----
+# source <(argocd completion bash)
+----
+
+For `zsh`, ensure you have Bash completions installed and enabled.
+
+*Example: Add to your `~/.zshrc` file and access completion in your current shell:*
+[source,terminal]
+----
+source <(argocd completion zsh)
+compdef _argocd argocd
+----

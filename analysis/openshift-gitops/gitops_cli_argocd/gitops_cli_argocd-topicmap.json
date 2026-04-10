@@ -1,0 +1,19 @@
+{
+  "book": "GitOps CLI (argocd) reference",
+  "dir": "gitops_cli_argocd",
+  "distro": "openshift-gitops",
+  "topics": [
+    {
+      "name": "Configuring the GitOps CLI",
+      "file": "configuring-argocd-gitops-cli"
+    },
+    {
+      "name": "Logging in to the Argo CD server in the default mode",
+      "file": "logging-in-to-argocd-server-in-default-mode"
+    },
+    {
+      "name": "Basic GitOps argocd commands",
+      "file": "argocd-gitops-cli-reference"
+    }
+  ]
+}

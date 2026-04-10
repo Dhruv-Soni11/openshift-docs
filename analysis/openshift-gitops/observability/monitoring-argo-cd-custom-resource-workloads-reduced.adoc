@@ -1,0 +1,260 @@
+:_mod-docs-content-type: ASSEMBLY
+// Included from: _attributes/common-attributes.adoc
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+
+[id="monitoring-argo-cd-custom-resource-workloads"]
+= Monitoring Argo CD custom resource workloads
+:context: monitoring-argo-cd-custom-resource-workloads
+
+toc::[]
+
+[role="_abstract"]
+With {gitops-title}, you can monitor the availability of Argo CD custom resource workloads for specific Argo CD instances. By monitoring Argo CD custom resource workloads, you have the latest information about the state of your Argo CD instances by enabling alerts for them. When the component workload pods such as application-controller, repo-server, or server of the corresponding Argo CD instance are unable to come up for certain reasons and there is a drift between the number of ready replicas and the number of desired replicas for a certain period of time, the Operator then triggers the alerts.
+
+You can enable and disable the setting for monitoring Argo CD custom resource workloads. 
+
+// Prerequisites for monitoring Argo CD custom resource workloads
+[id="prerequisites_{context}"]
+== Prerequisites
+
+* You have access to the cluster as a user with the `cluster-admin` role. 
+* {gitops-title} is installed in your cluster.
+* The monitoring stack is configured in your cluster in the `openshift-monitoring` project. In addition, the Argo CD instance is in a namespace that you can monitor through Prometheus.
+* The `kube-state-metrics` service is running on your cluster.
+* Optional: If you are enabling monitoring for an Argo CD instance already present in a user-defined project, ensure that the monitoring is link:https://docs.openshift.com/container-platform/latest/observability/monitoring/enabling-monitoring-for-user-defined-projects.html#enabling-monitoring-for-user-defined-projects_enabling-monitoring-for-user-defined-projects[enabled for user-defined projects] in your cluster.
++
+[NOTE]
+====
+If you want to enable monitoring for an Argo CD instance in a namespace that is not watched by the default `openshift-monitoring` stack, for example, any namespace that does not start with `openshift-*`, then you must enable user workload monitoring in your cluster. This action enables the monitoring stack to pick up the created PrometheusRule.
+====
+
+//Enabling Monitoring for Argo CD custom resource workloads
+// Included from: modules/gitops-enabling-monitoring-for-argo-cd-custom-resource-workloads.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/monitoring-argo-cd-custom-resource-workloads.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-enabling-monitoring-for-argo-cd-custom-resource-workloads_{context}"]
+= Enabling Monitoring for Argo CD custom resource workloads
+
+[role="_abstract"]
+By default, the monitoring configuration for Argo CD custom resource workloads is set to `false`.
+
+With {gitops-title}, you can enable workload monitoring for specific Argo CD instances. As a result, the Operator creates a `PrometheusRule` object that contains alert rules for all the workloads managed by the specific Argo CD instances. These alert rules trigger the firing of an alert when the replica count of the corresponding component has drifted from the desired state for a certain amount of time. The Operator will not overwrite the changes made to the `PrometheusRule` object by the users.
+
+.Procedure
+
+. Set the `.spec.monitoring.enabled` field value to `true` on a given Argo CD instance:
++
+--
+*Example Argo CD custom resource:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: example-argocd
+  labels:
+    example: repo
+spec:
+ # ...
+  monitoring:
+    enabled: true
+ # ...
+----
+--
+
+. Verify whether an alert rule is included in the PrometheusRule created by the Operator:
++
+--
+*Example alert rule:*
+[source,yaml]
+----
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argocd-component-status-alert
+  namespace: openshift-gitops
+spec:
+  groups:
+    - name: ArgoCDComponentStatus
+      rules:
+       # ...
+        - alert: ApplicationSetControllerNotReady
+          annotations:
+            message: >-
+              applicationSet controller deployment for Argo CD instance in
+              namespace "default" is not running
+          expr: >-
+            kube_statefulset_status_replicas{statefulset="openshift-gitops-application-controller statefulset",
+            namespace="openshift-gitops"} !=
+            kube_statefulset_status_replicas_ready{statefulset="openshift-gitops-application-controller statefulset",
+            namespace="openshift-gitops"} 
+          for: 1m
+          labels:
+            severity: critical
+----
+--
++
+--
+where:
+
+`rules.alert`:: Specifies the alert rule used in the `PrometheusRule` that checks whether the workloads created by the Argo CD instances are running as expected.
+--
+
+//Disabling Monitoring for Argo CD custom resource workloads
+// Included from: modules/gitops-disabling-monitoring-for-argo-cd-custom-resource-workloads.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/monitoring-argo-cd-custom-resource-workloads.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-disabling-monitoring-for-argo-cd-custom-resource-workloads_{context}"]
+= Disabling Monitoring for Argo CD custom resource workloads
+
+[role="_abstract"]
+You can disable workload monitoring for specific Argo CD instances. Disabling workload monitoring deletes the created PrometheusRule.
+
+.Procedure
+
+* Set the `.spec.monitoring.enabled` field value to `false` on a given Argo CD instance:
++
+--
+*Example Argo CD custom resource:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: example-argocd
+  labels:
+    example: repo
+spec:
+ # ...
+  monitoring:
+    enabled: false
+ # ...
+----
+--
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* link:https://docs.openshift.com/container-platform/latest/observability/monitoring/enabling-monitoring-for-user-defined-projects.html#enabling-monitoring-for-user-defined-projects_enabling-monitoring-for-user-defined-projects[Enabling monitoring for user-defined projects]

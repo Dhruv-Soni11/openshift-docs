@@ -1,0 +1,44 @@
+{
+  "book": "Observability",
+  "dir": "observability",
+  "distros": "openshift-gitops",
+  "topics": [
+    {
+      "name": "Logging",
+      "dir": "logging",
+      "topics": [
+        {
+          "name": "Viewing Argo CD logs",
+          "file": "viewing-argo-cd-logs"
+        }
+      ]
+    },
+    {
+      "name": "Monitoring",
+      "dir": "monitoring",
+      "distros": "openshift-gitops",
+      "topics": [
+        {
+          "name": "Monitoring with GitOps dashboards",
+          "file": "monitoring-with-gitops-dashboards"
+        },
+        {
+          "name": "Monitoring Argo CD instances",
+          "file": "monitoring-argo-cd-instances"
+        },
+        {
+          "name": "Monitoring the GitOps Operator performance",
+          "file": "monitoring-the-gitops-operator-performance"
+        },
+        {
+          "name": "Monitoring application health status",
+          "file": "health-information-for-resources-deployment"
+        },
+        {
+          "name": "Monitoring Argo CD custom resource workloads",
+          "file": "monitoring-argo-cd-custom-resource-workloads"
+        }
+      ]
+    }
+  ]
+}

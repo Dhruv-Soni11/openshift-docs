@@ -1,0 +1,251 @@
+:_mod-docs-content-type: ASSEMBLY
+// Included from: _attributes/common-attributes.adoc
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+
+[id="health-information-for-resources-deployment"]
+= Monitoring health information for application resources and deployments
+:context: health-information-for-resources-deployment
+
+toc::[]
+
+[role="_abstract"]
+The {gitops-title} *Environments* page in the *Developer* perspective of the {OCP} web console shows a list of the successful deployments of the application environments, along with links to the revision for each deployment.
+
+The *Application environments* page in the *Developer* perspective of the {OCP} web console displays the health status of the application resources, such as routes, synchronization status, deployment configuration, and deployment history.
+
+// Settings for environment labels and annotations
+// Included from: modules/go-settings-for-environment-labels-and-annotations.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/health-information-for-resources-deployment.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="go-settings-for-environment-labels-and-annotations_{context}"]
+= Settings for environment labels and annotations
+
+[role="_abstract"]
+This section provides reference settings for environment labels and annotations required to display an environment application in the *Environments* page, in the *Developer* perspective of the {OCP} web console.
+
+[discrete]
+== Environment labels
+
+The environment application manifest must contain `labels.openshift.gitops/environment` and `destination.namespace` fields. You must set identical values for the `<environment_name>` variable and the name of the environment application manifest.
+
+*Specification of the environment application manifest:*
+[source,yaml]
+----
+spec:
+  labels:
+    openshift.gitops/environment: <environment_name>
+  destination:
+    namespace: <environment_name>
+# ...
+----  
+
+*Example of an environment application manifest:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1beta1
+kind: Application
+metadata:
+  name: dev-env
+  namespace: openshift-gitops
+spec:
+  labels:
+    openshift.gitops/environment: dev-env
+  destination:
+    namespace: dev-env
+# ...
+----
+
+--
+where:
+
+`<metadata.name>`:: Specifies the name of the environment application manifest. The value set is the same as the value of the `<environment_name>` variable.
+--
+
+[discrete]
+== Environment annotations
+The environment namespace manifest must contain the `annotations.app.openshift.io/vcs-uri` and `annotations.app.openshift.io/vcs-ref` fields to specify the version controller code source of the application. You must set identical values for the `<environment_name>` variable and the name of the environment namespace manifest.
+
+*Specification of the environment namespace manifest:*
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    app.openshift.io/vcs-uri: <application_source_url>
+    app.openshift.io/vcs-ref: <branch_reference>
+  name: <environment_name>
+# ...
+----
+
+--
+where:
+
+`<metadata.name>`:: Specifies the name of the environment namespace manifest. The value set is the same as the value of the `<environment_name>` variable.
+--
+
+*Example of an environment namespace manifest:*
+[source,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    app.openshift.io/vcs-uri: https://example.com/<your_domain>/<your_gitops.git>
+    app.openshift.io/vcs-ref: main
+  labels:
+    argocd.argoproj.io/managed-by: openshift-gitops
+  name: dev-env
+# ...
+----  
+
+// Checking health information
+// Included from: modules/go-health-monitoring.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/health-information-for-resources-deployment.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="health-information-resources_{context}"]
+= Checking health information
+
+[role="_abstract"]
+The {gitops-title} Operator will install the GitOps backend service in the `openshift-gitops` namespace.
+
+.Prerequisites
+
+* The {gitops-title} Operator is installed from *OperatorHub*.
+* Ensure that your applications are synchronized by Argo CD.
+
+.Procedure
+
+. Click *Environments* under the *Developer* perspective. The *Environments* page shows the list of applications along with their *Environment status*.
+
+. Hover over the icons under the *Environment status* column to see the synchronization status of all the environments.
+
+. Click the application name from the list to view the details of a specific application.
+
+. In the *Application environments* page, if the *Resources* section under the *Overview* tab displays icons, hover over the icons to get status details. 
+** A broken heart indicates that resource issues have degraded the application's performance.
+** A yellow yield sign indicates that resource issues have delayed data about the application's health.
+
+. To view the deployment history of an application, click the *Deployment History* tab. The page includes details such as the *Last deployment*, *Description* (commit message), *Environment*, *Author*, and *Revision*.

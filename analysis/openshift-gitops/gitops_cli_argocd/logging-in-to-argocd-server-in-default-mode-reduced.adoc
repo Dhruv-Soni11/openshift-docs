@@ -1,0 +1,79 @@
+[id="logging-in-to-argocd-server-in-default-mode"]
+= Logging in to the Argo CD server in the default mode
+
+[IMPORTANT]
+====
+The GitOps argocd CLI tool is a Technology Preview feature only. Technology Preview features
+are not supported with Red Hat production service level agreements (SLAs) and
+might not be functionally complete. Red Hat does not recommend using them
+in production. These features provide early access to upcoming product
+features, enabling customers to test functionality and provide feedback during
+the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see link:https://access.redhat.com/support/offerings/techpreview/[Technology Preview Features Support Scope].
+====
+
+You can log in to the Argo CD server in the default mode using the GitOps `argocd` CLI and your Argo CD credentials to execute commands.
+
+[id="gitops-argocd-cli-logging-in-to-argocd-serverlogging-in-to-argocd-server-in-default-mode"]
+== Logging in to the Argo CD server
+
+After you install and configure the GitOps `argocd` CLI, you must log in to the Argo CD server to execute commands in the default mode.
+
+.Prerequisites
+
+* You must have the GitOps `argocd` CLI tool installed and configured.
+
+.Procedure
+
+You must use your credentials to log in and remain logged in throughout the session.
+
+[IMPORTANT]
+====
+ If the login session times out, you can use the `relogin` command to log in again. When done using the `argocd` commands, you can log out using the `logout` command.
+====
+
+. Get the `admin` account password for the Argo CD server:
++
+[source,terminal]
+----
+$ ADMIN_PASSWD=$(oc get secret openshift-gitops-cluster -n openshift-gitops -o jsonpath='{.data.admin\.password}' | base64 -d)
+----
+
+. Get the Argo CD server URL:
++
+[source,terminal]
+----
+$ SERVER_URL=$(oc get routes openshift-gitops-server -n openshift-gitops -o jsonpath='{.status.ingress[0].host}')
+----
+
+. Log in to the Argo CD server by using the `admin` account password and enclosing it in single quotes:
++
+[IMPORTANT]
+====
+Enclosing the password in single quotes ensures that special characters, such as `$`, are not misinterpreted by the shell. Always use single quotes to enclose the literal value of the password.
+====
++
+[source,terminal]
+----
+$ argocd login --username admin --password ${ADMIN_PASSWD} ${SERVER_URL}
+----
++
+--
+*Example:*
+[source,terminal]
+----
+$ argocd login --username admin --password '<password>' openshift-gitops.openshift-gitops.apps-crc.testing
+----
+--
++
+After a successful login, the session context will be displayed as follows:
++
+--
+*Example output:*
+[source,terminal]
+----
+'admin:login' logged in successfully
+Context '<server_url>' updated
+----
+--

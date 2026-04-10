@@ -1,0 +1,279 @@
+:_mod-docs-content-type: ASSEMBLY
+// Included from: _attributes/common-attributes.adoc
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+
+[id="monitoring-argo-cd-instances"]
+= Monitoring Argo CD instances
+:context: monitoring-argo-cd-instances
+
+toc::[]
+
+[role="_abstract"]
+By default, the {gitops-title} Operator automatically detects an installed Argo CD instance in your defined namespace, for example, `openshift-gitops`, and connects it to the monitoring stack of the cluster to provide alerts for out-of-sync applications.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have access to the cluster with `cluster-admin` privileges.
+* You have access to the {OCP} web console.
+* You have installed the {gitops-title} Operator in your cluster.
+* You have installed an Argo CD application in your defined namespace, for example, `openshift-gitops`.
+
+// Monitoring Argo CD health using Prometheus metrics
+// Included from: modules/gitops-monitoring-argo-cd-health-using-prometheus-metrics.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/monitoring-argo-cd-instances.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-monitoring-argo-cd-health-using-promethous-metrics_{context}"]
+= Monitoring Argo CD health using Prometheus metrics
+
+[role="_abstract"]
+You can monitor the health status of an Argo CD application by running Prometheus metrics queries against it.
+
+.Procedure
+
+. In the *Developer* perspective of the web console, select the namespace where your Argo CD application is installed, and navigate to *Observe* -> *Metrics*.
+. From the *Select query* drop-down list, select *Custom query*.
+. To check the health status of your Argo CD application, enter the Prometheus Query Language (PromQL) query similar to the following example in the *Expression* field:
++
+*Example:*
+[source, terminal]
+----
+sum(argocd_app_info{dest_namespace=~"<your_defined_namespace>",health_status!=""}) by (health_status)
+----
++
+--
+where:
+
+`<your_defined_namespace>`:: Specifies the variable with the actual name of your defined namespace, for example `openshift-gitops`.
+--
+
+
+// Disabling automatic scraping of metrics for Argo CD instances
+// Included from: modules/gitops-disabling-automatic-scraping-of-metrics-for-argo-cd-instances.adoc
+// Module included in the following assemblies:
+//
+// * observability/monitoring/monitoring-argo-cd-instances.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-disabling-automatic-scraping-of-metrics-for-argo-cd-instances_{context}"]
+= Disabling automatic scraping of metrics for Argo CD instances
+
+[role="_abstract"]
+By default, the {gitops-title} Operator automatically scrapes metrics for all Argo CD instances to measure the performance. As a result, the Operator creates the following resources and label to the namespace where the Argo CD instance is installed:
+
+* `gitops-operator-argocd-alerts` prometheus rule
+* `<argocd_namespace>-read` role
+* `<argocd_name>`, `<argocd_name>-repo-server`, and `<argocd_name>-server` service monitors
+* `<argocd_namespace>-prometheus-k8s-read-binding` role binding
+* `openshift.io/cluster-monitoring=true` label
+
+Scraping metrics for multiple Argo CD instances in a cluster might result in excessive storage usage. As a preventive measure, use the web console's YAML view and configure the `ArgoCD` custom resource (CR) to disable the automatic scraping of metrics for your Argo CD instance.
+
+As a cluster administrator, by disabling metric scraping for individual instances, you can give your users better control, flexibility, and stability to manage their defined namespaces.
+
+.Procedure
+
+. Log in to the {OCP} web console. 
+
+. In the *Administrator* perspective of the web console, click *Operators* -> *Installed Operators*.
+
+. From the *Project* list, select the project where the user-defined Argo CD instance is installed.
+
+. Select *{gitops-title}* from the installed Operators list and go to the *Argo CD* tab.
+
+. Click your user-defined Argo CD instance.
+
+. Configure the `ArgoCD` CR of your user-defined Argo CD instance to disable the automatic scraping of metrics:
+.. Click the *YAML* tab and edit the YAML file of the `ArgoCD` CR.
+.. In the `ArgoCD` CR, set the `spec.monitoring.disableMetrics` field value to `true`:
++
+--
+*Example `ArgoCD` CR:*
+[source,YAML]
+----
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+ name: example
+ namespace: spring-petclinic
+spec:
+ monitoring:
+   disableMetrics: true
+----
+--
++
+--
+where:
+
+`name`:: Specifies the name of the user-defined Argo CD instance.
+`namespace`:: Specifies the namespace where you want to run the user-defined Argo CD instance.
+--
++
+[TIP]
+====
+Alternatively, use the following command to disable the automatic scraping of metrics in the {gitops-title} `argocd` CLI:
+====
++
+--
+*Example command:*
+[source,terminal]
+----
+$ oc patch argocd example -n spring-petclinic --type='json' -p='[{"op": "replace", "path": "/spec/monitoring/disableMetrics", "value": true}]'
+----
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+argocd.argoproj.io/example patched
+----
+--
+
+. Verify that the Operator adds the `openshift.io/cluster-monitoring=false` label to your defined namespace:
+.. Go to *Administration* -> *Namespaces*.
++
+The *Namespaces* page displays the created namespaces.
+.. Click your defined namespace, go to the *YAML* tab, and verify that under the `metadata.labels` section, the `openshift.io/cluster-monitoring=false` label is added by the Operator.
+
+. Verify that the Operator deletes the following resources from your defined namespace:
+.. Go to *Home* -> *Search*.
+.. From the *Resources* list, select *PrometheusRule*, *Role*, *RoleBinding*, and *ServiceMonitors*.
++
+The *Search* page displays the selected resources.
+.. In the *Search* page, verify that under the *PrometheusRule* section, the `gitops-operator-argocd-alerts` prometheus rule is removed.
+.. Under the *Roles* section, from the *Filter* list, select *Namespace Roles*.
+.. Verify that the `<argocd_namespace>-read` role is removed.
+.. Under the *RoleBindings* section, from the *Filter* list, select *Namespace RoleBindings*.
+.. Verify that the `<argocd_namespace>-prometheus-k8s-read-binding` role binding is removed.
+.. Verify that under the *ServiceMonitors* section, the `<argocd_name>`, `<argocd_name>-repo-server`, and `<argocd_name>-server` service monitors are removed.
+
+[NOTE]
+====
+You can enable the metrics for your instance by modifying the `spec.monitoring.disableMetrics` field value to `false`. The Operator then creates the required role, role bindings, and service monitors and adds the `openshift.io/cluster-monitoring=true` label to your defined namespace. 
+====
+
+
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../../observability/monitoring/monitoring-argo-cd-custom-resource-workloads.adoc#monitoring-argo-cd-custom-resource-workloads[Monitoring Argo CD custom resource workloads]

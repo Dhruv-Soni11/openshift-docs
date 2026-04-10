@@ -1,0 +1,181 @@
+:_mod-docs-content-type: ASSEMBLY
+// Included from: _attributes/common-attributes.adoc
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+
+[id="viewing-argo-cd-logs"]
+= Viewing Argo CD logs
+:context: viewing-argo-cd-logs
+
+toc::[]
+
+[role="_abstract"]
+You can view the Argo CD logs with the {logging-title}. The {logging} visualizes the logs on a Kibana dashboard. The OpenShift Logging Operator enables logging with Argo CD by default.
+
+// Storing and retrieving Argo CD logs
+// Included from: modules/gitops-storing-and-retrieving-argo-cd-logs.adoc
+// Module included in the following assemblies:
+//
+// * observability/logging/viewing-argo-cd-logs.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-storing-and-retrieving-argo-cd-logs_{context}"]
+= Storing and retrieving Argo CD logs
+
+[role="_abstract"]
+You can use the Kibana dashboard to store and retrieve Argo CD logs.
+
+.Prerequisites
+
+* The {gitops-title} Operator is installed on your {OCP} cluster.
+* The {logging-title} is installed with default configuration on your {OCP} cluster.
+
+.Procedure
+
+. In the {OCP} web console, go to the {rh-app-icon} menu -> *Observability* -> *Logging* to view the Kibana dashboard. 
+
+. Create an index pattern.
+
+.. To display all the indices, define the index pattern as `pass:[*]`, and click *Next step*.
+
+.. Select *@timestamp* for *Time Filter field name*.
+
+.. Click *Create index pattern*.
+
+. In the navigation panel of the Kibana dashboard, click the *Discover* tab.
+
+. Create a filter to retrieve logs for Argo CD. The following steps create a filter that retrieves logs for all the pods in the `openshift-gitops` namespace:
+
+.. Click *Add a filter +*.
+
+.. Select the *kubernetes.namespace_name* field.
+
+.. Select the *is* operator.
+
+.. Select the *openshift-gitops* value.
+
+.. Click *Save*.
+
+. Optional: Add additional filters to narrow the search. For example, to retrieve logs for a particular pod, you can create another filter with `kubernetes.pod_name` as the field.
+
+. View the filtered Argo CD logs in the Kibana dashboard.
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* link:https://docs.openshift.com/container-platform/4.16/observability/logging/cluster-logging-deploying.html#logging-loki-gui-install_cluster-logging-deploying[Installing the {logging-title} using the web console]
