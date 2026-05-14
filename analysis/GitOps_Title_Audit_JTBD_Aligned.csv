@@ -1,0 +1,44 @@
+GitOps Title Audit - JTBD Framework Alignment,,,,,,,,,
+This audit aligns OpenShift GitOps documentation titles with JTBD framework and Red Hat title guidelines,,,,,,,,,
+,,,,,,,,,
+Original Title,JTBD-Aligned Title,Content Type,CCS Category,Doc Category,User Job,Desired Outcome,Title Guidelines Applied,Rationale,Word Count
+Release notes,What's new in OpenShift GitOps,Procedure,What's new,Get started,Learn what features and changes are available in this release,Make informed decisions about upgrading and using new capabilities,Length OK; Char count OK; Sentence-style caps,Focuses on user intent to discover new features and changes,5 words / 30 chars
+Understanding OpenShift GitOps,GitOps principles and architecture,Concept,Discover,Get started,Orient to what GitOps is and when to use it,Understand whether GitOps fits my deployment needs,Length OK; Char count OK; Sentence-style caps,"Concept topic using noun phrase, describes what user will learn",4 words / 34 chars
+Managing cluster configuration,Configure clusters declaratively,Procedure,Configure,Get started,Set up cluster configuration through Git,Maintain consistent cluster state across environments,Length OK; Char count OK; Sentence-style caps; Imperative verb,"Imperative verb focusing on configuration outcome, not management",3 words / 32 chars
+Installing GitOps,Install the GitOps Operator,Procedure,Install,Install,Set up GitOps in my cluster,Enable GitOps-based application deployment,Length OK; Char count OK; Sentence-style caps; Imperative verb,Specific imperative with clear object - what user installs,4 words / 27 chars
+Removing GitOps,Uninstall the GitOps Operator,Procedure,Install,Install,Remove GitOps from my cluster,Clean up GitOps installation completely,Length OK; Char count OK; Sentence-style caps; Imperative verb,"Clear action and object; ""uninstall"" is more standard than ""remove""",4 words / 29 chars
+Argo CD instance,Set up and configure Argo CD instances,Procedure,Configure,Set up,Create and configure Argo CD for my environment,Deploy Argo CD instances with appropriate settings,Length OK; Char count OK; Sentence-style caps; Imperative verb,Imperative verbs with user action and outcome,7 words / 38 chars
+Access control and user management,Secure GitOps with RBAC and SSO,Procedure,Secure,Set up,Control access to GitOps resources,Ensure only authorized users can manage deployments,Length OK; Char count OK; Sentence-style caps; Imperative verb,Outcome-focused title emphasizing security job,6 words / 31 chars
+Managing resource use,Optimize resource allocation and quotas,Procedure,Optimize,Set up,Right-size GitOps deployment for my environment,Ensure efficient resource utilization,Length OK; Char count OK; Sentence-style caps; Imperative verb,"Focuses on optimization outcome, not just management",5 words / 39 chars
+Argo CD applications,Deploy applications with Argo CD,Procedure,Develop,Set up,Create and manage application deployments,Automate application delivery through Git,Length OK; Char count OK; Sentence-style caps; Imperative verb,Clear action verb with outcome - what user accomplishes,5 words / 32 chars
+Argo CD application sets,Automate multi-target deployments with ApplicationSets,Procedure,Develop,Set up,Deploy apps across multiple clusters or namespaces,Scale application deployment automation,Length OK; Char count OK; Sentence-style caps; Imperative verb,"Outcome-focused, explains what ApplicationSets enable",5 words / 54 chars
+Multitenancy,Configure multi-tenant environments,Procedure,Configure,Set up,Isolate teams and applications,Enable safe multi-team GitOps usage,Length OK; Char count OK; Sentence-style caps; Imperative verb,Active verb with clear outcome - configuring isolation,3 words / 35 chars
+Declarative cluster configuration,Automate cluster configuration with GitOps,Procedure,Configure,Set up,Manage cluster state declaratively,Ensure cluster configuration consistency,Length OK; Char count OK; Sentence-style caps; Imperative verb,Emphasizes automation benefit and GitOps methodology,5 words / 42 chars
+Argo CD Agent architecture,Argo CD Agent architecture and deployment model,Concept,Discover,Set up,Understand agent-based architecture,Choose right deployment model for my use case,Length OK; Char count OK; Sentence-style caps,Concept topic with descriptive noun phrase,7 words / 47 chars
+Argo CD Agent installation,Install the Argo CD Agent,Procedure,Install,Set up,Deploy agent for remote cluster management,Enable secure hub-and-spoke GitOps architecture,Length OK; Char count OK; Sentence-style caps; Imperative verb,Clear imperative with specific component,5 words / 25 chars
+Argo Rollouts,Implement progressive delivery with Argo Rollouts,Procedure,Extend,Progressive delivery,Reduce deployment risk with gradual rollouts,Deploy safely with canary and blue-green strategies,Length OK; Char count OK; Sentence-style caps; Imperative verb,"Outcome-focused, explains what users achieve",6 words / 49 chars
+Security,Secure Argo CD deployments,Procedure,Secure,Security,Protect GitOps infrastructure and secrets,Meet security and compliance requirements,Length OK; Char count OK; Sentence-style caps; Imperative verb,Action verb with clear focus on security outcome,4 words / 26 chars
+GitOps CLI (argocd) reference,argocd CLI command reference,Reference,Reference,Reference,Find CLI command syntax and options,Automate GitOps operations via command line,Length OK; Char count OK; Sentence-style caps,Specific reference title without generic words,4 words / 28 chars
+GitOps workloads on infrastructure nodes,Run GitOps workloads on infrastructure nodes,Procedure,Optimize,Manage,Optimize GitOps pod placement,Separate control plane from application workloads,Length OK; Char count OK; Sentence-style caps; Imperative verb,Clear action with specific placement outcome,6 words / 44 chars
+Observability,Monitor and troubleshoot with logs and metrics,Procedure,Observe,Observability,Track GitOps system health and behavior,Detect and diagnose issues quickly,Length OK; Char count OK; Sentence-style caps; Imperative verb,Action verbs with tools and outcomes,7 words / 46 chars
+Troubleshooting issues,Troubleshoot common GitOps issues,Procedure,Troubleshoot,Troubleshoot,Diagnose and resolve problems,Restore GitOps functionality quickly,Length OK; Char count OK; Sentence-style caps; Imperative verb,Imperative verb with specific context,4 words / 33 chars
+,,,,,,,,,
+SUMMARY,,,,,,,,,
+,,,,,,,,,
+Titles by CCS Category:,,,,,,,,,
+Configure,4,,,,,,,,
+Develop,2,,,,,,,,
+Discover,2,,,,,,,,
+Extend,1,,,,,,,,
+Install,3,,,,,,,,
+Observe,1,,,,,,,,
+Optimize,2,,,,,,,,
+Reference,1,,,,,,,,
+Secure,2,,,,,,,,
+Troubleshoot,1,,,,,,,,
+What's new,1,,,,,,,,
+,,,,,,,,,
+Titles by Content Type:,,,,,,,,,
+Concept,2,,,,,,,,
+Procedure,17,,,,,,,,
+Reference,1,,,,,,,,
