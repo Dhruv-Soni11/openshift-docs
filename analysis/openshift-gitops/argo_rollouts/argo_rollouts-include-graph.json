@@ -1,0 +1,218 @@
+{
+  "book_dir": "argo_rollouts",
+  "assemblies": {
+    "argo-rollouts-overview": {
+      "path": "argo_rollouts/argo-rollouts-overview.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 17,
+          "path": "modules/gitops-why-use-argo-rollouts.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 20,
+          "path": "modules/gitops-about-argo-rollout-manager-custom-resources-and-spec.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 23,
+          "path": "modules/gitops-argo-rollouts-architecture-overview.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 26,
+          "path": "modules/gitops-argo-rollouts-cli-overview.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "using-argo-rollouts-for-progressive-deployment-delivery": {
+      "path": "argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 19,
+          "path": "modules/gitops-creating-rolloutmanager-custom-resource.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 22,
+          "path": "modules/gitops-deleting-rolloutmanager-custom-resource.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 25,
+          "path": "modules/gitops-installing-argo-rollouts-cli-on-linux.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 28,
+          "path": "modules/gitops-installing-argo-rollouts-cli-on-mac-os.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 31,
+          "path": "modules/gitops-enabling-argo-rollouts-ui-on-an-argo-cd-instance.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "getting-started-with-argo-rollouts": {
+      "path": "argo_rollouts/getting-started-with-argo-rollouts.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 26,
+          "path": "modules/gitops-deploying-a-rollout.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 29,
+          "path": "modules/gitops-updating-the-rollout.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 32,
+          "path": "modules/gitops-promoting-the-rollout.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        },
+        {
+          "line": 35,
+          "path": "modules/gitops-manually-aborting-the-rollout.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "routing-traffic-by-using-argo-rollouts": {
+      "path": "argo_rollouts/routing-traffic-by-using-argo-rollouts.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 28,
+          "path": "modules/gitops-configure-rollout-route-traffic-using-openshift-routes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh": {
+      "path": "argo_rollouts/routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 39,
+          "path": "modules/gitops-configure-rollout-route-traffic-using-openshift-service-mesh.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "enable-support-for-namespace-scoped-argo-rollouts-installation": {
+      "path": "argo_rollouts/enable-support-for-namespace-scoped-argo-rollouts-installation.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 25,
+          "path": "modules/gitops-configuring-namespace-scoped-argo-rollouts-installation.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "configuring_traffic_management_and_metric_plugins_in_argo_rollouts": {
+      "path": "argo_rollouts/configuring_traffic_management_and_metric_plugins_in_argo_rollouts.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 26,
+          "path": "modules/gitops-enable-traffic-management-and-metric-plugins-in-argo-rollouts.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "enabling-ha-support-for-argo-rollouts": {
+      "path": "argo_rollouts/enabling-ha-support-for-argo-rollouts.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 22,
+          "path": "modules/gitops-configuring-high-availability-for-argo-rollouts.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    },
+    "using-cluster-scoped-rollouts-instance-to-manage-rollouts-resources": {
+      "path": "argo_rollouts/using-cluster-scoped-rollouts-instance-to-manage-rollouts-resources.adoc",
+      "includes": [
+        {
+          "line": 2,
+          "path": "_attributes/common-attributes.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 0
+        },
+        {
+          "line": 21,
+          "path": "modules/gitops-configuring-a-cluster-scoped-argo-rollouts-instance-to-manage-rollouts-resources.adoc",
+          "module_type": "UNKNOWN",
+          "leveloffset": 1
+        }
+      ]
+    }
+  }
+}

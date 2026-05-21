@@ -1,0 +1,226 @@
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="enabling-ha-support-for-argo-rollouts"]
+= Enabling high availability support for Argo Rollouts
+:context: enabling-ha-support-for-argo-rollouts
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts support enabling high availability (HA) in the `RolloutManager` Custom Resource (CR). When you configure high availability in Argo Rollouts, the {gitops-title} Operator automatically sets the number of pods to 2 for the Argo Rollouts controller using the `.spec.ha` field in the `RolloutManager` CR. It also activates leader election, allowing the pods to run in an active-passive process. A single pod actively manages rollouts, while the other pod remains in a passive state, ensuring the additional replica provides redundancy and availability if a node fails.
+
+This feature benefits the Rollouts controller by ensuring it runs without downtime or manual intervention. It also operates during planned maintenance, as the second replica ensures the controller runs smoothly. Enabling high availability in Argo Rollouts ensures the controller remains reliable and resilient, even during node failures or heavy workloads.
+
+The {gitops-title} Operator also ensures that anti-affinity rules apply by default. Although these rules are not user-defined, they ensure the controller pods distribute across different nodes to avoid a single point of failure, providing resilience against node failure.
+
+.Prerequisites
+* You are logged in to the {OCP} cluster as an administrator.
+* You installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+
+// Configuring high availability for Argo Rollouts
+// Module included in the following assemblies:
+//
+// * argo_rollouts/enabling-ha-support-for-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configuring-high-availability-for-argo-rollouts_{context}"]
+== Configuring high availability for Argo Rollouts
+
+[role="_abstract"]
+To enable high availability, configure the `ha` specification in the `RolloutManager` custom resource (CR) by completing the following steps:
+
+.Procedure
+
+.  Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Create or select the project where you want to create and configure a `RolloutManager` CR from the *Project* drop-down menu.
+
+. Select *{gitops-title}* from the installed Operators.
+
+. In the *Details* tab, under the *Provided APIs* section, click *Create instance* in the *RolloutManager* pane.
+
+. On the *Create RolloutManager* page, select the *YAML view* and edit the YAML.
++
+--
+*Example enabling the `ha` field in the `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollouts
+  namespace: openshift-gitops
+spec:
+  ha:
+    enabled: true
+----
+--
++
+--
+where:
+
+`spec.ha.enabled`:: Specifies whether high availability is enabled or not. If the value is set to `true`, high availability is enabled.
+--
+
+. Click *Create*.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the *Status* field of the RolloutManager instance shows *Phase: Available*.
+
+. Verify the status of the Rollouts deployment by completing the following steps:
+.. In the *Administrator* perspective, click *Workloads* -> *Deployments*.
+.. Click the *argo-rollouts* deployment.
++
+.. Click the *Details* tab and confirm that the number of replicas in the Rollouts deployment is now set to 2. 
+.. Click the *YAML* tab and confirm that the following configuration is displayed:
++
+--
+*Example Argo Rollouts deployment configuration file:*
+[source,yaml]
+----
+kind: Deployment
+metadata:
+  name: argo-rollouts
+  namespace: openshift-gitops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argo-rollouts
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: argo-rollouts
+    spec:
+      containers:
+          args:
+            - '--leader-elect'
+            - 'true'
+----
+--
++
+--
+where:
+
+`spec.replicas`:: Specifies the number of pods.
+`spec.template.spec.containers.args`:: Specifies that the `--leader-elect=true` flag is passed to the Rollouts deployment. Although this flag is set to `true` by default, explicitly setting it ensures that leader election remains consistently enforced.
+--

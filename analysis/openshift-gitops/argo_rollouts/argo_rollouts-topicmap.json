@@ -1,0 +1,52 @@
+{
+  "book_name": "Argo Rollouts",
+  "book_dir": "argo_rollouts",
+  "distro": "openshift-gitops",
+  "topics": [
+    {
+      "name": "Argo Rollouts overview",
+      "file": "argo-rollouts-overview",
+      "order": 1
+    },
+    {
+      "name": "Using Argo Rollouts for progressive deployment delivery",
+      "file": "using-argo-rollouts-for-progressive-deployment-delivery",
+      "order": 2
+    },
+    {
+      "name": "Getting started with Argo Rollouts",
+      "file": "getting-started-with-argo-rollouts",
+      "order": 3
+    },
+    {
+      "name": "Routing traffic by using Argo Rollouts",
+      "file": "routing-traffic-by-using-argo-rollouts",
+      "order": 4
+    },
+    {
+      "name": "Routing traffic by using Argo Rollouts for OpenShift Service Mesh",
+      "file": "routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh",
+      "order": 5
+    },
+    {
+      "name": "Enabling support for namespace-scoped Argo Rollouts installation",
+      "file": "enable-support-for-namespace-scoped-argo-rollouts-installation",
+      "order": 6
+    },
+    {
+      "name": "Configuring traffic management and metric plugins in Argo Rollouts",
+      "file": "configuring_traffic_management_and_metric_plugins_in_argo_rollouts",
+      "order": 7
+    },
+    {
+      "name": "Enabling high availability support for Argo Rollouts",
+      "file": "enabling-ha-support-for-argo-rollouts",
+      "order": 8
+    },
+    {
+      "name": "Using a cluster-scoped Argo Rollouts instance to manage resources",
+      "file": "using-cluster-scoped-rollouts-instance-to-manage-rollouts-resources",
+      "order": 9
+    }
+  ]
+}

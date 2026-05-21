@@ -1,0 +1,278 @@
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="enable-support-for-namespace-scoped-argo-rollouts-installation"]
+= Enabling support for a namespace-scoped Argo Rollouts installation
+:context: enable-support-for-namespace-scoped-argo-rollouts-installation
+
+toc::[]
+
+[role="_abstract"]
+{gitops-title} enables support for two modes of Argo Rollouts installations:
+
+* *Cluster-scoped installation* (default): The Argo Rollouts custom resources (CRs) defined in any namespace are reconciled by the Argo Rollouts instance. As a result, you can use Argo Rollouts CR across any namespace on the cluster.
+* *Namespace-scoped installation*: The Argo Rollouts instance is installed in a specific namespace and only handles an Argo Rollouts CR within the same namespace. This installation mode includes the following benefits:
+** This mode does not require cluster-wide `ClusterRole` or `ClusterRoleBinding` permissions. You can install and use Argo Rollouts within a single namespace without requiring cluster permissions.
+** This mode provides security benefits by limiting the cluster scope of a single Argo Rollouts instance to a specific namespace.
+
+[NOTE]
+====
+To prevent unintended privilege escalation, {gitops-title} allows only one mode of Argo Rollout installation at a time.
+====
+
+To switch between cluster-scoped and namespace-scoped Argo Rollouts installations, complete the following steps.
+
+// Configuring namespace-scoped Argo Rollouts installation
+// Module included in the following assemblies:
+//
+// * argo_rollouts/enable-support-for-namespace-scoped-argo-rollouts-installation.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="configuring-namespace-scoped-argo-rollouts-installation_{context}"]
+== Configuring a namespace-scoped Argo Rollouts installation
+
+[role="_abstract"]
+To configure a namespace-scoped instance of Argo Rollouts installation, complete the following steps.
+
+.Prerequisites
+
+* You are logged in to the {product-title} cluster as an administrator.
+* You have installed {gitops-title} on your {product-title} cluster.
+
+.Procedure 
+
+. In the *Administrator* perspective of the web console, go to *Administration* -> *CustomResourceDefinitions*.
+. Search for `Subscription` and click the *Subscription* CRD.
+. Click the *Instances* tab and then click the *openshift-gitops-operator* subscription.
+. Click the *YAML* tab and edit the YAML file. 
+.. Specify the `NAMESPACE_SCOPED_ARGO_ROLLOUTS` environment variable, with the value set to `true` in the `.spec.config.env` property.
++
+--
+*Example of configuring the namespace-scoped Argo Rollouts installation:*
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+spec:
+  # (...)
+  config:
+    env:
+      - name: NAMESPACE_SCOPED_ARGO_ROLLOUTS
+        value: 'true'
+----
+--
++
+--
+where:
+
+`config.env.value`:: Set the value to `'true'` to enable namespace-scoped installation. If the value is set to `'false'` or not specified, the installation defaults to cluster-scoped mode.
+--
+
+.. Click *Save*.
++
+The {gitops-title} Operator facilitates the reconciliation of the Argo Rollouts custom resource within a namespace-scoped installation.
+
+. Verify that the {gitops-title} Operator has enabled the namespace-scoped Argo Rollouts installation by viewing the logs of the {gitops-shortname} container:
+.. In the *Administrator* perspective of the web console, go to *Workloads* -> *Pods*.
+.. Click the *openshift-gitops-operator-controller-manager* pod, and then click the *Logs* tab.
+.. Look for the following log statement: `Running in namespaced-scoped mode`. This statement indicates that the {gitops-title} Operator has enabled the namespace-scoped Argo Rollouts installation.
+
+. Create a `RolloutManager` resource to complete the namespace-scoped Argo Rollouts installation:
+.. Go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps*, and click the *RolloutManager* tab.
+.. Click *Create RolloutManager*.
+.. Select *YAML view* and enter the following snippet:
++
+--
+*Example `RolloutManager` CR for a namespace-scoped Argo Rollouts installation:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: rollout-manager
+  namespace: my-application
+spec:
+  namespaceScoped: true
+----
+--
++
+--
+where:
+
+`metadata.namespace`:: Specifies the name of the project where you want to install the namespace-scoped Argo Rollouts instance.
+--
+
+.. Click *Create*. 
++
+After the `RolloutManager` CR is created, {gitops-title} begins to install the namespace-scoped Argo Rollouts instance into the selected namespace.
+
+. Verify that the namespace-scoped installation is successful.
+.. In the *RolloutManager* tab, under the *RolloutManagers* section, ensure that the *Status* field of the `RolloutManager` instance is `Phase: Available`.
+.. Examine the following output in the *YAML* tab under the *RolloutManagers* section to ensure that the installation is successful:
++
+--
+*Example of namespace-scoped Argo Rollouts installation YAML file:*
+[source,yaml]
+----
+spec:
+  namespaceScoped: true
+status:
+  conditions:
+    lastTransitionTime: '2024-07-10T14:20:05Z'
+    message: ''
+    reason: Success
+    status: 'True'
+    type: 'Reconciled'
+  phase: Available
+  rolloutController: Available
+----
+--
++
+--
+where:
+
+`status.rolloutController`:: Specifies the status of the Argo Rollouts controller. The value `Available` indicates that the namespace-scoped Argo Rollouts installation is successful.
+--
++
+If you try to install a namespace-specific Argo Rollouts instance while a cluster-scoped installation already exists on the cluster, an error message is displayed:
++
+--
+*Example of an incorrect installation with an error message:*
+[source,yaml]
+----
+spec:
+  namespaceScoped: true
+status:
+  conditions:
+    lastTransitionTime: '2024-07-10T14:10:07Z'
+    message: 'when Subscription has environment variable NAMESPACE_SCOPED_ARGO_ROLLOUTS set to False, there may not exist any namespace-scoped RolloutManagers: only a single cluster-scoped RolloutManager is supported'
+    reason: InvalidRolloutManagerScope
+    status: 'False'
+    type: 'Reconciled'
+  phase: Failure
+  rolloutController: Failure
+----
+--
++
+--
+where:
+
+`status.rolloutController`:: Specifies the status of the Argo Rollouts controller. The value `Failure` indicates that the namespace-scoped Argo Rollouts installation was unsuccessful. In this case, the installation defaults to cluster-scoped mode.
+--

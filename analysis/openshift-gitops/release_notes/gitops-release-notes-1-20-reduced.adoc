@@ -1,0 +1,498 @@
+//OpenShift GitOps Release Notes
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="gitops-release-notes"]
+= {gitops-title} release notes
+:context: gitops-release-notes
+
+toc::[]
+
+[role="_abstract"]
+Release notes contain information about new and deprecated features, breaking changes, fixed issues, and known issues. The following release notes apply to the most recent OpenShift {gitops-shortname} releases on {OCP}.
+
+{gitops-title} is a declarative way to implement continuous deployment for cloud native applications. {gitops-title} ensures consistency in applications when you deploy them to different clusters in different environments, such as development, staging, and production. {gitops-title} helps you automate the following tasks:
+
+* Ensure that the clusters have similar states for configuration, monitoring, and storage.
+* Recover or recreate clusters from a known state.
+* Apply or revert configuration changes to multiple {OCP} clusters.
+* Associate templated configuration with different environments.
+* Promote applications across clusters, from staging to production.
+
+For an overview of {gitops-title}, see xref:../understanding_openshift_gitops/about-redhat-openshift-gitops.adoc#about-redhat-openshift-gitops[About {gitops-title}].
+
+[NOTE]
+====
+For additional information about the OpenShift {gitops-shortname} lifecycle and supported platforms, refer to the link:https://access.redhat.com/support/policy/updates/openshift_operators[OpenShift Operator Life Cycles] and link:https://access.redhat.com/support/policy/updates/openshift[Red{nbsp}Hat {OCP} Life Cycle Policy].
+====
+
+// Compatibility and support matrix
+// Module included in the following assembly:
+//
+// * release_notes/gitops-release-notes.adoc
+
+:_mod-docs-content-type: REFERENCE
+[id="GitOps-compatibility-support-matrix_{context}"]
+== Compatibility and support matrix
+
+[role="_abstract"]
+Some features in this release are currently in link:https://access.redhat.com/support/offerings/techpreview[Technology Preview]. These experimental features are not intended for production use.
+
+In the table, features are marked with the following statuses:
+
+* *TP*: _Technology Preview_
+* *GA*: _General Availability_
+* *NA*: _Not Applicable_
+
+[IMPORTANT]
+====
+* In {OCP} 4.13, the `stable` channel has been removed. Before upgrading to {OCP} 4.13, if you are already on the `stable` channel, choose the appropriate channel and switch to it.
+
+* The maintenance support for {OCP} 4.12 on {ibmpowerProductName} has ended from 17 July 2024. If you are using {gitops-title} on {OCP} 4.12, upgrade to {OCP} 4.13 or later.
+====
+
+.{gitops-shortname} and component versions
+[options="header"]
+|===
+|{gitops-shortname} |Argo CD CLI |Helm |Kustomize |Argo CD |Argo Rollouts |Dex |Argo CD Agent |{ocp}
+
+|1.20.0 |3.3.2 TP |3.19.4 GA |5.8.1 GA |3.3.2 GA |1.8.4 GA |2.43.1 GA |0.7.0 GA |4.14, 4.16-4.21
+|1.19.0 |3.1.9 TP |3.18.4 GA |5.7.0 GA |3.1.9 GA |1.8.3 GA |2.43.0 GA |0.5.3 GA |4.14, 4.16-4.21
+|1.18.0 |3.1.5 TP |3.18.4 GA |5.7.0 GA |3.1.6 GA |1.8.3 GA |2.43.0 GA |0.4.1 TP |4.14, 4.16-4.20
+|===
+
+[IMPORTANT]
+====
+* Starting from {gitops-title} 1.18, support is no longer provided for Keycloak-based authentication. As an alternative, you can migrate to Dex or configure a self-managed Red Hat Build of Keycloak (RHBK) instance.
+====
+
+// Writer, to update this support matrix, refer to https://spaces.redhat.com/display/GITOPS/GitOps+Component+Matrix
+
+[id="GitOps-technology-preview_{context}"]
+=== Technology Preview features
+
+The features mentioned in the following table are currently in Technology Preview (TP). These experimental features are not intended for production use. 
+
+.Technology Preview tracker
+[cols="4,1,1",options="header"]
+|====
+|Feature |TP in {gitops-title} versions|GA in {gitops-title} versions
+
+|Argo CD Agent
+|1.17.0
+|1.19.0
+
+|The {gitops-shortname} `argocd` CLI tool
+|1.12.0
+|NA
+
+|Argo CD application sets in non-control plane namespaces
+|1.12.0
+|NA
+
+|The `round-robin` cluster sharding algorithm
+|1.10.0
+|NA
+
+|Dynamic scaling of shards
+|1.10.0
+|NA
+
+|Argo Rollouts
+|1.9.0
+|1.13.0
+
+|ApplicationSet Progressive Sync Strategy
+|1.8.0
+|NA
+
+|Multiple sources for an application
+|1.8.0
+|1.15.0
+
+|Argo CD applications in non-control plane namespaces
+|1.7.0
+|1.13.0
+
+|The {gitops-title} *Environments* page in the *Developer* perspective of the {OCP} web console
+|1.1.0
+|NA
+|====
+
+[NOTE]
+====
+The `ApplicationSet Progressive Sync Strategy` feature name aligns with the upstream naming convention and replaces the earlier name, `ApplicationSet Progressive Rollout Strategy`, used in previous {gitops-title} versions. The functionality remains unchanged.
+====
+
+// Modules included, most to least recent
+
+// Release notes for Red Hat OpenShift GitOps 1.20.1
+// Module included in the following assembly:
+//
+// * release_notes/gitops-release-notes-1-20.adoc
+
+:_mod-docs-content-type: REFERENCE
+
+[id="gitops-release-notes-1-20-1_{context}"]
+== Release notes for {gitops-title} 1.20.1
+
+[role="_abstract"]
+{gitops-title} 1.20.1 is available on {OCP} 4.14, 4.16, 4.17, 4.18, 4.19, 4.20, and 4.21.
+
+[id="errata-updates-1-20-1_{context}"]
+=== Errata updates
+
+RHEA-2026:6378 - {gitops-title} 1.20.1 enhancement update advisory::
+Issued: 2026-04-01
++
+The list of enhancements that are included in this release is documented in the following advisory:
++
+* link:https://access.redhat.com/errata/RHEA-2026:6378[RHEA-2026:6378]
+
+If you have installed the {gitops-title} Operator in the default namespace, run the following command to view the container images in this release:
+
+[source,terminal]
+----
+$ oc describe deployment gitops-operator-controller-manager -n openshift-gitops-operator
+----
+
+[id="fixed-issues-1-20-1_{context}"]
+=== Fixed issues
+
+Prevent unintended AppProjects deletion during resync::
+Before this update, `AppProjects` managed by autonomous agents could be unintentionally deleted during resync operations. This occurred when a principal restart triggered resync and the `AppProject` destination names did not match the agent name, leading to incorrect reconciliation. With this update, the reconciliation logic preserves these `AppProjects`, ensuring they remain intact during resync operations and restarts.
++
+link:https://issues.redhat.com/browse/GITOPS-9200[GITOPS-9200]
+
+
+// Release notes for Red Hat OpenShift GitOps 1.20.0
+// Module included in the following assembly:
+//
+// * release_notes/gitops-release-notes-1-20-0.adoc
+
+:_mod-docs-content-type: REFERENCE
+
+[id="gitops-release-notes-1-20-0_{context}"]
+== Release notes for {gitops-title} 1.20.0
+
+[role="_abstract"]
+{gitops-title} 1.20.0 is available on {OCP} 4.14, 4.16, 4.17, 4.18, 4.19, 4.20, and 4.21.
+
+[id="errata-updates-1-20-0_{context}"]
+=== Errata updates
+
+RHEA-2026:5819 - {gitops-title} 1.20.0 enhancement update advisory::
+Issued: 2026-03-25
++
+The list of enhancements that are included in this release are documented in the following advisory:
++
+* link:https://access.redhat.com/errata/RHEA-2026:5819[RHEA-2026:5819]
+
+If you have installed the {gitops-title} Operator in the default namespace, run the following command to view the container images in this release:
+
+[source,terminal]
+----
+$ oc describe deployment gitops-operator-controller-manager -n openshift-gitops-operator
+----
+
+[id="new-features-1-20-0_{context}"]
+=== New features
+
+Changes to Argo CD authentication with external authentication enabled::
+With this update, when external authentication is enabled at the cluster level in {OCP} 4.20 and later, the {gitops-title} Operator no longer configures OpenShift OAuth for Argo CD login. To enable login in such environments, configure an external identity provider by specifying the `.spec.oidc` field in the ArgoCD custom resource, for example using Red Hat Build of Keycloak (RHBK). If external authentication is not enabled, {gitops-shortname} continues to use Dex with OpenShift OAuth.
++
+link:https://issues.redhat.com/browse/GITOPS-8017[GITOPS-8017]
+
+Enhanced wildcard support for ApplicationSet source namespaces::
+With this update, {gitops-title} supports wildcard characters (`*`) in the `.spec.applicationSet.sourceNamespaces` field of the Argo CD custom resource (CR). Use this feature to enable the `ApplicationSets` in any namespace feature for a dynamic group of namespaces by using a single pattern instead of maintaining a static list.
++
+link:https://issues.redhat.com/browse/GITOPS-8217[GITOPS-8217]
+
+Managed and autonomous agent installation through the Argo CD agent::
+With this update, {gitops-title} supports managed and autonomous Argo CD agent installation directly through the Argo CD custom resource (CR). Administrators can configure and deploy Argo CD agents by using the Operator, simplifying agent-based deployments.
++
+link:https://issues.redhat.com/browse/GITOPS-8164[GITOPS-8164]
+
+Mapping Applications to managed agents by using the destination field::
+With this update, the Argo CD agent supports destination-based mapping. This mode routes applications to managed agents by using the `.spec.destination.name` field instead of the application namespace. It supports multitenant use cases where teams organize applications in separate namespaces while targeting the same agent. Applications keep their original namespace on the spoke cluster.
++
+To enable destination-based mapping, configure the `destinationBasedMapping` field in the Argo CD CR for the principal and agent components. On the agent, you can optionally set the `createNamespace` field to allow automatic namespace creation if the application namespace does not exist on the spoke cluster.
++
+For more information, see the Additional Resources section, which includes information about Argo CD Agent Mapping Modes in the Argo CD Agent upstream documentation.
++
+link:https://issues.redhat.com/browse/GITOPS-8531[GITOPS-8531]
+
+Image Updater custom resource with legacy annotation reading (Technology Preview)::
+With this update, the Argo CD Image Updater supports a custom resource (CR) that targets multiple applications generated by `ApplicationSets`. This custom resource reads Image Updater settings from existing annotations (`argocd-image-updater.argoproj.io/*`). This enables adoption of the CR-based workflow without migrating existing configurations. A single `ImageUpdater` CR can manage image updates across multiple applications.
++
+--
+For more information, see the Additional Resources section, which includes an upstream documentation link for the Argo CD Image Updater.
+--
++
+--
+:FeatureName: The Argo CD Image Updater feature
+// When including this file, ensure that {FeatureName} is set immediately before
+// the include. Otherwise it will result in an incorrect replacement.
+
+[IMPORTANT]
+====
+[subs="attributes+"]
+{FeatureName} is a Technology Preview feature only. Technology Preview features
+are not supported with Red Hat production service level agreements (SLAs) and
+might not be functionally complete. Red Hat does not recommend using them
+in production. These features provide early access to upcoming product
+features, enabling customers to test functionality and provide feedback during
+the development process.
+
+For more information about the support scope of Red Hat Technology Preview features, see link:https://access.redhat.com/support/offerings/techpreview/[Technology Preview Features Support Scope].
+====
+// Undefine {FeatureName} attribute, so that any mistakes are easily spotted
+:!FeatureName:
+
+--
++
+link:https://issues.redhat.com/browse/GITOPS-8544[GITOPS-8544]
+
+CloudEvents webhook support for AWS ECR in Image Updater (Technology Preview)::
+With this update, the Argo CD Image Updater supports a CloudEvents v1.0 webhook handler for AWS Elastic Container Registry (ECR) push events through AWS EventBridge. This approach uses a standard format instead of registry-specific handlers. AWS EventBridge can convert native ECR events to CloudEvents, enabling automated image updates when new images are pushed to ECR registries.
++
+--
+For more information, see the Additional Resources section, which includes an upstream documentation link for the Argo CD Image Updater.
+--
++
+--
+:FeatureName: The Argo CD Image Updater feature
+// CIRCULAR INCLUDE DETECTED: snippets/technology-preview.adoc
+--
++
+link:https://issues.redhat.com/browse/GITOPS-8283[GITOPS-8283]
+
+Pod log streaming in agent architecture::
+With this update, users can view pod logs from workload clusters in the control plane when using the Argo CD agent architecture. You can use this feature to enable centralized troubleshooting and remove the need for direct access to workload clusters.
++
+link:https://issues.redhat.com/browse/GITOPS-7264[GITOPS-7264]
+
+OpenTelemetry integration for Argo CD agent::
+With this update, the Argo CD agent and principal components integrate with OpenTelemetry for distributed tracing. This integration enables deeper visibility into system behavior and performance.
++
+link:https://issues.redhat.com/browse/GITOPS-8119[GITOPS-8119]
+
+Network policies for core Argo CD components::
+With this update, {gitops-title} implements Kubernetes Network Policy resources for all Argo CD workload pods to prevent unnecessary ingress and egress traffic. These network policies directly mitigate risks identified in the {OCP} threat model and ensure a least-privilege network security posture for all Argo CD components. You can disable this feature by setting the `spec.networkPolicy.enabled` field to `false`.
++
+link:https://issues.redhat.com/browse/GITOPS-7787[GITOPS-7787]
+
+Kubernetes trust anchors in the GitOps operator::
+With this update, the {gitops-title} Operator supports configuring system CA trust for the Argo CD repo-server through the Argo CD custom resource. The repo-server uses trust anchors from Kubernetes resources. This allows plugin sidecars to trust TLS hosts when running commands such as kustomize or fetching files over TLS. Previously, administrators configured trust anchors manually in the `argocd-tls-certs-cm` config map. This change simplifies certificate management.
++
+link:https://issues.redhat.com/browse/GITOPS-7391[GITOPS-7391]
+
+Argo CD progressive sync with ordered deletion::
+With this update, Argo CD progressive sync supports removing applications in a specific order during deletion operations. Previously, Argo CD removed all applications in parallel. This update allows administrators to configure the deletion order to avoid dependency issues or service disruptions.
++
+link:https://issues.redhat.com/browse/GITOPS-6250[GITOPS-6250]
+
+Automatic cleanup of orphaned roles and role bindings::
+With this update, the {gitops-title} Operator implements a safety mechanism that identifies namespaces containing orphaned Operator roles and automatically reapplies the tracking label. When a namespace is removed from `.spec.sourceNamespaces` or `.spec.applicationSet.sourceNamespaces`, the {gitops-title} Operator cleans up related resources to ensure consistent resource management.
++
+link:https://issues.redhat.com/browse/GITOPS-8537[GITOPS-8537]
+
+Argo Rollouts kubectl plugin binaries::
+With this update, the Argo Rollouts kubectl plugin (CLI) binaries are built and released through Konflux for multiple platforms. The binaries are provided as standalone executables and are not packaged as RPMs. Use the binaries for direct access to the Argo Rollouts CLI to enable progressive delivery workflows.
++
+link:https://issues.redhat.com/browse/GITOPS-5038[GITOPS-5038]
+
+Operator base image migration to UBI 9 Minimal::
+With this update, the {gitops-title} Operator and operand images use the UBI 9 Minimal base image to reduce CVE exposure and improve security posture. The image suffix changes from `rhel8` to `rhel9`. No action is required during upgrades. However, if you use external automation or scripts that reference these images, update them to match the new suffix.
++
+link:https://issues.redhat.com/browse/GITOPS-8107[GITOPS-8107]
+
+Reduced image size through package cleanup::
+With this update, {gitops-title} component images have been optimized by removing unused packages and dependencies. This enhancement reduces image size, improves security, and speeds up image pulls.
++
+link:https://issues.redhat.com/browse/GITOPS-8929[GITOPS-8929]
+
+[id="fixed-issues-1-20-0_{context}"]
+=== Fixed issues
+
+Fixed console plugin Applications page rendering error::
+Before this update, the Applications page of the GitOps console plugin did not render due to an unhandled JavaScript error, `Cannot read properties of undefined (reading '0')`, particularly for invalid or ill-formed Applications. With this update, the plugin gracefully handles such cases, and the Applications page renders correctly.
++
+link:https://issues.redhat.com/browse/GITOPS-8773[GITOPS-8773]
+
+Fixed incorrect ownerReferences apiVersion in config maps::
+Before this update, `ownerReferences` in config maps within the Argo CD namespace used an incorrect `apiVersion` of `v1alpha1` for the Argo CD instance, even after the Argo CD CR was converted to `v1beta1`. This caused discrepancies in the UI when viewing the Argo CD CR. With this update, `ownerReferences` are properly updated during upgrades to use the correct `apiVersion`, ensuring consistency between the CR and its owned resources.
++
+link:https://issues.redhat.com/browse/GITOPS-8001[GITOPS-8001]
+
+Fixed Progressive Sync status display in UI::
+Before this update, applications generated by `ApplicationSets` incorrectly displayed Progressive Sync as "Unknown" in the UI status panel. With this update, the Progressive Sync state is surfaced correctly, and when the feature is disabled, the UI hides the field entirely.
++
+link:https://issues.redhat.com/browse/GITOPS-7797[GITOPS-7797]
+
+Fixed incorrect application links across Argo CD instances::
+Before this update, when using a cluster-scoped Argo CD instance to deploy a namespaced Argo CD instance and applications managed by the namespaced instance, the cluster-scoped UI displayed incorrect links to the namespaced applications. With this update, the UI generates correct links for applications managed by different Argo CD instances.
++
+link:https://issues.redhat.com/browse/GITOPS-1505[GITOPS-1505]
+
+Enhanced security for Image Updater application references (Technology Preview)::
+Before this update, users could reference applications across namespaces in multitenant setups, bypassing `AppProject` restrictions. With this update, the Image Updater enforces namespace boundaries and respects `AppProject` configurations, ensuring proper tenant isolation.
++
+--
+For more information, see the Additional Resources section, which includes an upstream documentation link for the Argo CD Image Updater.
+--
++
+--
+:FeatureName: The Argo CD Image Updater feature
+// CIRCULAR INCLUDE DETECTED: snippets/technology-preview.adoc
+--
++
+link:https://issues.redhat.com/browse/GITOPS-8876[GITOPS-8876]
+
+Fixed Image Updater Git process exhaustion (Technology Preview)::
+Before this update, the Argo CD Image Updater experienced Git process exhaustion when retrieving Git access tokens, leading to errors such as `cannot fork() for remote-https: Resource temporarily unavailable` and `RPC failed; HTTP 500`. The container accumulated thousands of Git processes, preventing further Git operations. With this update, the Image Updater properly manages Git processes and releases resources after retrieving access tokens, preventing process exhaustion.
++
+--
+For more information, see the Additional Resources section, which includes an upstream documentation link for the Argo CD Image Updater.
+--
++
+--
+:FeatureName: The Argo CD Image Updater feature
+// CIRCULAR INCLUDE DETECTED: snippets/technology-preview.adoc
+--
++
+link:https://issues.redhat.com/browse/GITOPS-8875[GITOPS-8875]
+
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+
+* xref:../argo_cd_agent_architecture/argocd-agent-architecture-overview.adoc[Argo CD Agent architecture overview]
+
+* link:https://argocd-agent.readthedocs.io/latest/concepts/agent-mapping/[Argo CD Agent Mapping modes, Argo CD upstream documentation]
+
+* xref:../argocd_agent_installation/argocd-agent-installation.adoc[Installing Argo CD Agent]
+
+* xref:../accesscontrol_usermanagement/configuring-sso-for-argo-cd-using-oidc.adoc[Configuring SSO for Argo CD using external OIDC providers]
+
+* link:https://argocd-image-updater.readthedocs.io/en/stable/#argo-cd-image-updater[Argo CD Image Updater upstream documentation]
+
+* link:https://developers.redhat.com/content-gateway/rest/browse/pub/cgw/openshift-gitops/[Red Hat OpenShift GitOps client binaries]
+
+* link:https://developers.redhat.com/content-gateway/rest/browse/pub/cgw/openshift-gitops/1.20.0[Argo Rollouts kubectl plugin binaries]

@@ -1,0 +1,403 @@
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="using-argo-rollouts-for-progressive-deployment-delivery"]
+= Using Argo Rollouts for progressive deployment delivery
+:context: using-argo-rollouts-for-progressive-deployment-delivery
+
+toc::[]
+
+[role="_abstract"]
+To use Argo Rollouts and manage progressive delivery, after you install the {gitops-title} Operator on the cluster, you can create and configure a `RolloutManager` custom resource (CR) instance in the namespace of your choice. You can scope the `RolloutManager` CR for single or multiple namespaces.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have access to the cluster with `cluster-admin` privileges.
+* You have access to the {OCP} web console.
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+
+// Creating a RolloutManager custom resource
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-creating-rolloutmanager-custom-resource_{context}"]
+== Creating a RolloutManager custom resource
+
+[role="_abstract"]
+To manage progressive delivery of deployments by using Argo Rollouts in {gitops-title}, you must create and configure a `RolloutManager` custom resource (CR) in the namespace of your choice. By default, any new `argo-rollouts` instance has permission to manage resources only in the namespace where it is deployed, but you can use Argo Rollouts in multiple namespaces as required.
+
+.Prerequisites
+
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+
+.Procedure 
+
+. Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Create or select the project where you want to create and configure a `RolloutManager` custom resource (CR) from the *Project* drop-down menu.
+
+. Select *{gitops-title}* from the installed operators.
+
+. In the *Details* tab, under the *Provided APIs* section, click *Create instance* in the *RolloutManager* pane.
+
+. On the *Create RolloutManager* page, select the *YAML view* and use the default YAML or edit it according to your requirements:
++
+--
+*Example: `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  namespace: openshift-gitops
+spec: {}
+----
+--
+
+. Click *Create*.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the *Status* field of the RolloutManager instance shows as *Phase: Available*.
+
+. In the left navigation pane, verify the creation of the namespace-scoped supporting resources:
++ 
+* Click *Workloads* -> *Deployments* to verify that the `argo-rollouts` deployment is available with the *Status* showing as `1 of 1 pods` running.
+* Click *Workloads* -> *Secrets* to verify that the `argo-rollouts-notification-secret` secret is available.
+* Click *Networking* -> *Services* to verify that the `argo-rollouts-metrics` service is available.
+* Click *User Management* -> *Roles* to verify that the `argo-rollouts` role and `argo-rollouts-aggregate-to-admin`, `argo-rollouts-aggregate-to-edit`, and `argo-rollouts-aggregate-to-view` cluster roles are available.
+* Click *User Management* -> *RoleBindings* to verify that the `argo-rollouts` role binding is available.
+
+// Deleting a RolloutManager custom resource
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-deleting-rolloutmanager-custom-resource_{context}"]
+== Deleting a RolloutManager custom resource
+
+[role="_abstract"]
+Uninstalling the {gitops-title} Operator does not remove the resources that were created during installation. You must manually delete the `RolloutManager` custom resource (CR) before you uninstall the {gitops-title} Operator.
+
+.Prerequisites
+
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+* A `RolloutManager` CR exists in your namespace.
+
+.Procedure 
+
+. Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Click the *Project* drop-down menu and select the project that contains the `RolloutManager` CR.
+
+. Select *{gitops-title}* from the installed operators.
+
+. Click the *RolloutManager* tab to find RolloutManager instances under the *RolloutManagers* section.
+
+. Click the instance. 
+
+. Click *Actions* -> *Delete RolloutManager* from the drop-down menu, and click *Delete* to confirm in the dialog box.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the RolloutManager instance is not available anymore.
+
+. In the left navigation pane, verify the deletion of the namespace-scoped supporting resources:
++ 
+* Click *Workloads* -> *Deployments* to verify that the `argo-rollouts` deployment is deleted.
+* Click *Workloads* -> *Secrets* to verify that the `argo-rollouts-notification-secret` secret is deleted.
+* Click *Networking* -> *Services* to verify that the `argo-rollouts-metrics` service is deleted.
+* Click *User Management* -> *Roles* to verify that the `argo-rollouts` role and `argo-rollouts-aggregate-to-admin`, `argo-rollouts-aggregate-to-edit`, and `argo-rollouts-aggregate-to-view` cluster roles are deleted.
+* Click *User Management* -> *RoleBindings* to verify that the `argo-rollouts` role binding is deleted.
+
+
+
+// Installing Argo Rollouts CLI on Linux
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-installing-argo-rollouts-cli-on-linux_{context}"]
+== Installing Argo Rollouts CLI on Linux
+
+[role="_abstract"]
+You can install the Argo Rollouts CLI on Linux.
+
+.Prerequisites
+
+* You have installed the {OCP} CLI (`oc`).
+
+.Procedure
+
+. Download the latest version of the Argo Rollouts CLI binary, `kubectl-argo-rollouts`, by running the following command:
++
+[source,terminal]
+----
+$ curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+----
+
+. Ensure that the `kubectl-argo-rollouts` binary is executable by running the following command:
++
+[source,terminal]
+----
+$ chmod +x ./kubectl-argo-rollouts-linux-amd64
+----
+
+. Move the `kubectl-argo-rollouts` binary to the system path by running the following command:
++
+[source,terminal]
+----
+# mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+----
++
+[IMPORTANT]
+====
+Ensure that you have superuser privileges to run this command.
+====
+
+. Verify that the plugin is installed correctly by running the following command and receiving the similar output:
++
+[source,terminal]
+----
+$ oc argo rollouts version
+----
++
+--
+*Example output:*
+[source,terminal]
+----
+kubectl-argo-rollouts: v1.6.6+737ca89
+  BuildDate: 2024-02-13T15:39:31Z
+  GitCommit: 737ca89b42e4791e96e05b438c2b8540737a2a1a
+  GitTreeState: clean
+  GoVersion: go1.20.14
+  Compiler: gc
+  Platform: linux/amd64
+----
+--
++
+--
+where:
+
+`kubectl-argo-rollouts`:: Specifies the build date information of the Argo Rollouts binary.
+`kubectl-argo-rollouts.BuildDate`:: Specifies the version of the Go language used for building the Argo Rollouts binary.
+`kubectl-argo-rollouts.GitCommit`:: Specifies the platform used for building the Argo Rollouts binary.
+--
+
+// Installing Argo Rollouts CLI on Mac OS
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-installing-argo-rollouts-cli-on-mac-os_{context}"]
+== Installing Argo Rollouts CLI on Mac OS
+
+[role="_abstract"]
+If you are a macOS user, you can install the Argo Rollouts CLI by using the link:https://brew.sh[Homebrew] package manager.
+
+.Prerequisites
+
+* You have installed the Homebrew (`brew`) package manager.
+
+.Procedure
+
+* Run the following command to install the Argo Rollouts CLI:
++
+[source,terminal]
+----
+$ brew install argoproj/tap/kubectl-argo-rollouts
+----
+
+
+// Enabling Argo Rollouts UI on an Argo CD instance
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-enabling-argo-rollouts-ui-on-an-argo-cd-instance_{context}"]
+== Enabling Argo Rollouts UI on an Argo CD instance
+
+[role="_abstract"]
+To enable Argo Rollouts UI on an Argo CD instance, complete the following steps.
+
+.Prerequisites
+
+* You have access to the cluster with `cluster-admin` privileges.
+
+* You have installed the {gitops-title} Operator on your {OCP} cluster.
+
+* You have configured the *RolloutManager* custom resource (CR).
+
+.Procedure
+
+. Log in to the {OCP} web console.
+
+. In the *Administrator* perspective of the web console, click *Operators* -> *Installed Operators*.
+
+. Select *{gitops-title}* from the installed Operators list and click the *Argo CD* tab.
+
+. Select the Argo CD instance in the *Argo CD* tab under the `openshift-gitops` namespace.
+
+. Click *YAML* and add the following configuration to configure the Argo Rollouts UI:
++
+--
+*Example enabling Argo Rollouts UI in the Argo CD CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:  
+  name: argocd
+spec:  
+  server:    
+    enableRolloutsUI: true
+----
+--
++
+--
+where:
+
+`spec.server.enableRolloutsUI`:: Specifies the value of `enableRolloutsUI` field to configure the Rollouts UI.
+--
+. Click *Save*.
+
+. In the *Administrator* perspective of the web console, navigate to the {rh-app-icon} menu -> *OpenShift GitOps* -> *Cluster Argo CD*. The login page of the Argo CD Web UI is displayed in a new window.
+
+. To access the Argo Rollouts UI in the Argo CD Web UI, configure a sample application that includes the Argo Rollouts resources.
++
+[NOTE]
+====
+The `enableRolloutsUI` field restarts the Argo CD server deployment pod, so it takes a few seconds for the Argo Rollouts extension to enable in the Argo CD Web UI.
+====
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[RolloutManager custom resource (CR)]
+* xref:../argo_rollouts/getting-started-with-argo-rollouts.adoc#getting-started-with-argo-rollouts[Getting started with Argo Rollouts]
+* xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[Installing {gitops-title}]
+* xref:../removing_gitops/uninstalling-openshift-gitops.adoc#uninstalling-openshift-gitops[Uninstalling {gitops-title}]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]

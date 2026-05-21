@@ -1,0 +1,3646 @@
+= Argo Rollouts
+
+
+= Argo Rollouts overview
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="argo-rollouts-overview"]
+= Argo Rollouts overview
+:context: argo-rollouts-overview
+
+toc::[]
+
+[role="_abstract"]
+In the {gitops-shortname} context, progressive delivery is a process of releasing application updates in a controlled and gradual manner. Progressive delivery reduces the risk of a release by exposing the new version of an application update only to a subset of users initially. The process involves continuously observing and analyzing this new application version to verify whether its behavior matches the requirements and expectations set. The verifications continue as the process gradually exposes the application update to a broader and wider audience.
+
+{OCP} provides some progressive delivery capability by using routes to split traffic between different services, but this typically requires manual intervention and management. 
+
+With Argo Rollouts, as a cluster administrator, you can automate the progressive deployment delivery and manage the progressive deployment of applications hosted on Kubernetes and OpenShift Container Platform clusters. Argo Rollouts is a controller with custom resource definitions (CRDs) that provides advanced deployment capabilities such as blue-green, canary, canary analysis, and experimentation.
+
+// Benefits of Argo Rollouts
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-why-use-argo-rollouts_{context}"]
+== Why use Argo Rollouts?
+
+[role="_abstract"]
+As a cluster administrator, managing and coordinating advanced deployment strategies in traditional infrastructure often involves long maintenance windows. Automation with tools like {OCP} and {gitops-title} can reduce these windows, but setting up these strategies can still be challenging. 
+
+Use Argo Rollouts to simplify progressive delivery by allowing application teams to define their rollout strategy declaratively. Teams no longer need to define multiple deployments and services or create automation for traffic shaping and integration of tests. 
+
+You can use Argo Rollouts for the following reasons:
+
+* Your users can more easily adopt progressive delivery in end-user environments.
+* With the available structure and guidelines of Argo Rollouts, your teams do not have to learn about traffic managers and complex infrastructure.
+* During an update, depending on your deployment strategy, you can optimize the existing traffic-shaping abilities of the deployed application versions by gradually shifting traffic to the new version. 
+* You can combine Argo Rollouts with a metric provider like Prometheus to do metric-based and policy-driven rollouts and rollbacks based on the parameters set. 
+* Your end-user environments get the {gitops-title} Operator's security and help to manage the resources, cost, and time effectively.
+* Your existing users who use Argo CD with security and automated deployments get feedback early in the process that they can use to avoid problems that impact them.
+
+[id="benefits-of-argo-rollouts_{context}"]
+=== Benefits of Argo Rollouts
+
+Using Argo Rollouts as a default workload in {gitops-title} provides the following benefits:
+
+* Automated progressive delivery as part of the {gitops-shortname} workflow
+* Advanced deployment capabilities
+* Optimize the existing advanced deployment strategies such as blue-green or canary
+* Zero downtime updates for deployments
+* Fine-grained, weighted traffic shifting
+* Able to test without any new traffic hitting the production environment
+* Automated rollbacks and promotions
+* Manual judgment
+* Customizable metric queries and analysis of business key performance indicators (KPIs)
+* Integration with ingress controller and {SMProductName} for advanced traffic routing
+* Integration with metric providers for deployment strategy analysis
+* Usage of multiple providers
+
+// About RolloutManager custom resources and specification
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-about-argo-rollout-manager-custom-resources-and-spec_{context}"]
+== About RolloutManager custom resources and specification
+
+[role="_abstract"]
+To use Argo Rollouts, you must install {gitops-title} Operator on the cluster, and then create and submit a `RolloutManager` custom resource (CR) to the Operator in the namespace of your choice. You can scope the `RolloutManager` CR for single or multiple namespaces. The Operator creates an `argo-rollouts` instance with the following namespace-scoped supporting resources:
+
+* Argo Rollouts controller
+* Argo Rollouts metrics service
+* Argo Rollouts service account
+* Argo Rollouts roles
+* Argo Rollouts role bindings
+* Argo Rollouts secret
+
+You can specify the command arguments, environment variables, a custom image name, and so on for the Argo Rollouts controller resource in the spec of the `RolloutsManager` CR. The `RolloutManager` CR spec defines the desired state of Argo Rollouts.
+
+*Example: `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  labels:
+    example: basic
+spec: {}
+----
+
+[id="argo-rollouts-controller_{context}"]
+=== Argo Rollouts controller
+
+With the Argo Rollouts controller resource, you can manage the progressive application delivery in your namespace. The Argo Rollouts controller resource monitors the cluster for events, and reacts whenever there is a change in any resource related to Argo Rollouts. The controller reads all the rollout details and brings the cluster to the same state as described in the rollout definition.
+
+// Argo Rollouts architecture overview
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-argo-rollouts-architecture-overview_{context}"]
+== Argo Rollouts architecture overview
+
+[role="_abstract"]
+Argo Rollouts support is enabled on a cluster by installing the {gitops-title} Operator and configuring a `RolloutManager` custom resource (CR) instance.
+
+After a `RolloutManager` CR is created, the {gitops-title} Operator installs Argo Rollouts into that same namespace. This step includes the installation of the Argo Rollouts controller and the resources required for handling Argo Rollouts, such as CRs, roles, role bindings, and configuration data.
+
+The Argo Rollouts controller can be installed in two different modes:
+
+* *Cluster-scoped mode* (default): The controller oversees resources throughout all namespaces within the cluster.
+* *Namespace-scoped mode*: The controller monitors resources within the namespace where Argo Rollouts is deployed.
+
+The architecture of Argo Rollouts is structured into components and resources. Components are used to manage resources. For example, the AnalysisRun controller manages the `AnalysisRun` CR.
+
+Argo Rollouts include several mechanisms to gather analysis metrics to verify that a new application version is deployed:
+
+* *Prometheus metrics*: The `AnalysisTemplate` CR is configured to connect to Prometheus instances to evaluate the success or failure of one or more metrics.
+* *Kubernetes job metrics*: Argo Rollouts support the Kubernetes `Job` resource to run analysis on resource metrics. You can verify a successful deployment of an application based on the successful run of Kubernetes jobs.
+
+[id="gitops-argo-rollouts-components_{context}"]
+=== Argo Rollouts components
+
+Argo Rollouts consists of several components that enable users to practice progressive delivery in {OCP}.
+
+.Argo Rollouts components
+[options="header"]
+|===
+|Name |Description
+|Argo Rollouts controller |The Argo Rollouts Controller is an alternative to the standard `Deployment` resource and coexists alongside it. This controller only responds to changes in the Argo Rollouts resources and manages the `Rollout` CR. The Argo Rollouts Controller does not modify standard deployment resources.
+|AnalysisRun controller |The AnalysisRun controller manages and performs analysis for `AnalysisRun` and `AnalysisTemplate` CRs. It connects a rollout to the metrics provider and defines thresholds for metrics that determine if a deployment update is successful for your application.
+|`Experiment controller` | The `Experiment` controller runs analysis on short-lived replica sets, and manages the `Experiment` custom resource. The controller can also be integrated with the `Rollout` resource by specifying the `experiment` step in the canary deployment `strategy` field.
+|`Service` and `Ingress` controller |The Service controller manages the `Service` resources and the Ingress controller manages the `Ingress` resources modified by Argo Rollouts. These controllers inject additional metadata annotations in the application instances for traffic management.
+|Argo Rollouts CLI and UI |Argo Rollouts supports an `oc/kubectl` plugin called Argo Rollouts CLI. You can use it to interact with resources, such as rollouts, analyses, and experiments, from the command line. It can perform operations, such as `pause`, `promote`, or `retry`. The Argo Rollouts CLI plugin can start a local web UI dashboard in the browser to enhance the experience of visualizing the Argo Rollouts resources.
+|===
+
+[id="gitops-argo-rollouts-resources_{context}"]
+=== Argo Rollouts resources
+
+Argo Rollout components manage several resources to enable progressive delivery:
+
+* *Rollouts-specific resources*: For example, `Rollout`, `AnalysisRun`, or `Experiment`.
+* *Kubernetes networking resources*: For example, `Service`, `Ingress`, or `Route` for network traffic shaping. Argo Rollouts integrate with these resources, which are referred to as traffic management.
+
+These resources are essential for customizing the deployment of applications through the `Rollout` CR.
+
+Argo Rollouts support the following actions:
+
+* Route percentage-based traffic for canary deployments.
+* Forward incoming user traffic by using `Service` and `Ingress` resources to the correct application version. 
+* Use multiple mechanisms to collect analysis metrics to validate the deployment of a new version of an application.
+
+.Argo Rollouts resources
+[options="header"]
+|===
+|Name |Description
+|`Rollout` |This CR enables the deployment of applications by using canary or blue-green deployment strategies. It replaces the in-built Kubernetes `Deployment` resource.
+|`AnalysisRun` |This CR is used to perform an analysis and aggregate the results of analysis to guide the user toward the successful deployment delivery of an application. The `AnalysisRun` CR is an instance of the `AnalysisTemplate` CR.
+|`AnalysisTemplate` |The `AnalysisTemplate` CR is a template file that provides instructions on how to query metrics. The result of these instructions is attached to a rollout in the form of the `AnalysisRun` CR. The `AnalysisTemplate` CR can be defined globally on the cluster or on a specific rollout. You can link a list of `AnalysisTemplate` to be used on replica sets by creating an `Experiment` custom resource.
+|`Experiment` |The `Experiment` CR is used to run short-lived analysis on an application during its deployment to ensure the application is deployed correctly. The `Experiment` CR can be used independently or run as part of the `Rollout` CR.
+|`Service` and `Ingress` | Argo Rollouts natively support routing traffic by services and ingresses by using the Service and Ingress controllers.
+|`Route` and `VirtualService` |The OpenShift `Route` and {SMProductName} `VirtualService` resources are used to perform traffic splitting across different application versions.
+|===
+
+// Argo Rollouts CLI overview
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-argo-rollouts-cli-overview_{context}"]
+== Argo Rollouts CLI overview
+
+[role="_abstract"]
+You can use the Argo Rollouts CLI, which is an optional plugin, to manage and monitor Argo Rollouts resources directly, bypassing the need to use the {OCP} web console or the CLI (`oc`).
+
+With the Argo Rollouts CLI plugin, you can perform the following actions:
+
+* Make changes to an Argo Rollouts image.
+* Monitor the progress of an Argo Rollouts promotion.
+* Proceed with the promotion steps in a canary deployment.
+* Terminate a failed Argo Rollouts deployment.
+
+The Argo Rollouts CLI plugin directly integrates with `oc` and `kubectl` commands.
+
+// How Argo Rollouts work in progressive delivery
+
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../argo_rollouts/getting-started-with-argo-rollouts.adoc#getting-started-with-argo-rollouts[Getting started with Argo Rollouts]
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Creating RolloutManager custom resources]
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Installing the Argo Rollouts CLI]
+* link:https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html#deployments-canary-deployments_deployment-strategies[Canary deployments]
+* link:https://docs.openshift.com/container-platform/latest/applications/deployments/route-based-deployment-strategies.html#deployments-blue-green_route-based-deployment-strategies[Blue-green deployments]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* link:https://www.redhat.com/architect/blue-green-canary-argo-rollouts[Blue-green and canary deployments with Argo Rollouts]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]
+= Using Argo Rollouts for progressive deployment delivery
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="using-argo-rollouts-for-progressive-deployment-delivery"]
+= Using Argo Rollouts for progressive deployment delivery
+:context: using-argo-rollouts-for-progressive-deployment-delivery
+
+toc::[]
+
+[role="_abstract"]
+To use Argo Rollouts and manage progressive delivery, after you install the {gitops-title} Operator on the cluster, you can create and configure a `RolloutManager` custom resource (CR) instance in the namespace of your choice. You can scope the `RolloutManager` CR for single or multiple namespaces.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have access to the cluster with `cluster-admin` privileges.
+* You have access to the {OCP} web console.
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+
+// Creating a RolloutManager custom resource
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-creating-rolloutmanager-custom-resource_{context}"]
+== Creating a RolloutManager custom resource
+
+[role="_abstract"]
+To manage progressive delivery of deployments by using Argo Rollouts in {gitops-title}, you must create and configure a `RolloutManager` custom resource (CR) in the namespace of your choice. By default, any new `argo-rollouts` instance has permission to manage resources only in the namespace where it is deployed, but you can use Argo Rollouts in multiple namespaces as required.
+
+.Prerequisites
+
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+
+.Procedure 
+
+. Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Create or select the project where you want to create and configure a `RolloutManager` custom resource (CR) from the *Project* drop-down menu.
+
+. Select *{gitops-title}* from the installed operators.
+
+. In the *Details* tab, under the *Provided APIs* section, click *Create instance* in the *RolloutManager* pane.
+
+. On the *Create RolloutManager* page, select the *YAML view* and use the default YAML or edit it according to your requirements:
++
+--
+*Example: `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  namespace: openshift-gitops
+spec: {}
+----
+--
+
+. Click *Create*.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the *Status* field of the RolloutManager instance shows as *Phase: Available*.
+
+. In the left navigation pane, verify the creation of the namespace-scoped supporting resources:
++ 
+* Click *Workloads* -> *Deployments* to verify that the `argo-rollouts` deployment is available with the *Status* showing as `1 of 1 pods` running.
+* Click *Workloads* -> *Secrets* to verify that the `argo-rollouts-notification-secret` secret is available.
+* Click *Networking* -> *Services* to verify that the `argo-rollouts-metrics` service is available.
+* Click *User Management* -> *Roles* to verify that the `argo-rollouts` role and `argo-rollouts-aggregate-to-admin`, `argo-rollouts-aggregate-to-edit`, and `argo-rollouts-aggregate-to-view` cluster roles are available.
+* Click *User Management* -> *RoleBindings* to verify that the `argo-rollouts` role binding is available.
+
+// Deleting a RolloutManager custom resource
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-deleting-rolloutmanager-custom-resource_{context}"]
+== Deleting a RolloutManager custom resource
+
+[role="_abstract"]
+Uninstalling the {gitops-title} Operator does not remove the resources that were created during installation. You must manually delete the `RolloutManager` custom resource (CR) before you uninstall the {gitops-title} Operator.
+
+.Prerequisites
+
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+* A `RolloutManager` CR exists in your namespace.
+
+.Procedure 
+
+. Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Click the *Project* drop-down menu and select the project that contains the `RolloutManager` CR.
+
+. Select *{gitops-title}* from the installed operators.
+
+. Click the *RolloutManager* tab to find RolloutManager instances under the *RolloutManagers* section.
+
+. Click the instance. 
+
+. Click *Actions* -> *Delete RolloutManager* from the drop-down menu, and click *Delete* to confirm in the dialog box.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the RolloutManager instance is not available anymore.
+
+. In the left navigation pane, verify the deletion of the namespace-scoped supporting resources:
++ 
+* Click *Workloads* -> *Deployments* to verify that the `argo-rollouts` deployment is deleted.
+* Click *Workloads* -> *Secrets* to verify that the `argo-rollouts-notification-secret` secret is deleted.
+* Click *Networking* -> *Services* to verify that the `argo-rollouts-metrics` service is deleted.
+* Click *User Management* -> *Roles* to verify that the `argo-rollouts` role and `argo-rollouts-aggregate-to-admin`, `argo-rollouts-aggregate-to-edit`, and `argo-rollouts-aggregate-to-view` cluster roles are deleted.
+* Click *User Management* -> *RoleBindings* to verify that the `argo-rollouts` role binding is deleted.
+
+
+
+// Installing Argo Rollouts CLI on Linux
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-installing-argo-rollouts-cli-on-linux_{context}"]
+== Installing Argo Rollouts CLI on Linux
+
+[role="_abstract"]
+You can install the Argo Rollouts CLI on Linux.
+
+.Prerequisites
+
+* You have installed the {OCP} CLI (`oc`).
+
+.Procedure
+
+. Download the latest version of the Argo Rollouts CLI binary, `kubectl-argo-rollouts`, by running the following command:
++
+[source,terminal]
+----
+$ curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+----
+
+. Ensure that the `kubectl-argo-rollouts` binary is executable by running the following command:
++
+[source,terminal]
+----
+$ chmod +x ./kubectl-argo-rollouts-linux-amd64
+----
+
+. Move the `kubectl-argo-rollouts` binary to the system path by running the following command:
++
+[source,terminal]
+----
+# mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+----
++
+[IMPORTANT]
+====
+Ensure that you have superuser privileges to run this command.
+====
+
+. Verify that the plugin is installed correctly by running the following command and receiving the similar output:
++
+[source,terminal]
+----
+$ oc argo rollouts version
+----
++
+--
+*Example output:*
+[source,terminal]
+----
+kubectl-argo-rollouts: v1.6.6+737ca89
+  BuildDate: 2024-02-13T15:39:31Z
+  GitCommit: 737ca89b42e4791e96e05b438c2b8540737a2a1a
+  GitTreeState: clean
+  GoVersion: go1.20.14
+  Compiler: gc
+  Platform: linux/amd64
+----
+--
++
+--
+where:
+
+`kubectl-argo-rollouts`:: Specifies the build date information of the Argo Rollouts binary.
+`kubectl-argo-rollouts.BuildDate`:: Specifies the version of the Go language used for building the Argo Rollouts binary.
+`kubectl-argo-rollouts.GitCommit`:: Specifies the platform used for building the Argo Rollouts binary.
+--
+
+// Installing Argo Rollouts CLI on Mac OS
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-installing-argo-rollouts-cli-on-mac-os_{context}"]
+== Installing Argo Rollouts CLI on Mac OS
+
+[role="_abstract"]
+If you are a macOS user, you can install the Argo Rollouts CLI by using the link:https://brew.sh[Homebrew] package manager.
+
+.Prerequisites
+
+* You have installed the Homebrew (`brew`) package manager.
+
+.Procedure
+
+* Run the following command to install the Argo Rollouts CLI:
++
+[source,terminal]
+----
+$ brew install argoproj/tap/kubectl-argo-rollouts
+----
+
+
+// Enabling Argo Rollouts UI on an Argo CD instance
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-enabling-argo-rollouts-ui-on-an-argo-cd-instance_{context}"]
+== Enabling Argo Rollouts UI on an Argo CD instance
+
+[role="_abstract"]
+To enable Argo Rollouts UI on an Argo CD instance, complete the following steps.
+
+.Prerequisites
+
+* You have access to the cluster with `cluster-admin` privileges.
+
+* You have installed the {gitops-title} Operator on your {OCP} cluster.
+
+* You have configured the *RolloutManager* custom resource (CR).
+
+.Procedure
+
+. Log in to the {OCP} web console.
+
+. In the *Administrator* perspective of the web console, click *Operators* -> *Installed Operators*.
+
+. Select *{gitops-title}* from the installed Operators list and click the *Argo CD* tab.
+
+. Select the Argo CD instance in the *Argo CD* tab under the `openshift-gitops` namespace.
+
+. Click *YAML* and add the following configuration to configure the Argo Rollouts UI:
++
+--
+*Example enabling Argo Rollouts UI in the Argo CD CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:  
+  name: argocd
+spec:  
+  server:    
+    enableRolloutsUI: true
+----
+--
++
+--
+where:
+
+`spec.server.enableRolloutsUI`:: Specifies the value of `enableRolloutsUI` field to configure the Rollouts UI.
+--
+. Click *Save*.
+
+. In the *Administrator* perspective of the web console, navigate to the {rh-app-icon} menu -> *OpenShift GitOps* -> *Cluster Argo CD*. The login page of the Argo CD Web UI is displayed in a new window.
+
+. To access the Argo Rollouts UI in the Argo CD Web UI, configure a sample application that includes the Argo Rollouts resources.
++
+[NOTE]
+====
+The `enableRolloutsUI` field restarts the Argo CD server deployment pod, so it takes a few seconds for the Argo Rollouts extension to enable in the Argo CD Web UI.
+====
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[RolloutManager custom resource (CR)]
+* xref:../argo_rollouts/getting-started-with-argo-rollouts.adoc#getting-started-with-argo-rollouts[Getting started with Argo Rollouts]
+* xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[Installing {gitops-title}]
+* xref:../removing_gitops/uninstalling-openshift-gitops.adoc#uninstalling-openshift-gitops[Uninstalling {gitops-title}]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]
+= Getting started with Argo Rollouts
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="getting-started-with-argo-rollouts"]
+= Getting started with Argo Rollouts
+:context: getting-started-with-argo-cd-rollouts
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts supports link:https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html#deployments-canary-deployments_deployment-strategies[canary] and link:https://docs.openshift.com/container-platform/latest/applications/deployments/route-based-deployment-strategies.html#deployments-blue-green_route-based-deployment-strategies[blue-green] deployment strategies. This guide provides instructions with examples using a canary deployment strategy to help you deploy, update, promote and manually abort rollouts.
+
+With a canary-based deployment strategy, you split traffic between two application versions:
+
+* *Canary version*: A new version of an application where you gradually route the traffic.
+* *Stable version*: The current version of an application. After the canary version is stable and has all the user traffic directed to it, it becomes the new stable version. The previous stable version is discarded.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have logged in to the {OCP} cluster as an administrator.
+* You have access to the {OCP} web console.
+* You have installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You have installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+* You have installed the xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts CLI] on your system. 
+
+// Deploying a rollout
+// Module included in the following assemblies:
+//
+// * argo_rollouts/getting-started-with-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-deploying-a-rollout_{context}"]
+== Deploying a rollout
+
+[role="_abstract"]
+As a cluster administrator, you can configure Argo Rollouts to progressively route a subset of user traffic to a new application version. Then you can test whether the application is deployed and working.
+
+The following example procedure creates a `rollouts-demo` rollout and service. The rollout then routes 20% of traffic to a canary version of the application, waits for a manual promotion, and then performs multiple automated promotions until it routes the entire traffic to the new application version.
+
+.Procedure 
+
+. In the *Administrator* perspective of the web console, click *Operators* -> *Installed Operators* -> *{gitops-title}* -> *Rollout*.
+
+. Create or select the project in which you want to create and configure a `Rollout` custom resource (CR) from the *Project* drop-down menu.
+
+. Click *Create Rollout* and enter the following configuration in the YAML view:
++
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 45}
+      - setWeight: 60
+      - pause: {duration: 20}
+      - setWeight: 80
+      - pause: {duration: 10}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+----
++
+--
+where:
+
+`spec.strategy.canary`:: Specifies the deployment strategy that the rollout must use.
+`spec.strategy.canary.steps`:: Specifies the steps for the rollout. This example gradually routes 20%, 40%, 60%, and 80% of traffic to the canary version.
+`spec.strategy.canary.steps.setWeight`:: Specifies the percentage of traffic that must be directed to the canary version. A value of 20 means that 20% of traffic is directed to the canary version.
+`spec.strategy.canary.steps.pause`:: Specifies to the Argo Rollouts controller to pause indefinitely until it finds a request for promotion.
+`spec.strategy.canary.steps.pause.duration`:: Specifies to the Argo Rollouts controller to pause for a specified duration. You can set the duration value in seconds (`s`), minutes (`m`), or hours (`h`). For example, you can specify `1h` for an hour. If no value is specified, the duration value defaults to seconds.
+`spec.template`:: Specifies the pods that are to be created.
+--
+
+. Click *Create*.
++
+[NOTE]
+====
+To ensure that the rollout becomes available quickly on creation, the Argo Rollouts controller automatically treats the `argoproj/rollouts-demo:blue` initial container image specified in the `.spec.template.spec.containers.image` field as a stable version. In the initial instance, the creation of the `Rollout` resource routes all of the traffic towards the stable version of the application and skips the part where the traffic is sent to the canary version. However, for all subsequent application upgrades with the modifications to the `.spec.template.spec.containers.image` field, the Argo Rollouts controller performs the canary steps, as usual.
+====
+
+. Verify that your rollout was created correctly by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts list rollouts -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+NAME           STRATEGY   STATUS        STEP  SET-WEIGHT  READY  DESIRED  UP-TO-DATE  AVAILABLE
+rollouts-demo  Canary     Healthy       8/8   100         5/5    5        5           5        
+----
+--
+
+. Create the Kubernetes services that targets the `rollouts-demo` rollout.
+.. In the *Administrator* perspective of the web console, click *Networking* -> *Services*.
+.. Click *Create Service* and enter the following configuration in the YAML view:
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-demo
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the name of the port used by the application for running inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in the `Rollout` custom resource (CR).
+--
+.. Click *Create*.
++
+Rollouts automatically update the created service with pod template hash of the canary `ReplicaSet`. For example, `rollouts-pod-template-hash: 687d76d795`.
+
+. Watch the progression of your rollout by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          argoproj/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  4m50s  
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  4m50s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-bv5zf  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  4m49s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  4m49s  ready:1/1
+----
+--
++
+After the rollout has been created, you can verify that the *Status* field of the rollout shows *Phase: Healthy*.
+
+. In the *Rollout* tab, under the *Rollouts* section, verify that the *Status* field of the `rollouts-demo` rollout shows as *Phase: Healthy*.
++
+[TIP]
+====
+Alternatively, you can verify that the rollout is healthy by running the following command:
+
+[source,terminal]
+----
+$ oc argo rollouts status rollouts-demo -n <namespace>
+----
++
+Specify the namespace where the `Rollout` resource is defined.
+
+*Example output:*
+[source,terminal]
+----
+Healthy
+----
+====
+
+You are now ready to perform a canary deployment, with the next update of the `Rollout` CR.
+
+
+// Updating the rollout
+// Module included in the following assemblies:
+//
+// * argo_rollouts/getting-started-with-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-gitops-updating-the-rollout_{context}"]
+== Updating the rollout
+
+[role="_abstract"]
+When you update the `Rollout` custom resource (CR) with modifications to the `.spec.template.spec` fields, for example, the container image version, then new pods are created through the `ReplicaSet` by using the updated container image version.
+
+.Procedure 
+
+. Simulate the new canary version of the application by modifying the container image deployed in the rollout.
+.. In the *Administrator* perspective of the web console, go to *Operators* -> *Installed Operators* -> *{gitops-title}* -> *Rollout*.
+.. Select the existing `rollouts-demo` rollout and modify the `.spec.template.spec.containers.image` value from `argoproj/rollouts-demo:blue` to `argoproj/rollouts-demo:yellow` in the YAML view.
+.. Click *Save* and then click *Reload*.
++
+The container image deployed in the rollout is modified and the rollout initiates a new canary deployment.
++
+[NOTE]
+====
+As per the `setWeight` property defined in the `.spec.strategy.canary.steps` field of the `Rollout` CR, initially 20% of traffic to the route reaches the canary version and the rollout is paused indefinitely until a request for promotion is received.
+====
++
+--
+*Example route with 20% of traffic directed to the canary version and rollout is paused indefinitely until a request for promotion is specified in the subsequent step:*
+[source,yaml]
+----
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      steps:
+      - setWeight: 20
+      - pause: {}
+  # (...)
+----
+--
++
+--
+where:
+
+`<spec.strategy.canary>`:: Specifies the deployment strategy that the rollout must use.
+`<spec.strategy.canary.steps>`:: Specifies the steps for the rollout. This example gradually routes 20%, 40%, 60%, and 80% of traffic to the canary version.
+`<spec.strategy.canary.steps.setWeight>`:: Specifies the percentage of traffic that must be directed to the canary version. A value of 20 means that 20% of traffic is directed to the canary version.
+`<spec.strategy.canary.steps.pause>`:: Requests the Argo Rollouts controller to pause indefinitely until it finds a request for promotion.
+--
+
+. Watch the progression of your rollout by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  20
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       1
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   9m51s  
+├──# revision:2                                                          
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy  99s    canary
+│     └──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running  98s    ready:1/1
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  9m51s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  9m50s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  9m50s  ready:1/1
+----
+--
++
+The rollout is now in a paused status, because there is no pause duration specified in the rollout's update strategy configuration.
+
+. Repeat the previous step to test the newly deployed version of application and ensure that it is working as expected. For example, verify the application by interacting with the application through the browser and try running tests or observing container logs.
++
+The rollout will remain paused until you advance it to the next step. 
+
+After you verify that the new version of the application is working as expected, you can decide whether to continue with promotion or to abort the rollout. Accordingly, follow the instructions in "Promoting the rollout" or "Manually aborting the rollout".
+
+// Promoting the rollout
+// Module included in the following assemblies:
+//
+// * aargo_rollouts/getting-started-with-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-promoting-the-rollout_{context}"]
+== Promoting the rollout
+
+[role="_abstract"]
+Because your rollout is now in a paused status, as a cluster administrator, you must now manually promote the rollout to allow it to progress to the next step. 
+
+.Procedure 
+
+. Simulate another new canary version of the application by running the following command in the Argo Rollouts CLI:
++
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+rollout 'rollouts-demo' promoted
+----
+--
++
+This increases the traffic weight to 40% in the canary version.
+
+. Verify that the rollout progresses through the rest of the steps, by running the following command: 
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo -n <namespace> --watch
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+Because the rest of the steps as defined in the `Rollout` CR have set durations, for example, `pause: {duration: 45}`, the Argo Rollouts controller waits that duration and then automatically moves to the next step.
++
+After all steps are completed successfully, the new `ReplicaSet` object is marked as the stable replica set.
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          argoproj/rollouts-demo:yellow (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS        AGE   INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy     14m   
+├──# revision:2                                                            
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy     6m5s  stable
+│     ├──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running     6m4s  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-g9kd5  Pod         ✔ Running     2m4s  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-2ptpp  Pod         ✔ Running     78s   ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-tmk6c  Pod         ✔ Running     58s   ready:1/1
+│     └──□ rollouts-demo-6cf78c66c5-zv6lx  Pod         ✔ Running     47s   ready:1/1
+└──# revision:1                                                            
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  • ScaledDown  14m    
+----
+--
+
+// Manually aborting the rollout 
+// Module included in the following assemblies:
+//
+// * argo_rollouts/getting-started-with-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-manually-aborting-the-rollout_{context}"]
+== Manually aborting the rollout
+
+[role="_abstract"]
+When using a canary deployment, the rollout deploys an initial canary version of the application. You can verify it either manually or programmatically. After you verify the canary version and promote it to stable, the new stable version is made available to all users.
+
+However, sometimes bugs, errors, or deployment issues are discovered in the canary version, and you might want to abort the canary rollout and rollback to a stable version of your application.
+
+Aborting a canary rollout deletes the resources of the new canary version and restores the previous stable version of your application. All network traffic such as ingress, route, or virtual service that was being directed to the canary returns to the original stable version.
+
+The following example procedure deploys a new `red` canary version of your application, and then aborts it before it is fully promoted to stable.
+
+.Procedure 
+
+. Update the container image version and and modify the `.spec.template.spec.containers.image` value from `argoproj/rollouts-demo:yellow` to `argoproj/rollouts-demo:red` by running the following command in the Argo Rollouts CLI:
++
+[source,terminal]
+----
+$ oc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:red -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` custom resource (CR) is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+rollout "rollouts-demo" image updated
+----
+--
++
+The container image deployed in the rollout is modified and the rollout initiates a new canary deployment.
+
+. Wait for the rollout to reach the paused status.
+
+. Verify that the rollout deploys the `rollouts-demo:red` canary version and reaches the paused status by running the following command: 
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  20
+Images:          argoproj/rollouts-demo:red (canary)
+                 argoproj/rollouts-demo:yellow (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       1
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS        AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused      17m    
+├──# revision:3                                                             
+│  └──⧉ rollouts-demo-5747959bdb           ReplicaSet  ✔ Healthy     75s    canary
+│     └──□ rollouts-demo-5747959bdb-fdrsg  Pod         ✔ Running     75s    ready:1/1
+├──# revision:2                                                             
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy     9m45s  stable
+│     ├──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running     9m44s  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-2ptpp  Pod         ✔ Running     4m58s  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-tmk6c  Pod         ✔ Running     4m38s  ready:1/1
+│     └──□ rollouts-demo-6cf78c66c5-zv6lx  Pod         ✔ Running     4m27s  ready:1/1
+└──# revision:1                                                             
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  • ScaledDown  17m   
+----
+--
+. Abort the update of the rollout by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts abort rollouts-demo -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+rollout 'rollouts-demo' aborted
+----
+--
++
+The Argo Rollouts controller deletes the canary resources of the application, and rolls back to the stable version. 
+
+. Verify that after aborting the rollout, now the canary `ReplicaSet` is scaled to 0 replicas by running the following command: 
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ✖ Degraded
+Message:         RolloutAborted: Rollout aborted update to revision 3
+Strategy:        Canary
+  Step:          0/8
+  SetWeight:     0
+  ActualWeight:  0
+Images:          argoproj/rollouts-demo:yellow (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       0
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS        AGE    INFO
+⟳ rollouts-demo                            Rollout     ✖ Degraded    24m    
+├──# revision:3                                                             
+│  └──⧉ rollouts-demo-5747959bdb           ReplicaSet  • ScaledDown  7m38s  canary
+├──# revision:2                                                             
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy     16m    stable
+│     ├──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running     16m    ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-2ptpp  Pod         ✔ Running     11m    ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-tmk6c  Pod         ✔ Running     11m    ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-zv6lx  Pod         ✔ Running     10m    ready:1/1
+│     └──□ rollouts-demo-6cf78c66c5-mlbsh  Pod         ✔ Running     4m47s  ready:1/1
+└──# revision:1                                                             
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  • ScaledDown  24m 
+----
+--
++
+The rollout status is marked as `Degraded` indicating that even though the application has rolled back to the previous stable version, `yellow`, the rollout is not currently at the wanted version, `red`, that was set within the `.spec.template.spec.containers.image` field. 
++
+[NOTE]
+====
+The `Degraded` status does not reflect the health of the application. It only indicates that there is a mismatch between the wanted and running container image versions. 
+====
+
+. Update the container image version to the previous stable version, `yellow`, and modify the `.spec.template.spec.containers.image` value by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+rollout "rollouts-demo" image updated
+----
+--
++
+The rollout skips the analysis and promotion steps, rolls back to the previous stable version, `yellow`, and fast-tracks the deployment of the stable `ReplicaSet`.
+
+. Verify that the rollout status is immediately marked as `Healthy` by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` CR is defined.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       spring-petclinic
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          argoproj/rollouts-demo:yellow (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS        AGE  INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy     63m  
+├──# revision:4                                                           
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy     55m  stable
+│     ├──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running     55m  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-2ptpp  Pod         ✔ Running     50m  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-tmk6c  Pod         ✔ Running     50m  ready:1/1
+│     ├──□ rollouts-demo-6cf78c66c5-zv6lx  Pod         ✔ Running     50m  ready:1/1
+│     └──□ rollouts-demo-6cf78c66c5-mlbsh  Pod         ✔ Running     44m  ready:1/1
+├──# revision:3                                                           
+│  └──⧉ rollouts-demo-5747959bdb           ReplicaSet  • ScaledDown  46m  
+└──# revision:1                                                           
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  • ScaledDown  63m 
+----
+--
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[Installing {gitops-title}]
+* xref:../removing_gitops/uninstalling-openshift-gitops.adoc#uninstalling-openshift-gitops[Uninstalling {gitops-title}]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* xref:../argo_rollouts/argo-rollouts-overview.adoc#gitops-argo-rollouts-cli-overview_argo-rollouts-overview[Argo Rollouts CLI overview]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]
+= Routing traffic by using Argo Rollouts
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="routing-traffic-by-using-argo-rollouts"]
+= Routing traffic by using Argo Rollouts
+:context: routing-traffic-by-using-argo-rollouts
+
+toc::[]
+
+[role="_abstract"]
+You can progressively route a subset of user traffic to a new application version by using Argo Rollouts and its traffic-splitting mechanisms. Then you can test whether the application is deployed and working.
+
+With Openshift Routes, you can configure Argo Rollouts to reduce or increase the amount of traffic by directing it to various applications in a cluster environment based on your requirements.
+
+You can use OpenShift Routes to split traffic between two application versions:
+
+* *Canary version*: A new version of an application where you gradually route the traffic.
+* *Stable version*: The current version of an application. After the canary version is stable and has all the user traffic directed to it, it becomes the new stable version. The previous stable version is discarded.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have logged in to the {OCP} cluster as an administrator.
+* You have installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You have installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+* You have installed the xref:../installing_gitops/installing-argocd-gitops-cli.adoc#installing-argocd-gitops-cli[{gitops-title} CLI] on your system.
+* You have installed the xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts CLI] on your system. 
+
+// Configuring Argo Rollouts to route traffic by using OpenShift Routes
+// Module included in the following assemblies:
+//
+// * argo_rollouts/routing-traffic-by-using-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configure-rollout-route-traffic-using-openshift-routes_{context}"]
+== Configuring Argo Rollouts to route traffic by using OpenShift Routes
+
+[role="_abstract"]
+You can use OpenShift Routes to configure Argo Rollouts to create routes, rollouts, and services.
+
+The following example procedure creates a route, a rollout, and two services. It then gradually routes an increasing percentage of traffic to a canary version of the application before that canary state is marked as successful and becomes the new stable version.
+
+.Prerequisites
+
+* You have logged in to the {OCP} cluster as an administrator.
+* You have installed the {gitops-title} on your {OCP} cluster.
+* You have installed Argo Rollouts on your {OCP} cluster. For more information, see "Creating a RolloutManager custom resource".
+* You have installed the {gitops-title} CLI on your system. For more information, see "Installing the {gitops-shortname} CLI".
+* You have installed the Argo Rollouts CLI on your system. For more information, see "Argo Rollouts CLI overview".
+
+.Procedure 
+
+. Create a `Route` object.
+.. In the *Administrator* perspective of the web console, click *Networking* -> *Routes*.
+.. Click *Create Route*.
+.. On the *Create Route* page, click *YAML view* and add the following snippet:
++
+--
+The following example creates a route called `rollouts-demo-route`:
+--
++
+[source,yaml]
+----
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: rollouts-demo-route
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: argo-rollouts-stable-service
+    weight: 100
+
+  alternateBackends:
+    - kind: Service
+      name: argo-rollouts-canary-service
+      weight: 0
+----
++
+--
+where:
+
+`spec.port.targetPort`:: Specifies the port name that the application uses to run inside the container.
+`spec.tls`:: Specifies the TLS configuration used to secure the route.
+`spec.to.name`:: Specifies the name of the targeted stable service.
+`spec.to.weight`:: Specifies the traffic weight for the stable service. This field is automatically modified to stable weight by Route Rollout plugin.
+`spec.alternateBackends.name`:: Specifies the name of the targeted canary service.
+`spec.alternateBackends.weight`:: Specifies the traffic weight for the canary service. This field is automatically modified to canary weight by Route Rollout plugin.
+-- 
+
+.. Click *Create* to create the route. It is then displayed on the *Routes* page.
+. Create the services, canary and stable, to be referenced in the route.
+.. In the *Administrator* perspective of the web console, click *Networking* -> *Services*.
+.. Click *Create Service*.
+.. On the *Create Service* page, click *YAML view* and add the following snippet:
++
+--
+The following example creates a canary service called `argo-rollouts-canary-service`. Canary traffic is directed to this service.
+--
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: argo-rollouts-canary-service
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the port name that the application uses to run inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in stable service and `Rollout` custom resource (CR).
+--
++
+[IMPORTANT]
+====
+Ensure that the name of the canary service specified in the `Route` object matches with the name of the canary service specified in the `Service` object.
+====
+.. Click *Create* to create the canary service.
++
+Rollouts automatically update the created service with pod template hash of the canary `ReplicaSet`. For example, `rollouts-pod-template-hash: 7bf84f9696`.
+.. Repeat these steps to create the stable service:
++
+--
+The following example creates a stable service called `argo-rollouts-stable-service`. Stable traffic is directed to this service.
+--
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: argo-rollouts-stable-service
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the port name that the application uses to run inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in canary service and `Rollout` CR.
+--
++
+[IMPORTANT]
+====
+Ensure that the name of the stable service specified in the `Route` object matches with the name of the stable service specified in the `Service` object.
+====
+.. Click *Create* to create the stable service.
++
+Rollouts automatically update the created service with pod template hash of the stable `ReplicaSet`. For example, `rollouts-pod-template-hash: 1b6a7733`.
+. Create the `Rollout` CR to reference the `Route` and `Service` objects.
+.. In the *Administrator* perspective of the web console, go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps* -> *Rollout*.
+.. On the *Create Rollout* page, click *YAML view* and add the following snippet:
+The following example creates a `Rollout` CR called `rollouts-demo`:
++
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+
+  revisionHistoryLimit: 2
+  replicas: 5
+  strategy:
+    canary:
+      canaryService: argo-rollouts-canary-service
+      stableService: argo-rollouts-stable-service
+      trafficRouting:
+        plugins:
+          argoproj-labs/openshift:
+            routes:
+              - rollouts-demo-route
+      steps:
+      - setWeight: 30
+      - pause: {}
+      - setWeight: 60
+      - pause: {}
+  selector:
+    matchLabels:
+      app: rollouts-demo
+----
++
+--
+where:
+
+`spec.template`:: Specifies the pods that are to be created.
+`spec.strategy.canary.canaryService`:: Specifies the name of the canary service. This value must match the name of the created canary `Service`.
+`spec.strategy.canary.stableService`:: Specifies the name of the stable service. This value must match the name of the created stable `Service`.
+`spec.strategy.canary.trafficRouting.plugins.argoproj-labs/openshift.routes`:: Specifies the name of the route. This value must match the name of the created `Route` CR.
+`spec.strategy.canary.steps`:: Specifies the steps for the rollout. This example gradually routes 30%, 60%, and 100% of traffic to the canary version.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in canary and stable service.
+--
+.. Click *Create*.
+.. In the *Rollout* tab, under the *Rollout* section, verify that the *Status* field of the rollout shows *Phase: Healthy*.
+
+. Verify that the route is directing 100% of the traffic towards the stable version of the application.
++
+[NOTE]
+====
+When the first instance of the `Rollout` resource is created, the rollout regulates the amount of traffic to be directed towards the stable and canary application versions. In the initial instance, the creation of the `Rollout` resource routes all of the traffic towards the stable version of the application and skips the part where the traffic is sent to the canary version.
+====
+.. Go to *Networking* -> *Routes* and look for the `Route` resource you want to verify. 
+.. Select the *YAML* tab and view the following snippet:
++
+--
+*Example: `Route`:*
+[source,yaml]
+----
+kind: Route
+metadata:
+  name: rollouts-demo-route
+spec:
+  alternateBackends:
+  - kind: Service
+    name: argo-rollouts-canary-service
+    weight: 0
+  # (...)
+  to:
+    kind: Service
+    name: argo-rollouts-stable-service
+    weight: 100
+----
+--
++
+--
+where:
+
+`alternateBackends.weight`:: Specifies the percentage of traffic directed to the canary version. A value of `0` means that 0% of traffic is directed to the canary version.
+`to.weight`:: Specifies the percentage of traffic directed to the stable version. A value of `100` means that 100% of traffic is directed to the stable version.
+--
+
+. Simulate the new canary version of the application by modifying the container image deployed in the rollout. 
+.. In the *Administrator* perspective of the web console, go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps* -> *Rollout*.
+.. Select the existing *Rollout* and modify the `.spec.template.spec.containers.image` value from `argoproj/rollouts-demo:blue` to `argoproj/rollouts-demo:yellow`.
++
+As a result, the container image deployed in the rollout is modified and the rollout initiates a new canary deployment.
++
+[NOTE]
+====
+As per the `setWeight` property defined in the `.spec.strategy.canary.steps` field of the `Rollout` resource, initially 30% of traffic to the route reaches the canary version and 70% of traffic is directed towards the stable version. The rollout is paused after 30% of traffic is directed to the canary version.
+====
++
+--
+*Example route with 30% of traffic directed to the canary version and 70% directed to the stable version.:*
+[source,yaml]
+----
+spec:
+  alternateBackends:
+  - kind: Service
+    name: argo-rollouts-canary-service
+    weight: 30
+  # (...)
+  to:
+    kind: Service
+    name: argo-rollouts-stable-service
+    weight: 70
+----
+--
+
+. Simulate another new canary version of the application by running the following command in the Argo Rollouts CLI:
++
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+This increases the traffic weight to 60% in the canary version and 40% in the stable version. 
++
+--
+*Example route with 60% of traffic directed to the canary version and 40% directed to the stable version.:*
+[source,yaml]
+----
+spec:
+  alternateBackends:
+  - kind: Service
+    name: argo-rollouts-canary-service
+    weight: 60
+  # (...)
+  to:
+    kind: Service
+    name: argo-rollouts-stable-service
+    weight: 40
+----
+--
+
+. Increase the traffic weight in the canary version to 100% and discard the traffic in the old stable version of the application by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+-- 
++
+--
+*Example route with 0% of traffic directed to the canary version and 100% directed to the stable version.:*
+[source,yaml]
+----
+spec:
+  # (...)
+  to:
+    kind: Service
+    name: argo-rollouts-stable-service
+    weight: 100
+----
+--
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../gitops_cli_argocd/configuring-argocd-gitops-cli.adoc#configuring-argocd-gitops-cli[Configuring the GitOps CLI]
+* xref:../argo_rollouts/argo-rollouts-overview.adoc#gitops-argo-rollouts-cli-overview_argo-rollouts-overview[Argo Rollouts CLI overview]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]
+
+
+= Routing traffic by using Argo Rollouts for OpenShift Service Mesh
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh"]
+= Routing traffic by using Argo Rollouts for OpenShift Service Mesh
+:context: routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts in {gitops-title} support various traffic management mechanisms such as xref:../argo_rollouts/routing-traffic-by-using-argo-rollouts.adoc#routing-traffic-by-using-argo-rollouts[OpenShift Routes] and Istio-based OpenShift Service Mesh.
+
+The choice for selecting a traffic manager to be used with Argo Rollouts depends on the existing traffic management solution that you are using to deploy cluster workloads. For example, Red{nbsp}Hat OpenShift Routes provides basic traffic management functionality and does not require the use of a sidecar container. However, Red{nbsp}Hat OpenShift Service Mesh provides more advanced routing capabilities by using Istio but does require the configuration of a sidecar container.
+
+You can use OpenShift Service Mesh to split traffic between two application versions.
+
+* *Canary version*: A new version of an application where you gradually route the traffic.
+* *Stable version*: The current version of an application. After the canary version is stable and has all the user traffic directed to it, it becomes the new stable version. The previous stable version is discarded.
+
+The Istio-support within Argo Rollouts uses the Gateway and VirtualService resources to handle traffic routing.
+
+* *Gateway*: You can use a Gateway to manage inbound and outbound traffic for your mesh. The gateway is the entry point of OpenShift Service Mesh and handles traffic requests sent to an application.
+
+* *VirtualService*: VirtualService defines traffic routing rules and the percentage of traffic that goes to underlying services, such as the stable and canary services.
+
+[discrete]
+== Sample deployment scenario
+
+For example, in a sample deployment scenario, 100% of the traffic is directed towards the stable version of the application during the initial instance. The application is running as expected, and no additional attempts are made to deploy a new version.
+
+image::446_OpenShift_Service_Mesh_Argo_Rollouts_0724_1.png[100% of traffic in the stable version of the application]
+
+However, after deploying a new version of the application, Argo Rollouts creates a new canary deployment based on the new version of the application and routes some percentage of traffic to that new version.
+
+When you use Service Mesh, Argo Rollouts automatically modifies the VirtualService resource to control the traffic split percentage between the stable and canary application versions. In the following diagram, 20% of traffic is sent to the canary application version after the first promotion and then 80% is sent to the stable version by the stable service.
+
+image::446_OpenShift_Service_Mesh_Argo_Rollouts_0724_2.png[80% of traffic in the stable version and 20% in the canary version]
+
+// Configuring Argo Rollouts to route traffic by using OpenShift Routes
+// Module included in the following assemblies:
+//
+// * argo_rollouts/routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configuring-argo-rollouts-route-traffic-using-ossm_{context}"]
+== Configuring Argo Rollouts to route traffic by using OpenShift Service Mesh
+
+[role="_abstract"]
+You can use OpenShift Service Mesh to configure Argo Rollouts by creating the following items:
+
+* A gateway
+* Two Kubernetes services: stable and canary, which point to the pods within each version of the services
+* A VirtualService
+* A rollout custom resource (CR)
+
+In the following example procedure, the rollout routes 20% of traffic to a canary version of the application. After a manual promotion, the rollout routes 40% of traffic. After another manual promotion, the rollout performs multiple automated promotions until all traffic is routed to the new application version.
+
+.Prerequisites
+* You are logged in to the {OCP} cluster as an administrator.
+* You installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+* You installed the xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts CLI] on your system.
+* You installed the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/installing-ossm.html[OpenShift Service Mesh] operator on the cluster and configured the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/ossm-create-smcp.html[ServiceMeshControlPlane].
+
+.Procedure
+
+. Create a `Gateway` object to accept the inbound traffic for your mesh.
+
+.. Create a YAML file with the following snippet content.
++
+--
+*Example gateway called `rollouts-demo-gateway`*
+[source,yaml]
+----
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: rollouts-demo-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+----
+--
++
+--
+where:
+
+`metadata.name`:: Specifies the name of the gateway.
+`spec.selector.istio`:: Specifies the name of the ingress gateway. The gateway configures exposed ports and protocols but does not include any traffic routing configuration.
+--
+
+.. Apply the YAML file by running the following command.
++
+[source,terminal]
+----
+$ oc apply -f gateway.yaml
+----
+
+. Create the services for the canary and stable versions of the application.
+.. In the *Administrator* perspective of the web console, go to *Networking* -> *Services*.
+
+.. Click *Create Service*.
+
+.. On the *Create Service* page, click *YAML view* and add the following snippet.
+The following example creates a stable service called `rollouts-demo-stable`. Stable traffic is directed to this service.
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-demo-stable
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the name of the port used by the application for running inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same in stable service and Rollout CR.
+--
+
+.. Click *Create* to create a stable service.
+
+.. On the *Create Service* page, click *YAML view* and add the following snippet.
+The following example creates a canary service called `rollouts-demo-canary`. Canary traffic is directed to this service.
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-demo-canary
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the name of the port used by the application for running inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same in canary service and `Rollout` CR.
+--
+
+.. Click *Create* to create the canary service.
+
+. Create a VirtualService to route incoming traffic to stable and canary services.
+
+.. Create a YAML file, and copy the following YAML into it.
+The following example creates a `VirtualService` called `rollouts-demo-vsvc`:
++
+[source,yaml]
+----
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rollouts-demo-vsvc
+spec:
+  gateways:
+  - rollouts-demo-gateway
+  hosts:
+  - rollouts-demo-vsvc.local
+  http:
+  - name: primary
+    route:
+    - destination:
+        host: rollouts-demo-stable
+        port:
+          number: 15372
+      weight: 100
+    - destination:
+        host: rollouts-demo-canary
+        port:
+          number: 15372
+      weight: 0
+  tls:
+  - match:
+    - port: 3000
+      sniHosts:
+      - rollouts-demo-vsvc.local
+    route:
+    - destination:
+        host: rollouts-demo-stable
+      weight: 100
+    - destination:
+        host: rollouts-demo-canary
+      weight: 0
+----
++
+--
+where:
+
+`spec.gateways`:: Specifies the name of the gateway.
+`spec.http.route.destination.host (stable)`:: Specifies the name of the targeted stable service.
+`spec.http.route.destination.port.number`:: Specifies the port number used for listening to traffic.
+`spec.http.route.destination.host (canary)`:: Specifies the name of the targeted canary service.
+`spec.tls`:: Specifies the TLS configuration used to secure the VirtualService.
+--
+
+.. Apply the YAML file by running the following command.
++
+[source,terminal]
+----
+$ oc apply -f virtual-service.yaml
+----
+
+. Create the `Rollout` CR. In this example, `Istio` is used as a traffic manager.
+
+.. In the *Administrator* perspective of the web console, go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps* -> *Rollout*.
+
+.. On the *Create Rollout* page, click *YAML view* and add the following snippet.
+The following example creates a `Rollout` CR called `rollouts-demo`:
++
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      canaryService: rollouts-demo-canary
+      stableService: rollouts-demo-stable
+      trafficRouting:
+        istio:
+          virtualServices:
+          - name: rollouts-demo-vsvc
+            routes:
+            - primary
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {}
+      - setWeight: 60
+      - pause: {duration: 30}
+      - setWeight: 80
+      - pause: {duration: 60}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+        istio-injection: enabled
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+----
++
+--
+where:
+
+`spec.strategy.canary.canaryService`:: Specifies the name of the canary service. This value must match the name of the created canary `Service`.
+`spec.strategy.canary.stableService`:: Specifies the name of the stable service. This value must match the name of the created stable `Service`.
+`spec.strategy.canary.steps`:: Specifies the steps for the rollout. This example gradually routes 20%, 40%, 60%, and 100% of traffic to the canary version.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in canary and stable service.
+--
+
+.. Click *Create*.
+
+.. In the *Rollout* tab, under the *Rollout* section, verify that the *Status* field of the rollout shows *Phase: Healthy*.
+
+. Verify that the route is directing 100% of the traffic towards the stable version of the application.
+
+.. Watch the progression of your rollout by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+where:
++
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          argoproj/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  4m50s  
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  4m50s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-bv5zf  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  4m49s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  4m49s  ready:1/1
+----
+--
++
+[NOTE]
+====
+When the first instance of the `Rollout` resource is created, the rollout regulates the amount of traffic to be directed towards the stable and canary application versions. In the initial instance, the creation of the `Rollout` resource routes all of the traffic towards the stable version of the application and skips the part where the traffic is sent to the canary version.
+====
+
+.. To verify that the service mesh sends 100% of the traffic for the stable service and 0% for the canary service, run the following command:
++
+[source,terminal]
+----
+$ oc describe virtualservice/rollouts-demo-vsvc -n <namespace>
+----
+
+.. View the following output displayed in the terminal:
++
+--
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 100
+- destination:
+    host: rollouts-demo-canary
+  weight: 0
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `100` means that 100% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `0` means that 0% of traffic is directed to the canary version.
+--
+
+. Simulate the new canary version of the application by modifying the container image deployed in the rollout.
+
+.. Modify the `.spec.template.spec.containers.image` value from `argoproj/rollouts-demo:blue` to `argoproj/rollouts-demo:yellow`, by running the following command.
++
+[source,terminal]
+----
+$ oc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow -n <namespace>
+----
++
+As a result, the container image deployed in the rollout is modified and the rollout initiates a new canary deployment.
++
+[NOTE]
+====
+As per the `setWeight` property defined in the `.spec.strategy.canary.steps` field of the `Rollout` resource, initially 20% of traffic to the route reaches the canary version and 80% of traffic is directed towards the stable version. The rollout is paused after 20% of traffic is directed to the canary version.
+====
+
+.. Watch the progression of your rollout by running the following command.
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+--
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+--
+In the following example, 80% of traffic is routed to the stable service and 20% of traffic is routed to the canary service. The deployment is then paused indefinitely until you manually promote it to the next level.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  20
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       5
+  Current:       6
+  Updated:       1
+  Ready:         6
+  Available:     6
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   6m51s  
+├──# revision:2                                                          
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy  99s    canary
+│     └──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running  98s    ready:1/1
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  9m51s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  9m50s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  9m50s  ready:1/1
+----
+--
++
+--
+*Example with 80% directed to the stable version and 20% of traffic directed to the canary version.:*
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 80
+- destination:
+    host: rollouts-demo-canary
+  weight: 20
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `80` means that 80% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `20` means that 20% of traffic is directed to the canary version.
+--
+
+. Manually promote the deployment to the next promotion step.
++
+--
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+.. Watch the progression of your rollout by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+In the following example, 60% of traffic is routed to the stable service and 40% of traffic is routed to the canary service. The deployment is then paused indefinitely until you manually promote it to the next level.
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          3/8
+  SetWeight:     40
+  ActualWeight:  40
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       5
+  Current:       7
+  Updated:       2
+  Ready:         7
+  Available:     7
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   9m21s  
+├──# revision:2                                                          
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy  99s    canary
+│     └──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running  98s    ready:1/1
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  9m51s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  9m50s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  9m50s  ready:1/1
+----
+--
++
+--
+*Example of 60% traffic directed to the stable version and 40% directed to the canary version.:*
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 60
+- destination:
+    host: rollouts-demo-canary
+  weight: 40
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `60` means that 60% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `40` means that 40% of traffic is directed to the canary version.
+--
+
+. Increase the traffic weight in the canary version to 100% and discard the traffic in the previous stable version of the application by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+
+.. Watch the progression of your rollout by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+
+After successful completion, weight on the stable service is 100% and 0% on the canary service.
+= Enabling support for namespace-scoped Argo Rollouts installation
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="enable-support-for-namespace-scoped-argo-rollouts-installation"]
+= Enabling support for a namespace-scoped Argo Rollouts installation
+:context: enable-support-for-namespace-scoped-argo-rollouts-installation
+
+toc::[]
+
+[role="_abstract"]
+{gitops-title} enables support for two modes of Argo Rollouts installations:
+
+* *Cluster-scoped installation* (default): The Argo Rollouts custom resources (CRs) defined in any namespace are reconciled by the Argo Rollouts instance. As a result, you can use Argo Rollouts CR across any namespace on the cluster.
+* *Namespace-scoped installation*: The Argo Rollouts instance is installed in a specific namespace and only handles an Argo Rollouts CR within the same namespace. This installation mode includes the following benefits:
+** This mode does not require cluster-wide `ClusterRole` or `ClusterRoleBinding` permissions. You can install and use Argo Rollouts within a single namespace without requiring cluster permissions.
+** This mode provides security benefits by limiting the cluster scope of a single Argo Rollouts instance to a specific namespace.
+
+[NOTE]
+====
+To prevent unintended privilege escalation, {gitops-title} allows only one mode of Argo Rollout installation at a time.
+====
+
+To switch between cluster-scoped and namespace-scoped Argo Rollouts installations, complete the following steps.
+
+// Configuring namespace-scoped Argo Rollouts installation
+// Module included in the following assemblies:
+//
+// * argo_rollouts/enable-support-for-namespace-scoped-argo-rollouts-installation.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="configuring-namespace-scoped-argo-rollouts-installation_{context}"]
+== Configuring a namespace-scoped Argo Rollouts installation
+
+[role="_abstract"]
+To configure a namespace-scoped instance of Argo Rollouts installation, complete the following steps.
+
+.Prerequisites
+
+* You are logged in to the {product-title} cluster as an administrator.
+* You have installed {gitops-title} on your {product-title} cluster.
+
+.Procedure 
+
+. In the *Administrator* perspective of the web console, go to *Administration* -> *CustomResourceDefinitions*.
+. Search for `Subscription` and click the *Subscription* CRD.
+. Click the *Instances* tab and then click the *openshift-gitops-operator* subscription.
+. Click the *YAML* tab and edit the YAML file. 
+.. Specify the `NAMESPACE_SCOPED_ARGO_ROLLOUTS` environment variable, with the value set to `true` in the `.spec.config.env` property.
++
+--
+*Example of configuring the namespace-scoped Argo Rollouts installation:*
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+spec:
+  # (...)
+  config:
+    env:
+      - name: NAMESPACE_SCOPED_ARGO_ROLLOUTS
+        value: 'true'
+----
+--
++
+--
+where:
+
+`config.env.value`:: Set the value to `'true'` to enable namespace-scoped installation. If the value is set to `'false'` or not specified, the installation defaults to cluster-scoped mode.
+--
+
+.. Click *Save*.
++
+The {gitops-title} Operator facilitates the reconciliation of the Argo Rollouts custom resource within a namespace-scoped installation.
+
+. Verify that the {gitops-title} Operator has enabled the namespace-scoped Argo Rollouts installation by viewing the logs of the {gitops-shortname} container:
+.. In the *Administrator* perspective of the web console, go to *Workloads* -> *Pods*.
+.. Click the *openshift-gitops-operator-controller-manager* pod, and then click the *Logs* tab.
+.. Look for the following log statement: `Running in namespaced-scoped mode`. This statement indicates that the {gitops-title} Operator has enabled the namespace-scoped Argo Rollouts installation.
+
+. Create a `RolloutManager` resource to complete the namespace-scoped Argo Rollouts installation:
+.. Go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps*, and click the *RolloutManager* tab.
+.. Click *Create RolloutManager*.
+.. Select *YAML view* and enter the following snippet:
++
+--
+*Example `RolloutManager` CR for a namespace-scoped Argo Rollouts installation:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: rollout-manager
+  namespace: my-application
+spec:
+  namespaceScoped: true
+----
+--
++
+--
+where:
+
+`metadata.namespace`:: Specifies the name of the project where you want to install the namespace-scoped Argo Rollouts instance.
+--
+
+.. Click *Create*. 
++
+After the `RolloutManager` CR is created, {gitops-title} begins to install the namespace-scoped Argo Rollouts instance into the selected namespace.
+
+. Verify that the namespace-scoped installation is successful.
+.. In the *RolloutManager* tab, under the *RolloutManagers* section, ensure that the *Status* field of the `RolloutManager` instance is `Phase: Available`.
+.. Examine the following output in the *YAML* tab under the *RolloutManagers* section to ensure that the installation is successful:
++
+--
+*Example of namespace-scoped Argo Rollouts installation YAML file:*
+[source,yaml]
+----
+spec:
+  namespaceScoped: true
+status:
+  conditions:
+    lastTransitionTime: '2024-07-10T14:20:05Z'
+    message: ''
+    reason: Success
+    status: 'True'
+    type: 'Reconciled'
+  phase: Available
+  rolloutController: Available
+----
+--
++
+--
+where:
+
+`status.rolloutController`:: Specifies the status of the Argo Rollouts controller. The value `Available` indicates that the namespace-scoped Argo Rollouts installation is successful.
+--
++
+If you try to install a namespace-specific Argo Rollouts instance while a cluster-scoped installation already exists on the cluster, an error message is displayed:
++
+--
+*Example of an incorrect installation with an error message:*
+[source,yaml]
+----
+spec:
+  namespaceScoped: true
+status:
+  conditions:
+    lastTransitionTime: '2024-07-10T14:10:07Z'
+    message: 'when Subscription has environment variable NAMESPACE_SCOPED_ARGO_ROLLOUTS set to False, there may not exist any namespace-scoped RolloutManagers: only a single cluster-scoped RolloutManager is supported'
+    reason: InvalidRolloutManagerScope
+    status: 'False'
+    type: 'Reconciled'
+  phase: Failure
+  rolloutController: Failure
+----
+--
++
+--
+where:
+
+`status.rolloutController`:: Specifies the status of the Argo Rollouts controller. The value `Failure` indicates that the namespace-scoped Argo Rollouts installation was unsuccessful. In this case, the installation defaults to cluster-scoped mode.
+--
+= Configuring traffic management and metric plugins in Argo Rollouts
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="configuring_traffic_management_and_metric_plugins_in_argo_rollouts"]
+= Configuring traffic management and metric plugins in Argo Rollouts
+:context: enable-support-for-namespace-scoped-argo-rollouts-installation
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts supports configuring traffic management and metric plugins directly through the `RolloutManager` Custom Resource (CR). The native support for these plugins in Argo Rollouts eliminates the need to modify the config map manually, ensuring a consistent configuration across the system. As a result, Argo Rollouts no longer preserves user-defined plugins in the config map. Instead, it only applies to the plugins specified within the `RolloutManager` CR. By managing plugins directly within the `RolloutManager` CR, you can do the following:
+
+* Centralize plugin configuration control.
+* Avoid conflicts between the `RolloutManager` CR and config map.
+* Simplify plugin management by allowing easy addition, removal, or modification of plugins without editing the config map directly.
+
+The traffic management plugin controls how traffic routes between different versions of your application during a rollout, while the metric plugin collects and evaluates metrics to determine the success or failure of a rollout.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have logged in to the {OCP} cluster as an administrator.
+* You have access to the {OCP} web console.
+* You have installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You have installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+
+// Enabling traffic management and metric plugins in Argo Rollouts
+// Module included in the following assemblies:
+//
+// * argo_rollouts/configuring_traffic_management_and_metric_plugins_in_argo_rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="enable-traffic-management-and-metric-plugins-in-argo-rollouts_{context}"]
+== Enabling traffic management and metric plugins in Argo Rollouts
+
+[role="_abstract"]
+To enable traffic management and metric plugins in Argo Rollouts, complete the following steps.
+
+.Procedure 
+
+. Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Create or select the project where you want to create and configure a `RolloutManager` custom resource (CR) from the *Project* drop-down menu.
+
+. Select *{gitops-title}* from the *Installed Operators*.
+
+. In the *Details* tab, under the *Provided APIs* section, click *Create instance* in the *RolloutManager* pane.
+
+. On the *Create RolloutManager* page, select the *YAML view* and edit the YAML.
++
+--
+*Example adding the traffic management and metric plugins configuration in the `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollouts
+spec:
+  plugins:
+    trafficManagement:
+      - name: argoproj-labs/gatewayAPI
+        location: https://github.com/sample-metric-plugin
+    metric:
+      - name: argoproj-labs/sample-prometheus
+        location: https://github.com/sample-trafficrouter-plugin
+        sha256: dac10cbf57633c9832a17f8c27d2ca34aa97dd3d
+----
+--
++
+--
+where:
+
+`spec.plugins.trafficManagement.name`:: Specifies the name of the `trafficManagement` plugin.
+`spec.plugins.trafficManagement.location`:: Specifies the location of the `trafficManagement` plugin.
+`spec.plugins.metric.name`:: Specifies the name of the `metric` plugin.
+`spec.plugins.metric.location`:: Specifies the location of the `metric` plugin.
+`spec.plugins.metric.sha256`:: Specifies the SHA256 signature of the plugin binary that is downloaded and installed by the Rollouts controller. Optional.
+--
+
+. Click *Create*.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the *Status* field of the RolloutManager instance shows as *Phase: Available*.
+
+. Verify that the traffic management and metric plugins are installed correctly by completing the following steps:
+.. In the *Administrator* perspective, click *Workloads* -> *ConfigMaps*.
+.. Click the *argo-rollouts-config* config map.
++
+As a result, the plugins defined in the `RolloutManager` CR are updated in the *argo-rollouts-config* config map.
++
+--
+*Example updated traffic management and metric plugins in the *argo-rollouts-config* `ConfigMap`:*
+[source,yaml]
+----
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: argo-rollouts-config
+  namespace: argo-rollouts
+  labels:
+    app.kubernetes.io/component: argo-rollouts
+    app.kubernetes.io/name: argo-rollouts
+    app.kubernetes.io/part-of: argo-rollouts
+data:
+  metricPlugins: |
+      - name: "argoproj-labs/sample-prometheus"
+        location: https://github.com/sample-metric-plugin
+        sha256: dac10cbf57633c9832a17f8c27d2ca34aa97dd3d
+  trafficRouterPlugins: |
+    - name: argoproj-labs/gatewayAPI
+      location: https://github.com/sample-metric-plugin
+      sha256: ""
+    - name: argoproj-labs/openshift
+      location: file:/plugins/rollouts-trafficrouter-openshift/openshift-route-plugin
+      sha256: ""
+
+----
+--
++
+--
+where:
+
+`data.metricPlugins.name`:: Specifies the name of the `metric` plugin.
+`data.metricPlugins.location`:: Specifies the location of the `metric` plugin.
+`data.metricPlugins.sha256`:: Specifies the sha256 signature of the `metric` plugin.
+`data.trafficRouterPlugins.name`:: Specifies the name of the `trafficmanagement` plugin.
+`data.trafficRouterPlugins.location`:: Specifies the location of the `trafficmanagement` plugin.
+`data.trafficRouterPlugins.sha256`:: Specifies the sha256 signature of the `trafficmanagement` plugin.
+--
++
+By configuring traffic and metric plugins directly through the `RolloutManager` CR, you streamline the rollout process, reduce the chance of errors, and ensure consistent plugin management across your environment. This enhances control and flexibility while simplifying deployment procedures.
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* link:https://argo-rollouts.readthedocs.io/en/stable/features/traffic-management/plugins/#traffic-router-plugins[Traffic router plugin]
+* link:https://argo-rollouts.readthedocs.io/en/stable/analysis/plugins/[Metric plugin]
+= Enabling high availability support for Argo Rollouts
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="enabling-ha-support-for-argo-rollouts"]
+= Enabling high availability support for Argo Rollouts
+:context: enabling-ha-support-for-argo-rollouts
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts support enabling high availability (HA) in the `RolloutManager` Custom Resource (CR). When you configure high availability in Argo Rollouts, the {gitops-title} Operator automatically sets the number of pods to 2 for the Argo Rollouts controller using the `.spec.ha` field in the `RolloutManager` CR. It also activates leader election, allowing the pods to run in an active-passive process. A single pod actively manages rollouts, while the other pod remains in a passive state, ensuring the additional replica provides redundancy and availability if a node fails.
+
+This feature benefits the Rollouts controller by ensuring it runs without downtime or manual intervention. It also operates during planned maintenance, as the second replica ensures the controller runs smoothly. Enabling high availability in Argo Rollouts ensures the controller remains reliable and resilient, even during node failures or heavy workloads.
+
+The {gitops-title} Operator also ensures that anti-affinity rules apply by default. Although these rules are not user-defined, they ensure the controller pods distribute across different nodes to avoid a single point of failure, providing resilience against node failure.
+
+.Prerequisites
+* You are logged in to the {OCP} cluster as an administrator.
+* You installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+
+// Configuring high availability for Argo Rollouts
+// Module included in the following assemblies:
+//
+// * argo_rollouts/enabling-ha-support-for-argo-rollouts.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configuring-high-availability-for-argo-rollouts_{context}"]
+== Configuring high availability for Argo Rollouts
+
+[role="_abstract"]
+To enable high availability, configure the `ha` specification in the `RolloutManager` custom resource (CR) by completing the following steps:
+
+.Procedure
+
+.  Log in to the {OCP} web console as a cluster administrator. 
+
+. In the *Administrator* perspective, click *Operators* -> *Installed Operators*.
+
+. Create or select the project where you want to create and configure a `RolloutManager` CR from the *Project* drop-down menu.
+
+. Select *{gitops-title}* from the installed Operators.
+
+. In the *Details* tab, under the *Provided APIs* section, click *Create instance* in the *RolloutManager* pane.
+
+. On the *Create RolloutManager* page, select the *YAML view* and edit the YAML.
++
+--
+*Example enabling the `ha` field in the `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollouts
+  namespace: openshift-gitops
+spec:
+  ha:
+    enabled: true
+----
+--
++
+--
+where:
+
+`spec.ha.enabled`:: Specifies whether high availability is enabled or not. If the value is set to `true`, high availability is enabled.
+--
+
+. Click *Create*.
+
+. In the *RolloutManager* tab, under the *RolloutManagers* section, verify that the *Status* field of the RolloutManager instance shows *Phase: Available*.
+
+. Verify the status of the Rollouts deployment by completing the following steps:
+.. In the *Administrator* perspective, click *Workloads* -> *Deployments*.
+.. Click the *argo-rollouts* deployment.
++
+.. Click the *Details* tab and confirm that the number of replicas in the Rollouts deployment is now set to 2. 
+.. Click the *YAML* tab and confirm that the following configuration is displayed:
++
+--
+*Example Argo Rollouts deployment configuration file:*
+[source,yaml]
+----
+kind: Deployment
+metadata:
+  name: argo-rollouts
+  namespace: openshift-gitops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: argo-rollouts
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: argo-rollouts
+    spec:
+      containers:
+          args:
+            - '--leader-elect'
+            - 'true'
+----
+--
++
+--
+where:
+
+`spec.replicas`:: Specifies the number of pods.
+`spec.template.spec.containers.args`:: Specifies that the `--leader-elect=true` flag is passed to the Rollouts deployment. Although this flag is set to `true` by default, explicitly setting it ensures that leader election remains consistently enforced.
+--
+= Using a cluster-scoped Argo Rollouts instance to manage resources
+
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="using-cluster-scoped-argo-rollouts-instance-to-manage-rollouts-resources"]
+= Using a cluster-scoped Argo Rollouts instance to manage rollout resources
+:context: using-cluster-scoped-argo-rollouts-instance-to-manage-rollouts-resources
+
+toc::[]
+
+[role="_abstract"]
+By default, Argo Rollouts supports the cluster-scoped mode of installation for Argo Rollouts custom resources (CRs). This mode of installation uses the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable to specify a list of namespaces that can be used to manage the rollout resources.
+
+To manage Argo Rollouts resources, after you install the {gitops-title} Operator on the cluster, you can create and configure a `RolloutManager` custom resource (CR) instance in the namespace of your choice. You can then update the existing `Subscription` object for the {gitops-title} Operator and add user-defined namespaces to the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable in the `spec` section of the Argo CD instance.
+
+[id="prerequisites_{context}"]
+== Prerequisites
+* You have logged in to the {OCP} cluster as an administrator.
+* You have installed the {gitops-title} Operator on your {OCP} cluster.
+* You have created a `RolloutManager` custom resource.
+
+// Configuring a cluster-scoped Argo Rollouts instance to manage rollout resources 
+// Module included in the following assemblies:
+//
+// * argo_rollouts/using-cluster-scoped-rollouts-instance-to-manage-rollouts-resources.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configuring-a-cluster-scoped-argo-rollouts-instance-to-manage-rollouts-resources_{context}"]
+== Configuring a cluster-scoped Argo Rollouts instance to manage rollout resources
+
+[role="_abstract"]
+To configure a cluster-scoped Argo Rollouts instance for managing rollout resources, add the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable in the `Subscription` resource. This variable contains a list of user-defined namespaces which can be configured for a cluster-scoped Argo Rollouts installation. If the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable is empty, you can create cluster-scoped Argo Rollouts installation in the `openshift-gitops` namespace.
+
+[NOTE]
+====
+You can only create a cluster-scoped Argo Rollouts instance if the `NAMESPACE_SCOPED_ARGO_ROLLOUTS` variable is set to `false`. By default, if the `NAMESPACE_SCOPED_ARGO_ROLLOUTS` variable is not defined, it is set to `false`.
+====
+
+.Procedure
+
+. In the *Administrator* perspective of the web console, navigate to *Operators* → *Installed Operators* → *{gitops-title}* → *Subscription*.
+
+. Click the *Actions* list and then click *Edit Subscription*.
+
+. On the *openshift-gitops-operator* Subscription details page, under the *YAML* tab, edit the `Subscription` YAML file by adding the namespace of the Argo CD instance to the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable in the `spec` section:
++
+--
+*Example configuring the `CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES` environment variable:*
+[source,yaml]
+----
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-gitops-operator
+spec:
+  config:
+   env: 
+    - name: NAMESPACE_SCOPED_ARGO_ROLLOUTS
+      value: 'false'
+    - name: CLUSTER_SCOPED_ARGO_ROLLOUTS_NAMESPACES
+      value: <list_of_namespaces_in_the_cluster-scoped_Argo_CD_instances>
+ ...
+----
+--
++
+--
+where:
+
+spec.config.env.value ('false'):: Specify this value to enable or disable the cluster-scoped installation. Set the value to `'false'` to enable cluster-scoped installation. Set to `'true'` to enable namespace-scoped installation. If this value is empty, the operator defaults to `false`.
+spec.config.env.value (list_of_namespaces):: Specifies a comma-separated list of namespaces that can host a cluster-scoped Argo Rollouts instance, for example `test-123-cluster-scoped,test-456-cluster-scoped`.
+--
+
+. Click *Save* and *Reload*.
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Creating RolloutManager custom resources]

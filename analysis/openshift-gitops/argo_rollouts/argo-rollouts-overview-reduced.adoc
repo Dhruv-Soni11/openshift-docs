@@ -1,0 +1,315 @@
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="argo-rollouts-overview"]
+= Argo Rollouts overview
+:context: argo-rollouts-overview
+
+toc::[]
+
+[role="_abstract"]
+In the {gitops-shortname} context, progressive delivery is a process of releasing application updates in a controlled and gradual manner. Progressive delivery reduces the risk of a release by exposing the new version of an application update only to a subset of users initially. The process involves continuously observing and analyzing this new application version to verify whether its behavior matches the requirements and expectations set. The verifications continue as the process gradually exposes the application update to a broader and wider audience.
+
+{OCP} provides some progressive delivery capability by using routes to split traffic between different services, but this typically requires manual intervention and management. 
+
+With Argo Rollouts, as a cluster administrator, you can automate the progressive deployment delivery and manage the progressive deployment of applications hosted on Kubernetes and OpenShift Container Platform clusters. Argo Rollouts is a controller with custom resource definitions (CRDs) that provides advanced deployment capabilities such as blue-green, canary, canary analysis, and experimentation.
+
+// Benefits of Argo Rollouts
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-why-use-argo-rollouts_{context}"]
+== Why use Argo Rollouts?
+
+[role="_abstract"]
+As a cluster administrator, managing and coordinating advanced deployment strategies in traditional infrastructure often involves long maintenance windows. Automation with tools like {OCP} and {gitops-title} can reduce these windows, but setting up these strategies can still be challenging. 
+
+Use Argo Rollouts to simplify progressive delivery by allowing application teams to define their rollout strategy declaratively. Teams no longer need to define multiple deployments and services or create automation for traffic shaping and integration of tests. 
+
+You can use Argo Rollouts for the following reasons:
+
+* Your users can more easily adopt progressive delivery in end-user environments.
+* With the available structure and guidelines of Argo Rollouts, your teams do not have to learn about traffic managers and complex infrastructure.
+* During an update, depending on your deployment strategy, you can optimize the existing traffic-shaping abilities of the deployed application versions by gradually shifting traffic to the new version. 
+* You can combine Argo Rollouts with a metric provider like Prometheus to do metric-based and policy-driven rollouts and rollbacks based on the parameters set. 
+* Your end-user environments get the {gitops-title} Operator's security and help to manage the resources, cost, and time effectively.
+* Your existing users who use Argo CD with security and automated deployments get feedback early in the process that they can use to avoid problems that impact them.
+
+[id="benefits-of-argo-rollouts_{context}"]
+=== Benefits of Argo Rollouts
+
+Using Argo Rollouts as a default workload in {gitops-title} provides the following benefits:
+
+* Automated progressive delivery as part of the {gitops-shortname} workflow
+* Advanced deployment capabilities
+* Optimize the existing advanced deployment strategies such as blue-green or canary
+* Zero downtime updates for deployments
+* Fine-grained, weighted traffic shifting
+* Able to test without any new traffic hitting the production environment
+* Automated rollbacks and promotions
+* Manual judgment
+* Customizable metric queries and analysis of business key performance indicators (KPIs)
+* Integration with ingress controller and {SMProductName} for advanced traffic routing
+* Integration with metric providers for deployment strategy analysis
+* Usage of multiple providers
+
+// About RolloutManager custom resources and specification
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-about-argo-rollout-manager-custom-resources-and-spec_{context}"]
+== About RolloutManager custom resources and specification
+
+[role="_abstract"]
+To use Argo Rollouts, you must install {gitops-title} Operator on the cluster, and then create and submit a `RolloutManager` custom resource (CR) to the Operator in the namespace of your choice. You can scope the `RolloutManager` CR for single or multiple namespaces. The Operator creates an `argo-rollouts` instance with the following namespace-scoped supporting resources:
+
+* Argo Rollouts controller
+* Argo Rollouts metrics service
+* Argo Rollouts service account
+* Argo Rollouts roles
+* Argo Rollouts role bindings
+* Argo Rollouts secret
+
+You can specify the command arguments, environment variables, a custom image name, and so on for the Argo Rollouts controller resource in the spec of the `RolloutsManager` CR. The `RolloutManager` CR spec defines the desired state of Argo Rollouts.
+
+*Example: `RolloutManager` CR:*
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  labels:
+    example: basic
+spec: {}
+----
+
+[id="argo-rollouts-controller_{context}"]
+=== Argo Rollouts controller
+
+With the Argo Rollouts controller resource, you can manage the progressive application delivery in your namespace. The Argo Rollouts controller resource monitors the cluster for events, and reacts whenever there is a change in any resource related to Argo Rollouts. The controller reads all the rollout details and brings the cluster to the same state as described in the rollout definition.
+
+// Argo Rollouts architecture overview
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-argo-rollouts-architecture-overview_{context}"]
+== Argo Rollouts architecture overview
+
+[role="_abstract"]
+Argo Rollouts support is enabled on a cluster by installing the {gitops-title} Operator and configuring a `RolloutManager` custom resource (CR) instance.
+
+After a `RolloutManager` CR is created, the {gitops-title} Operator installs Argo Rollouts into that same namespace. This step includes the installation of the Argo Rollouts controller and the resources required for handling Argo Rollouts, such as CRs, roles, role bindings, and configuration data.
+
+The Argo Rollouts controller can be installed in two different modes:
+
+* *Cluster-scoped mode* (default): The controller oversees resources throughout all namespaces within the cluster.
+* *Namespace-scoped mode*: The controller monitors resources within the namespace where Argo Rollouts is deployed.
+
+The architecture of Argo Rollouts is structured into components and resources. Components are used to manage resources. For example, the AnalysisRun controller manages the `AnalysisRun` CR.
+
+Argo Rollouts include several mechanisms to gather analysis metrics to verify that a new application version is deployed:
+
+* *Prometheus metrics*: The `AnalysisTemplate` CR is configured to connect to Prometheus instances to evaluate the success or failure of one or more metrics.
+* *Kubernetes job metrics*: Argo Rollouts support the Kubernetes `Job` resource to run analysis on resource metrics. You can verify a successful deployment of an application based on the successful run of Kubernetes jobs.
+
+[id="gitops-argo-rollouts-components_{context}"]
+=== Argo Rollouts components
+
+Argo Rollouts consists of several components that enable users to practice progressive delivery in {OCP}.
+
+.Argo Rollouts components
+[options="header"]
+|===
+|Name |Description
+|Argo Rollouts controller |The Argo Rollouts Controller is an alternative to the standard `Deployment` resource and coexists alongside it. This controller only responds to changes in the Argo Rollouts resources and manages the `Rollout` CR. The Argo Rollouts Controller does not modify standard deployment resources.
+|AnalysisRun controller |The AnalysisRun controller manages and performs analysis for `AnalysisRun` and `AnalysisTemplate` CRs. It connects a rollout to the metrics provider and defines thresholds for metrics that determine if a deployment update is successful for your application.
+|`Experiment controller` | The `Experiment` controller runs analysis on short-lived replica sets, and manages the `Experiment` custom resource. The controller can also be integrated with the `Rollout` resource by specifying the `experiment` step in the canary deployment `strategy` field.
+|`Service` and `Ingress` controller |The Service controller manages the `Service` resources and the Ingress controller manages the `Ingress` resources modified by Argo Rollouts. These controllers inject additional metadata annotations in the application instances for traffic management.
+|Argo Rollouts CLI and UI |Argo Rollouts supports an `oc/kubectl` plugin called Argo Rollouts CLI. You can use it to interact with resources, such as rollouts, analyses, and experiments, from the command line. It can perform operations, such as `pause`, `promote`, or `retry`. The Argo Rollouts CLI plugin can start a local web UI dashboard in the browser to enhance the experience of visualizing the Argo Rollouts resources.
+|===
+
+[id="gitops-argo-rollouts-resources_{context}"]
+=== Argo Rollouts resources
+
+Argo Rollout components manage several resources to enable progressive delivery:
+
+* *Rollouts-specific resources*: For example, `Rollout`, `AnalysisRun`, or `Experiment`.
+* *Kubernetes networking resources*: For example, `Service`, `Ingress`, or `Route` for network traffic shaping. Argo Rollouts integrate with these resources, which are referred to as traffic management.
+
+These resources are essential for customizing the deployment of applications through the `Rollout` CR.
+
+Argo Rollouts support the following actions:
+
+* Route percentage-based traffic for canary deployments.
+* Forward incoming user traffic by using `Service` and `Ingress` resources to the correct application version. 
+* Use multiple mechanisms to collect analysis metrics to validate the deployment of a new version of an application.
+
+.Argo Rollouts resources
+[options="header"]
+|===
+|Name |Description
+|`Rollout` |This CR enables the deployment of applications by using canary or blue-green deployment strategies. It replaces the in-built Kubernetes `Deployment` resource.
+|`AnalysisRun` |This CR is used to perform an analysis and aggregate the results of analysis to guide the user toward the successful deployment delivery of an application. The `AnalysisRun` CR is an instance of the `AnalysisTemplate` CR.
+|`AnalysisTemplate` |The `AnalysisTemplate` CR is a template file that provides instructions on how to query metrics. The result of these instructions is attached to a rollout in the form of the `AnalysisRun` CR. The `AnalysisTemplate` CR can be defined globally on the cluster or on a specific rollout. You can link a list of `AnalysisTemplate` to be used on replica sets by creating an `Experiment` custom resource.
+|`Experiment` |The `Experiment` CR is used to run short-lived analysis on an application during its deployment to ensure the application is deployed correctly. The `Experiment` CR can be used independently or run as part of the `Rollout` CR.
+|`Service` and `Ingress` | Argo Rollouts natively support routing traffic by services and ingresses by using the Service and Ingress controllers.
+|`Route` and `VirtualService` |The OpenShift `Route` and {SMProductName} `VirtualService` resources are used to perform traffic splitting across different application versions.
+|===
+
+// Argo Rollouts CLI overview
+// Module included in the following assemblies:
+//
+// * argo_rollouts/argo-rollouts-overview.adoc
+
+:_mod-docs-content-type: CONCEPT
+[id="gitops-argo-rollouts-cli-overview_{context}"]
+== Argo Rollouts CLI overview
+
+[role="_abstract"]
+You can use the Argo Rollouts CLI, which is an optional plugin, to manage and monitor Argo Rollouts resources directly, bypassing the need to use the {OCP} web console or the CLI (`oc`).
+
+With the Argo Rollouts CLI plugin, you can perform the following actions:
+
+* Make changes to an Argo Rollouts image.
+* Monitor the progress of an Argo Rollouts promotion.
+* Proceed with the promotion steps in a canary deployment.
+* Terminate a failed Argo Rollouts deployment.
+
+The Argo Rollouts CLI plugin directly integrates with `oc` and `kubectl` commands.
+
+// How Argo Rollouts work in progressive delivery
+
+
+[role="_additional-resources"]
+[id="additional-resources_{context}"]
+== Additional resources
+* xref:../argo_rollouts/getting-started-with-argo-rollouts.adoc#getting-started-with-argo-rollouts[Getting started with Argo Rollouts]
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Creating RolloutManager custom resources]
+* xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Installing the Argo Rollouts CLI]
+* link:https://docs.openshift.com/container-platform/latest/applications/deployments/deployment-strategies.html#deployments-canary-deployments_deployment-strategies[Canary deployments]
+* link:https://docs.openshift.com/container-platform/latest/applications/deployments/route-based-deployment-strategies.html#deployments-blue-green_route-based-deployment-strategies[Blue-green deployments]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* link:https://www.redhat.com/architect/blue-green-canary-argo-rollouts[Blue-green and canary deployments with Argo Rollouts]
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9/[Argo Rollouts tech preview limitations]

@@ -1,0 +1,690 @@
+:_mod-docs-content-type: ASSEMBLY
+// The {product-title} attribute provides the context-sensitive name of the relevant OpenShift distribution, for example, "OpenShift Container Platform" or "OKD". The {product-version} attribute provides the product version relative to the distribution, for example "4.9".
+// {product-title} and {product-version} are parsed when AsciiBinder queries the _distro_map.yml file in relation to the base branch of a pull request.
+// See https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#product-name-and-version for more information on this topic.
+// Other common attributes are defined in the following lines:
+:data-uri:
+:icons:
+:experimental:
+:toc: macro
+:toc-title:
+:imagesdir: images
+:prewrap!:
+:HCOVersion: 4.13.0
+
+//gitops
+:gitops-title: Red Hat OpenShift GitOps
+:gitops-shortname: GitOps
+:gitops-ver: 1.20
+:upstream-ver: 3.0
+:rh-app-icon: image:red-hat-applications-menu-icon.jpg[title="Red Hat applications"]
+
+// IBM Power
+:ibmpowerProductName: IBM Power
+// IBM zSystems
+:ibmzProductName: IBM zSystems
+:linuxoneProductName: IBM(R) LinuxONE
+:kebab: image:kebab.png[title="Options menu"]
+
+// Attributes not present in the main branch
+:OCP: OpenShift Container Platform
+
+:op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
+:op-system: RHCOS
+:op-system-lowercase: rhcos
+:op-system-base: RHEL
+:op-system-base-full: Red Hat Enterprise Linux (RHEL)
+:op-system-version: 8.x
+
+ifdef::openshift-origin[]
+:op-system-first: Fedora CoreOS (FCOS)
+:op-system: FCOS
+:op-system-lowercase: fcos
+:op-system-base: Fedora
+:op-system-base-full: Fedora
+:op-system-version: 35
+endif::[]
+
+:tsb-name: Template Service Broker
+:kebab: image:kebab.png[title="Options menu"]
+
+ifndef::openshift-origin[]
+:rh-openstack-first: Red Hat OpenStack Platform (RHOSP)
+:rh-openstack: RHOSP
+endif::openshift-origin[]
+ifdef::openshift-origin[]
+:rh-openstack-first: OpenStack
+:rh-openstack: OpenStack
+endif::openshift-origin[]
+:ai-full: Assisted Installer
+:ai-version: 2.3
+
+:cluster-manager-first: Red Hat OpenShift Cluster Manager
+:cluster-manager: OpenShift Cluster Manager
+:cluster-manager-url: link:https://console.redhat.com/openshift[OpenShift Cluster Manager Hybrid Cloud Console]
+:cluster-manager-url-pull: link:https://console.redhat.com/openshift/install/pull-secret[pull secret from the Red Hat OpenShift Cluster Manager]
+
+:rh-storage-first: Red Hat OpenShift Data Foundation
+:rh-storage: OpenShift Data Foundation
+:rh-rhacm-first: Red Hat Advanced Cluster Management (RHACM)
+:rh-rhacm: RHACM
+:rh-rhacm-version: 2.8
+:rh-virtualization-first: Red Hat Virtualization (RHV)
+:rh-virtualization: RHV
+:rh-virtualization-engine-name: Manager
+ifdef::openshift-origin[]
+:rh-virtualization-first: oVirt
+:rh-virtualization: oVirt
+:rh-virtualization-engine-name: Engine
+endif::[]
+
+// builds (Valid only in 4.11 and later)
+:builds-v2title: Builds for Red Hat OpenShift
+:builds-v2shortname: OpenShift Builds v2
+:builds-v1shortname: OpenShift Builds v1
+ifdef::openshift-origin[]
+:builds-v2title: Shipwright
+:builds-v2shortname: Shipwright
+:builds-v1shortname: Builds v1
+endif::[]
+
+//pipelines
+:pipelines-title: Red Hat OpenShift Pipelines
+:pipelines-shortname: OpenShift Pipelines
+:pipelines-ver: pipelines-1.9
+:tekton-chains: Tekton Chains
+:tekton-hub: Tekton Hub
+:artifact-hub: Artifact Hub
+:pac: Pipelines as Code
+
+//logging
+:logging-title: logging subsystem for Red Hat OpenShift
+:logging-title-uc: Logging subsystem for Red Hat OpenShift
+:logging: logging subsystem
+:logging-uc: Logging subsystem
+
+//serverless
+:ServerlessProductName: OpenShift Serverless
+:ServerlessProductShortName: Serverless
+:ServerlessOperatorName: OpenShift Serverless Operator
+:FunctionsProductName: OpenShift Serverless Functions
+//service mesh v2
+:product-dedicated: Red Hat OpenShift Dedicated
+:SMProductName: Red Hat OpenShift Service Mesh
+:SMProductShortName: Service Mesh
+:SMProductVersion: 2.4
+:MaistraVersion: 2.4
+
+
+[id="routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh"]
+= Routing traffic by using Argo Rollouts for OpenShift Service Mesh
+:context: routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh
+
+toc::[]
+
+[role="_abstract"]
+Argo Rollouts in {gitops-title} support various traffic management mechanisms such as xref:../argo_rollouts/routing-traffic-by-using-argo-rollouts.adoc#routing-traffic-by-using-argo-rollouts[OpenShift Routes] and Istio-based OpenShift Service Mesh.
+
+The choice for selecting a traffic manager to be used with Argo Rollouts depends on the existing traffic management solution that you are using to deploy cluster workloads. For example, Red{nbsp}Hat OpenShift Routes provides basic traffic management functionality and does not require the use of a sidecar container. However, Red{nbsp}Hat OpenShift Service Mesh provides more advanced routing capabilities by using Istio but does require the configuration of a sidecar container.
+
+You can use OpenShift Service Mesh to split traffic between two application versions.
+
+* *Canary version*: A new version of an application where you gradually route the traffic.
+* *Stable version*: The current version of an application. After the canary version is stable and has all the user traffic directed to it, it becomes the new stable version. The previous stable version is discarded.
+
+The Istio-support within Argo Rollouts uses the Gateway and VirtualService resources to handle traffic routing.
+
+* *Gateway*: You can use a Gateway to manage inbound and outbound traffic for your mesh. The gateway is the entry point of OpenShift Service Mesh and handles traffic requests sent to an application.
+
+* *VirtualService*: VirtualService defines traffic routing rules and the percentage of traffic that goes to underlying services, such as the stable and canary services.
+
+[discrete]
+== Sample deployment scenario
+
+For example, in a sample deployment scenario, 100% of the traffic is directed towards the stable version of the application during the initial instance. The application is running as expected, and no additional attempts are made to deploy a new version.
+
+image::446_OpenShift_Service_Mesh_Argo_Rollouts_0724_1.png[100% of traffic in the stable version of the application]
+
+However, after deploying a new version of the application, Argo Rollouts creates a new canary deployment based on the new version of the application and routes some percentage of traffic to that new version.
+
+When you use Service Mesh, Argo Rollouts automatically modifies the VirtualService resource to control the traffic split percentage between the stable and canary application versions. In the following diagram, 20% of traffic is sent to the canary application version after the first promotion and then 80% is sent to the stable version by the stable service.
+
+image::446_OpenShift_Service_Mesh_Argo_Rollouts_0724_2.png[80% of traffic in the stable version and 20% in the canary version]
+
+// Configuring Argo Rollouts to route traffic by using OpenShift Routes
+// Module included in the following assemblies:
+//
+// * argo_rollouts/routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh.adoc
+
+:_mod-docs-content-type: PROCEDURE
+[id="gitops-configuring-argo-rollouts-route-traffic-using-ossm_{context}"]
+== Configuring Argo Rollouts to route traffic by using OpenShift Service Mesh
+
+[role="_abstract"]
+You can use OpenShift Service Mesh to configure Argo Rollouts by creating the following items:
+
+* A gateway
+* Two Kubernetes services: stable and canary, which point to the pods within each version of the services
+* A VirtualService
+* A rollout custom resource (CR)
+
+In the following example procedure, the rollout routes 20% of traffic to a canary version of the application. After a manual promotion, the rollout routes 40% of traffic. After another manual promotion, the rollout performs multiple automated promotions until all traffic is routed to the new application version.
+
+.Prerequisites
+* You are logged in to the {OCP} cluster as an administrator.
+* You installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
+* You installed the xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts CLI] on your system.
+* You installed the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/installing-ossm.html[OpenShift Service Mesh] operator on the cluster and configured the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/ossm-create-smcp.html[ServiceMeshControlPlane].
+
+.Procedure
+
+. Create a `Gateway` object to accept the inbound traffic for your mesh.
+
+.. Create a YAML file with the following snippet content.
++
+--
+*Example gateway called `rollouts-demo-gateway`*
+[source,yaml]
+----
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: rollouts-demo-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+----
+--
++
+--
+where:
+
+`metadata.name`:: Specifies the name of the gateway.
+`spec.selector.istio`:: Specifies the name of the ingress gateway. The gateway configures exposed ports and protocols but does not include any traffic routing configuration.
+--
+
+.. Apply the YAML file by running the following command.
++
+[source,terminal]
+----
+$ oc apply -f gateway.yaml
+----
+
+. Create the services for the canary and stable versions of the application.
+.. In the *Administrator* perspective of the web console, go to *Networking* -> *Services*.
+
+.. Click *Create Service*.
+
+.. On the *Create Service* page, click *YAML view* and add the following snippet.
+The following example creates a stable service called `rollouts-demo-stable`. Stable traffic is directed to this service.
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-demo-stable
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the name of the port used by the application for running inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same in stable service and Rollout CR.
+--
+
+.. Click *Create* to create a stable service.
+
+.. On the *Create Service* page, click *YAML view* and add the following snippet.
+The following example creates a canary service called `rollouts-demo-canary`. Canary traffic is directed to this service.
++
+[source,yaml]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  name: rollouts-demo-canary
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+    name: http
+  selector:
+    app: rollouts-demo
+----
++
+--
+where:
+
+`spec.ports`:: Specifies the name of the port used by the application for running inside the container.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same in canary service and `Rollout` CR.
+--
+
+.. Click *Create* to create the canary service.
+
+. Create a VirtualService to route incoming traffic to stable and canary services.
+
+.. Create a YAML file, and copy the following YAML into it.
+The following example creates a `VirtualService` called `rollouts-demo-vsvc`:
++
+[source,yaml]
+----
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: rollouts-demo-vsvc
+spec:
+  gateways:
+  - rollouts-demo-gateway
+  hosts:
+  - rollouts-demo-vsvc.local
+  http:
+  - name: primary
+    route:
+    - destination:
+        host: rollouts-demo-stable
+        port:
+          number: 15372
+      weight: 100
+    - destination:
+        host: rollouts-demo-canary
+        port:
+          number: 15372
+      weight: 0
+  tls:
+  - match:
+    - port: 3000
+      sniHosts:
+      - rollouts-demo-vsvc.local
+    route:
+    - destination:
+        host: rollouts-demo-stable
+      weight: 100
+    - destination:
+        host: rollouts-demo-canary
+      weight: 0
+----
++
+--
+where:
+
+`spec.gateways`:: Specifies the name of the gateway.
+`spec.http.route.destination.host (stable)`:: Specifies the name of the targeted stable service.
+`spec.http.route.destination.port.number`:: Specifies the port number used for listening to traffic.
+`spec.http.route.destination.host (canary)`:: Specifies the name of the targeted canary service.
+`spec.tls`:: Specifies the TLS configuration used to secure the VirtualService.
+--
+
+.. Apply the YAML file by running the following command.
++
+[source,terminal]
+----
+$ oc apply -f virtual-service.yaml
+----
+
+. Create the `Rollout` CR. In this example, `Istio` is used as a traffic manager.
+
+.. In the *Administrator* perspective of the web console, go to *Operators* -> *Installed Operators* -> *Red Hat OpenShift GitOps* -> *Rollout*.
+
+.. On the *Create Rollout* page, click *YAML view* and add the following snippet.
+The following example creates a `Rollout` CR called `rollouts-demo`:
++
+[source,yaml]
+----
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      canaryService: rollouts-demo-canary
+      stableService: rollouts-demo-stable
+      trafficRouting:
+        istio:
+          virtualServices:
+          - name: rollouts-demo-vsvc
+            routes:
+            - primary
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {}
+      - setWeight: 60
+      - pause: {duration: 30}
+      - setWeight: 80
+      - pause: {duration: 60}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+        istio-injection: enabled
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
+----
++
+--
+where:
+
+`spec.strategy.canary.canaryService`:: Specifies the name of the canary service. This value must match the name of the created canary `Service`.
+`spec.strategy.canary.stableService`:: Specifies the name of the stable service. This value must match the name of the created stable `Service`.
+`spec.strategy.canary.steps`:: Specifies the steps for the rollout. This example gradually routes 20%, 40%, 60%, and 100% of traffic to the canary version.
+`spec.selector`:: Specifies the selector to match pods. Ensure that the contents of the `selector` field are the same as in canary and stable service.
+--
+
+.. Click *Create*.
+
+.. In the *Rollout* tab, under the *Rollout* section, verify that the *Status* field of the rollout shows *Phase: Healthy*.
+
+. Verify that the route is directing 100% of the traffic towards the stable version of the application.
+
+.. Watch the progression of your rollout by running the following command:
++
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
++
+where:
++
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          argoproj/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       5
+  Current:       5
+  Updated:       5
+  Ready:         5
+  Available:     5
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  4m50s  
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  4m50s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-bv5zf  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  4m49s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  4m49s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  4m49s  ready:1/1
+----
+--
++
+[NOTE]
+====
+When the first instance of the `Rollout` resource is created, the rollout regulates the amount of traffic to be directed towards the stable and canary application versions. In the initial instance, the creation of the `Rollout` resource routes all of the traffic towards the stable version of the application and skips the part where the traffic is sent to the canary version.
+====
+
+.. To verify that the service mesh sends 100% of the traffic for the stable service and 0% for the canary service, run the following command:
++
+[source,terminal]
+----
+$ oc describe virtualservice/rollouts-demo-vsvc -n <namespace>
+----
+
+.. View the following output displayed in the terminal:
++
+--
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 100
+- destination:
+    host: rollouts-demo-canary
+  weight: 0
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `100` means that 100% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `0` means that 0% of traffic is directed to the canary version.
+--
+
+. Simulate the new canary version of the application by modifying the container image deployed in the rollout.
+
+.. Modify the `.spec.template.spec.containers.image` value from `argoproj/rollouts-demo:blue` to `argoproj/rollouts-demo:yellow`, by running the following command.
++
+[source,terminal]
+----
+$ oc argo rollouts set image rollouts-demo rollouts-demo=argoproj/rollouts-demo:yellow -n <namespace>
+----
++
+As a result, the container image deployed in the rollout is modified and the rollout initiates a new canary deployment.
++
+[NOTE]
+====
+As per the `setWeight` property defined in the `.spec.strategy.canary.steps` field of the `Rollout` resource, initially 20% of traffic to the route reaches the canary version and 80% of traffic is directed towards the stable version. The rollout is paused after 20% of traffic is directed to the canary version.
+====
+
+.. Watch the progression of your rollout by running the following command.
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+--
++
+--
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+--
+In the following example, 80% of traffic is routed to the stable service and 20% of traffic is routed to the canary service. The deployment is then paused indefinitely until you manually promote it to the next level.
+--
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  20
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       5
+  Current:       6
+  Updated:       1
+  Ready:         6
+  Available:     6
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   6m51s  
+├──# revision:2                                                          
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy  99s    canary
+│     └──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running  98s    ready:1/1
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  9m51s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  9m50s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  9m50s  ready:1/1
+----
+--
++
+--
+*Example with 80% directed to the stable version and 20% of traffic directed to the canary version.:*
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 80
+- destination:
+    host: rollouts-demo-canary
+  weight: 20
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `80` means that 80% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `20` means that 20% of traffic is directed to the canary version.
+--
+
+. Manually promote the deployment to the next promotion step.
++
+--
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+.. Watch the progression of your rollout by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
++
+In the following example, 60% of traffic is routed to the stable service and 40% of traffic is routed to the canary service. The deployment is then paused indefinitely until you manually promote it to the next level.
++
+--
+*Example output:*
+[source,terminal]
+----
+Name:            rollouts-demo
+Namespace:       argo-rollouts
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          3/8
+  SetWeight:     40
+  ActualWeight:  40
+Images:          argoproj/rollouts-demo:blue (stable)
+                 argoproj/rollouts-demo:yellow (canary)
+Replicas:
+  Desired:       5
+  Current:       7
+  Updated:       2
+  Ready:         7
+  Available:     7
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   9m21s  
+├──# revision:2                                                          
+│  └──⧉ rollouts-demo-6cf78c66c5           ReplicaSet  ✔ Healthy  99s    canary
+│     └──□ rollouts-demo-6cf78c66c5-zrgd4  Pod         ✔ Running  98s    ready:1/1
+└──# revision:1                                                          
+   └──⧉ rollouts-demo-687d76d795           ReplicaSet  ✔ Healthy  9m51s  stable
+      ├──□ rollouts-demo-687d76d795-75k57  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-jsxg8  Pod         ✔ Running  9m50s  ready:1/1
+      ├──□ rollouts-demo-687d76d795-rsgtv  Pod         ✔ Running  9m50s  ready:1/1
+      └──□ rollouts-demo-687d76d795-xrmrj  Pod         ✔ Running  9m50s  ready:1/1
+----
+--
++
+--
+*Example of 60% traffic directed to the stable version and 40% directed to the canary version.:*
+[source,yaml]
+----
+route
+- destination:
+    host: rollouts-demo-stable
+  weight: 60
+- destination:
+    host: rollouts-demo-canary
+  weight: 40
+----
+--
++
+--
+where:
+
+`route.weight (stable)`:: Specifies the percentage of traffic directed to the stable version. A value of `60` means that 60% of traffic is directed to the stable version.
+`route.weight (canary)`:: Specifies the percentage of traffic directed to the canary version. A value of `40` means that 40% of traffic is directed to the canary version.
+--
+
+. Increase the traffic weight in the canary version to 100% and discard the traffic in the previous stable version of the application by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts promote rollouts-demo -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+
+.. Watch the progression of your rollout by running the following command:
++
+--
+[source,terminal]
+----
+$ oc argo rollouts get rollout rollouts-demo --watch -n <namespace>
+----
+
+where:
+
+`<namespace>`:: Specifies the namespace where the `Rollout` resource is defined.
+--
+
+After successful completion, weight on the stable service is 100% and 0% on the canary service.

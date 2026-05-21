@@ -1,0 +1,13 @@
+{
+  "book": {
+    "name": "Release notes",
+    "dir": "release_notes",
+    "distros": "openshift-gitops"
+  },
+  "topics": [
+    {
+      "name": "OpenShift GitOps release notes",
+      "file": "gitops-release-notes-1-20"
+    }
+  ]
+}
