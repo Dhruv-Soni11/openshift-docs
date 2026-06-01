@@ -1,0 +1,330 @@
+Current Category,Current Title,Content Item,Proposed Category,Reasoning
+Install,Installing GitOps,"Installing the OpenShift GitOps Operator, logging in to the Argo CD instance, and installing the Git...",Get Started,Installation is part of getting started
+Install,Installing GitOps,Chapter 1. Preparing to install Red Hat OpenShift GitOps,Get Started,Installation is part of getting started
+Install,Installing GitOps,1.1. Sizing requirements for GitOps,Get Started,Installation is part of getting started
+Install,Installing GitOps,1.1.1. Sizing requirements for Argo CD redis,Get Started,Installation is part of getting started
+Install,Installing GitOps,Chapter 2. Installing Red Hat OpenShift GitOps,Get Started,Installation is part of getting started
+Install,Installing GitOps,2.1. Prerequisites,Get Started,Installation is part of getting started
+Install,Installing GitOps,2.2. Installing Red Hat OpenShift GitOps Operator in web console,Get Started,Installation is part of getting started
+Install,Installing GitOps,2.3. Installing Red Hat OpenShift GitOps Operator using CLI,Get Started,Installation is part of getting started
+Install,Installing GitOps,2.4. Logging in to the Argo CD instance by using the Argo CD admin account,Get Started,Installation is part of getting started
+Install,Installing GitOps,2.5. Additional resources,Get Started,Installation is part of getting started
+Install,Installing GitOps,Chapter 3. Installing the GitOps CLI,Get Started,Installation is part of getting started
+Install,Installing GitOps,3.1. Installing the Red Hat OpenShift GitOps CLI on Linux,Get Started,Installation is part of getting started
+Install,Installing GitOps,3.2. Installing the Red Hat OpenShift GitOps CLI on Linux using an RPM,Get Started,Installation is part of getting started
+Install,Installing GitOps,3.3. Installing the Red Hat OpenShift GitOps CLI on Windows,Get Started,Installation is part of getting started
+Install,Installing GitOps,3.4. Installing the Red Hat OpenShift GitOps CLI on macOS,Get Started,Installation is part of getting started
+Install,Installing GitOps,3.5. Additional resources,Get Started,Installation is part of getting started
+Install,Removing GitOps,Removing OpenShift GitOps Operator from your cluster,Get Started,Installation content
+Install,Removing GitOps,Chapter 1. Uninstalling Red Hat OpenShift GitOps,Get Started,Installation is part of getting started
+Install,Removing GitOps,1.1. Deleting the Argo CD instances,Get Started,Installation content
+Install,Removing GitOps,1.2. Uninstalling the GitOps Operator,Get Started,Installation is part of getting started
+Set up,Argo CD instance,"Installing and deploying Argo CD instances, enabling notifications with an Argo CD instance, and con...",Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,Chapter 1. Setting up an Argo CD instance,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.1. Installing a user-defined Argo CD instance,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.2. Configuring common cluster roles by specifying user-defined cluster roles for namespace-scoped ...,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.3. Enabling replicas for Argo CD server and repo server,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.4. Deploying resources to a different namespace,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.5. Customizing the Argo CD console link,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,1.6. Configuring ImagePullPolicy,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,Chapter 2. Argo CD custom resource and component properties,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.1. Argo CD custom resource properties,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.2. Repo server properties,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.2.1. Configure TLS trust for the repo server,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.3. Enabling notifications with an Argo CD instance,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.4. Enabling Config Management Plugins in an Argo CD CR,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.5. NotificationsConfiguration custom resource properties,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.5.1. Configuring the NotificationsConfiguration CR by using the web console,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.5.2. Configuring the NotificationsConfiguration CR by using the CLI,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.6. Configuring notifications in any Namespace,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.6.1. Understanding configuration notifications behavior across namespaces,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.7. Enabling annotation-based resource tracking in Argo CD,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.7.1. Configuring annotation-based tracking in multiple Argo CD instances,Configure Argo CD,Configuring Argo CD instances
+Set up,Argo CD instance,2.8. Additional resources,Configure Argo CD,Configuring Argo CD instances
+Set up,Access control and user management,Configuring user authentication and access controls for users and namespaces,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,Chapter 1. Configuring Argo CD RBAC,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,1.1. Configuring user level access,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,Chapter 2. Configuring SSO for Argo CD using Dex,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,2.1. Configuration to enable the Dex OpenShift OAuth Connector,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,2.1.1. Mapping users to specific roles,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,2.2. Disabling Dex by replacing .spec.sso,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,Chapter 3. Configuring SSO for Argo CD using external OIDC providers,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,3.1. Understanding OIDC integration approaches for Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,3.2. Prerequisites,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,3.3. Configuring direct OIDC integration for Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,3.4. Verifying OIDC login for Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,Chapter 4. Managing local users in Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.1. About local user management in Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.2. Local user configuration in Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.3. Example local user configuration in Argo CD,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.4. Token storage and access,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.5. Token lifecycle management,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.6. User lifecycle management,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.7. Integration with legacy configuration,Secure & Control Access,Authentication and access control
+Set up,Access control and user management,4.8. Creating local users in Argo CD,Secure & Control Access,Authentication and access control
+Set up,Managing resource use,Configuring resource requests and limits for Argo CD workloads,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,Chapter 1. Configuring resource quota or requests,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,1.1. Configuring workloads with resource requests and limits,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,1.2. Patching Argo CD instance to update the resource requirements,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,1.3. Removing resource requests,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,Chapter 2. Configure resource requests and limits for GitOps plugin components,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,2.1. Enabling the GitOpsService custom resource,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Managing resource use,2.2. Behavior of resource configuration,Configure Argo CD,Resource configuration for Argo CD platform
+Set up,Argo CD applications,"Creating and deploying applications on the OpenShift cluster by using the Argo CD dashboard, oc tool...",Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,Chapter 1. Deploying a Spring Boot application with Argo CD,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,1.1. Creating an application by using the Argo CD dashboard,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,1.2. Creating an application by using the oc tool,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,1.3. Verifying Argo CD self-healing behavior,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,Chapter 2. Creating an application by using the GitOps CLI,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,2.1. Creating an application in the default mode by using the GitOps CLI,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,2.2. Creating an application in core mode by using the GitOps CLI,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,2.3. Additional resources,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,Chapter 3. Managing the application resources in non-control plane namespaces,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,3.1. Prerequisites,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,3.2. Configuring the Argo CD CR of your user-defined cluster-scoped Argo CD instance with the target...,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,3.3. Creating and configuring a user-defined AppProject instance with the target namespaces,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,3.4. Creating and configuring the Application CR to reference the target namespace and user-defined ...,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,3.5. Additional resources,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,Chapter 4. Managing application links with the managed-by-url annotation,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,4.1. Overview of the managed-by-url annotation,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,4.2. Configuring the managed-by-url annotation,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,4.3. Managed-by-url annotation reference,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,4.4. Troubleshooting the managed-by-url annotation,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD applications,4.5. Additional resources,Deploy & Manage Applications,Creating and deploying applications
+Set up,Argo CD application sets,Managing the application set resources in non-control plane namespaces,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,Chapter 1. Managing the application set resources in non-control plane namespaces,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.1. Prerequisites,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.2. Enabling the application set resources in non-control plane namespaces,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.3. About configuring ApplicationSet namespaces using names and patterns,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.3.1. Enable ApplicationSet in a specific namespace,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.3.2. Define glob-style in wildcard patterns,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.3.3. Define regular expressions in patterns,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.4. Allowing Source Code Manager Providers,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,1.5. Additional resources,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,Chapter 2. Using Progressive Sync in OpenShift GitOps,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.1. Overview of enabling Progressive Sync,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.2. Prerequisites,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.3. Enabling Progressive Sync,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.3.1. Adding the extraCommandArgs argument to the Argo CD CR,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.3.2. Setting the env environment variable in the Argo CD CR,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.4. Understanding ApplicationSet strategies,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.5. Understanding creation strategies,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.5.1. Configuring AllAtOnce creation strategy,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.5.2. Example: AllAtOnce creation strategy for simultaneous deployment,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.5.3. Configuring RollingSync strategy,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.5.4. Example: Progressive sync with environment labels,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.6. Understanding deletion strategies,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.6.1. Configuring AllAtOnce deletion strategy,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.6.2. Example: AllAtOnce deletion strategy for multi-cluster deployments,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.6.3. Configuring ApplicationSet reverse deletion order,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.6.4. Example: Reverse deletion order with dependent services,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.7. Troubleshooting Progressive Sync,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.7.1. Troubleshooting when Progressive Sync section does not appear,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.7.2. Troubleshooting when application shows Unknown state,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Argo CD application sets,2.8. Additional resources,Deploy & Manage Applications,ApplicationSets for multi-app deployment
+Set up,Multitenancy,Understanding multitenancy support in GitOps,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,Chapter 1. Multitenancy support in GitOps,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.1. Argo CD instance scopes,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.1.1. Namespace-scoped instance (Application delivery instance),Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.1.2. Cluster-scoped instance,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.1.3. Default cluster-scoped instance,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.2. Important considerations when adopting the multitenancy model,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.2.1. Argo CD role-based access control (RBAC),Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.2.2. Argo CD projects,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.3. Enable tenant namespace management with the NamespaceManagement CR,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.3.1. Configuring namespace management for Argo CD tenants,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Multitenancy,1.4. Additional resources,Configure Argo CD,Multi-tenancy platform configuration
+Set up,Declarative cluster configuration,Configuring an OpenShift cluster with cluster configurations by using OpenShift GitOps and creating ...,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,Chapter 1. Configuring an OpenShift cluster by deploying an application with cluster configurations,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.1. Prerequisites,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.2. Using an Argo CD instance to manage cluster-scoped resources,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.3. Default permissions of an Argo CD instance,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.4. Running the Argo CD instance at the cluster-level,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.5. Creating an application by using the Argo CD dashboard,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.6. Creating an application by using the oc tool,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.7. Creating an application in the default mode by using the GitOps CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.8. Creating an application in core mode by using the GitOps CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.9. Synchronizing your application with your Git repository,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.10. Synchronizing an application in the default mode by using the GitOps CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.11. Synchronizing an application in core mode by using the GitOps CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.12. In-built permissions for cluster configuration,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.13. Adding permissions for cluster configuration,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.14. Installing OLM Operators using Red Hat OpenShift GitOps,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.14.1. Installing cluster-scoped Operators,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.14.2. Installing namepace-scoped Operators,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.15. Configuring respectRBAC using Red Hat OpenShift GitOps,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.15.1. Configuring respectRBAC using the CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.15.2. Configuring respectRBAC by using the web console,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,1.16. Additional resources,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,Chapter 2. Customizing permissions by creating user-defined cluster roles for cluster-scoped instanc...,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,2.1. Prerequisites,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,2.2. Disabling the creation of the default cluster roles for the cluster-scoped instance,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,2.3. Customizing permissions for cluster-scoped instances,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,2.4. Additional resources,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,Chapter 3. Customizing permissions by creating aggregated cluster roles,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.1. Aggregated cluster roles,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.2. Prerequisites,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.3. Creating aggregated cluster roles,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.3.1. Enable the creation of aggregated cluster roles,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.3.2. Create user-defined cluster roles and configure user-defined permissions,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.4. Enabling the creation of aggregated cluster roles,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.5. Creating user-defined cluster roles and configuring user-defined permissions for Application Co...,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,3.6. Additional resources,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,Chapter 4. Sharding clusters across Argo CD Application Controller replicas,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.1. Enabling the round-robin sharding algorithm,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.1.1. Enabling the round-robin sharding algorithm in the web console,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.1.2. Enabling the round-robin sharding algorithm by using the CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.2. Enabling dynamic scaling of shards of the Argo CD Application Controller,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.2.1. Enabling dynamic scaling of shards in the web console,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Declarative cluster configuration,4.2.2. Enabling dynamic scaling of shards by using the CLI,Deploy & Manage Applications,Deploying cluster resources via GitOps
+Set up,Argo CD Agent architecture,"Describes the architecture and terminology used in the Argo CD Agent, detailing how agent-based GitO...",Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,Chapter 1. Argo CD Agent architecture overview,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.1. Introduction to the Argo CD Agent architecture,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.2. Architecture and Terminology,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.3. Comparing Argo CD Agent with traditional Argo CD architecture,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.4. Synchronization mechanism between the control plane and workload clusters,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.5. Argo CD Agent modes,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.5.1. Argo CD Agent Managed mode,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.5.2. Argo CD Agent Autonomous mode,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.6. Security and Authentication,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.7. Application Management Across Namespaces,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.8. Known Limitations,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent architecture,1.9. Additional resources,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,"Installing and deploying the Argo CD Agent, enabling the Argo CD Agent in different modes by using a...",Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,Chapter 1. Installing Argo CD Agent,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.1. Prerequisites,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.2. Argo CD Agent Terminologies,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.3. Installing the Principal component,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.4. Setting up a spoke cluster environment,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.5. Installing the Argo CD Agent by using a Helm chart,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.5.1. Deploying an Argo CD instance on the Agent cluster,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.5.2. Installing the Argo CD Agent in managed mode by using a Helm chart,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.5.3. Installing the Argo CD Agent in autonomous mode by using a Helm chart,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.6. Installing the Argo CD Agent by using an Argo CD custom resource,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.7. Verifying the Argo CD Agent installation in Managed Mode or Autonomous Mode,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.8. Deploying Argo CD applications,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.8.1. Deploying an Argo CD application in managed mode,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.8.2. Deploying an Argo CD application in autonomous mode,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.9. Troubleshooting Principal-Agent communication and deployment issues,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Set up,Argo CD Agent installation,1.10. Additional resources,Configure Argo CD,Multi-cluster setup via Argo CD Agent
+Progressive delivery,Argo Rollouts,Using Argo Rollouts for progressive delivery,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 1. Argo Rollouts overview,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.1. Why use Argo Rollouts?,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.1.1. Benefits of Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.2. About RolloutManager custom resources and specification,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.2.1. Argo Rollouts controller,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.3. Argo Rollouts architecture overview,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.3.1. Argo Rollouts components,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.3.2. Argo Rollouts resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.4. Argo Rollouts CLI overview,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,1.5. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 2. Using Argo Rollouts for progressive deployment delivery,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.1. Prerequisites,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.2. Creating a RolloutManager custom resource,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.3. Deleting a RolloutManager custom resource,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.4. Installing Argo Rollouts CLI on Linux,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.5. Installing Argo Rollouts CLI on Mac OS,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.6. Enabling Argo Rollouts UI on an Argo CD instance,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,2.7. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 3. Getting started with Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.1. Prerequisites,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.2. Deploying a rollout,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.3. Updating the rollout,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.4. Promoting the rollout,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.5. Manually aborting the rollout,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,3.6. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 4. Routing traffic by using Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,4.1. Prerequisites,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,4.2. Configuring Argo Rollouts to route traffic by using OpenShift Routes,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,4.3. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 5. Routing traffic by using Argo Rollouts for OpenShift Service Mesh,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Sample deployment scenario,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,5.1. Configuring Argo Rollouts to route traffic by using OpenShift Service Mesh,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 6. Enabling support for a namespace-scoped Argo Rollouts installation,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,6.1. Configuring a namespace-scoped Argo Rollouts installation,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 7. Configuring traffic management and metric plugins in Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,7.1. Prerequisites,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,7.2. Enabling traffic management and metric plugins in Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,7.3. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 8. Enabling high availability support for Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,8.1. Configuring high availability for Argo Rollouts,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,Chapter 9. Using a cluster-scoped Argo Rollouts instance to manage rollout resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,9.1. Prerequisites,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,9.2. Configuring a cluster-scoped Argo Rollouts instance to manage rollout resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Progressive delivery,Argo Rollouts,9.3. Additional resources,Deploy & Manage Applications,Progressive delivery (Argo Rollouts) is a deployment pattern
+Security,Security,Using security features to configure secure communication and protect the possibly sensitive data in...,Secure & Control Access,Security and secrets management
+Security,Security,Chapter 1. Configuring secure communication with Redis,Secure & Control Access,Security and secrets management
+Security,Security,1.1. Prerequisites,Secure & Control Access,Security and secrets management
+Security,Security,1.2. Configuring TLS for Redis with autotls enabled,Secure & Control Access,Security and secrets management
+Security,Security,1.3. Configuring TLS for Redis with autotls disabled,Secure & Control Access,Security and secrets management
+Security,Security,Chapter 2. Managing secrets securely using Secrets Store CSI driver with GitOps,Secure & Control Access,Security and secrets management
+Security,Security,2.1. Overview of managing secrets using Secrets Store CSI driver with GitOps,Secure & Control Access,Security and secrets management
+Security,Security,2.1.1. Benefits,Secure & Control Access,Security and secrets management
+Security,Security,2.2. Secrets store providers,Secure & Control Access,Security and secrets management
+Security,Security,2.3. Configure AWS Secrets Manager on OpenShift with GitOps,Secure & Control Access,Security and secrets management
+Security,Security,2.3.1. Storing AWS Secrets Manager resources in GitOps repository,Secure & Control Access,Security and secrets management
+Security,Security,2.3.2. Configuring SSCSI driver to mount secrets from AWS Secrets Manager,Secure & Control Access,Security and secrets management
+Security,Security,2.3.3. Configuring GitOps managed resources to use mounted secrets,Secure & Control Access,Security and secrets management
+Security,Security,2.4. Configure HashiCorp Vault as a secrets provider on OpenShift with GitOps,Secure & Control Access,Security and secrets management
+Security,Security,2.4.1. Installing the Vault CSI Provider using GitOps,Secure & Control Access,Security and secrets management
+Security,Security,2.4.2. Initializing and configuring Vault to store a Secret,Secure & Control Access,Security and secrets management
+Security,Security,"2.4.3. Managing Secrets, Policies, and Roles in Vault",Secure & Control Access,Security and secrets management
+Security,Security,2.4.4. Configuring GitOps managed resources to use Vault-mounted secrets,Secure & Control Access,Security and secrets management
+Security,Security,2.4.5. Verifying secret injection,Secure & Control Access,Security and secrets management
+Security,Security,2.5. Additional resources,Secure & Control Access,Security and secrets management
+Security,Security,Chapter 3. Masking sensitive annotations in the Argo CD Web UI,Secure & Control Access,Security and secrets management
+Security,Security,3.1. Enabling sensitive annotations masking in the Argo CD Web UI,Secure & Control Access,Security and secrets management
+Security,Security,3.2. Additional resources,Secure & Control Access,Security and secrets management
+Reference,GitOps CLI (argocd) reference,Configuring the GitOps CLI and logging in to the Argo CD server in the default mode,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,Chapter 1. Configuring the GitOps CLI,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,1.1. Enabling tab completion,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,1.2. Additional resources,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,Chapter 2. Logging in to the Argo CD server in the default mode,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,2.1. Logging in to the Argo CD server,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,2.2. Additional resources,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,Chapter 3. GitOps argocd CLI reference,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.1. Basic syntax,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.1.1. Default mode,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.1.2. Core mode,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.2. Global options,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.3. Utility commands,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.3.1. argocd,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.3.2. version,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.3.3. help,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.3.4. completion,Reference,Reference documentation
+Reference,GitOps CLI (argocd) reference,3.4. Additional resources,Reference,Reference documentation
+Manage,GitOps workloads on infrastructure nodes,Running GitOps control plane workloads on infrastructure nodes,Deploy & Manage Applications,Managing applications
+Manage,GitOps workloads on infrastructure nodes,Chapter 1. Running GitOps control plane workloads on infrastructure nodes,Deploy & Manage Applications,Managing applications
+Manage,GitOps workloads on infrastructure nodes,1.1. Moving GitOps control plane workloads to infrastructure nodes,Deploy & Manage Applications,Managing applications
+Manage,GitOps workloads on infrastructure nodes,1.2. Moving the GitOps Operator pod to infrastructure nodes,Deploy & Manage Applications,Managing applications
+Manage,GitOps workloads on infrastructure nodes,1.3. Additional resources,Deploy & Manage Applications,Managing applications
+Observability,Observability,Using observability features to view Argo CD logs and monitor the performance and health of Argo CD ...,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,Chapter 1. Logging,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,1.1. Viewing Argo CD logs,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,1.1.1. Storing and retrieving Argo CD logs,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,1.1.2. Additional resources,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,Chapter 2. Monitoring,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.1. Monitoring with GitOps dashboards,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.1.1. Accessing GitOps monitoring dashboards,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.2. Monitoring Argo CD instances,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.2.1. Prerequisites,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.2.2. Monitoring Argo CD health using Prometheus metrics,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.2.3. Disabling automatic scraping of metrics for Argo CD instances,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.2.4. Additional resources,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.3. Monitoring the GitOps Operator performance,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.3.1. Accessing the GitOps Operator metrics,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.3.2. Additional resources,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.4. Monitoring health information for application resources and deployments,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.4.1. Settings for environment labels and annotations,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,Environment labels,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,Environment annotations,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.4.2. Checking health information,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.5. Monitoring Argo CD custom resource workloads,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.5.1. Prerequisites,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.5.2. Enabling Monitoring for Argo CD custom resource workloads,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.5.3. Disabling Monitoring for Argo CD custom resource workloads,Monitor & Troubleshoot,Observability and monitoring
+Observability,Observability,2.5.4. Additional resources,Monitor & Troubleshoot,Observability and monitoring
+Troubleshoot,Troubleshooting issues,Troubleshooting topics for OpenShift GitOps and your cluster,Monitor & Troubleshoot,Troubleshooting content
+Troubleshoot,Troubleshooting issues,Chapter 1. Issue: Auto-reboot during Argo CD sync with machine configurations,Monitor & Troubleshoot,Troubleshooting content
+Troubleshoot,Troubleshooting issues,1.1. Solution: Enhance performance in machine configurations and Argo CD,Monitor & Troubleshoot,Troubleshooting content
+Troubleshoot,Troubleshooting issues,1.2. Additional resources,Monitor & Troubleshoot,Troubleshooting content

@@ -1,0 +1,193 @@
+====================================================================================================
+SAMPLE CONTENT FOR EACH NEW CATEGORY
+Showing first 10 items per category to illustrate the redistribution
+====================================================================================================
+
+
+====================================================================================================
+GET STARTED (20 items total)
+====================================================================================================
+
+1. Installing GitOps
+   └─ Installing the OpenShift GitOps Operator, logging in to the Argo CD in
+
+2. Installing GitOps
+   └─ Chapter 1. Preparing to install Red Hat OpenShift GitOps
+
+3. Installing GitOps
+   └─ 1.1. Sizing requirements for GitOps
+
+4. Installing GitOps
+   └─ 1.1.1. Sizing requirements for Argo CD redis
+
+5. Installing GitOps
+   └─ Chapter 2. Installing Red Hat OpenShift GitOps
+
+6. Installing GitOps
+   └─ 2.1. Prerequisites
+
+7. Installing GitOps
+   └─ 2.2. Installing Red Hat OpenShift GitOps Operator in web console
+
+8. Installing GitOps
+   └─ 2.3. Installing Red Hat OpenShift GitOps Operator using CLI
+
+9. Installing GitOps
+   └─ 2.4. Logging in to the Argo CD instance by using the Argo CD admin acc
+
+10. Installing GitOps
+   └─ 2.5. Additional resources
+
+   ... and 10 more items
+
+====================================================================================================
+DEPLOY APPLICATIONS (0 items total)
+====================================================================================================
+
+====================================================================================================
+MANAGE DEPLOYMENTS (0 items total)
+====================================================================================================
+
+====================================================================================================
+CONFIGURE ARGO CD (72 items total)
+====================================================================================================
+
+1. Argo CD instance
+   └─ Installing and deploying Argo CD instances, enabling notifications wit
+
+2. Argo CD instance
+   └─ Chapter 1. Setting up an Argo CD instance
+
+3. Argo CD instance
+   └─ 1.1. Installing a user-defined Argo CD instance
+
+4. Argo CD instance
+   └─ 1.2. Configuring common cluster roles by specifying user-defined clust
+
+5. Argo CD instance
+   └─ 1.3. Enabling replicas for Argo CD server and repo server
+
+6. Argo CD instance
+   └─ 1.4. Deploying resources to a different namespace
+
+7. Argo CD instance
+   └─ 1.5. Customizing the Argo CD console link
+
+8. Argo CD instance
+   └─ 1.6. Configuring ImagePullPolicy
+
+9. Argo CD instance
+   └─ Chapter 2. Argo CD custom resource and component properties
+
+10. Argo CD instance
+   └─ 2.1. Argo CD custom resource properties
+
+   ... and 62 more items
+
+====================================================================================================
+SECURE & CONTROL ACCESS (44 items total)
+====================================================================================================
+
+1. Access control and user management
+   └─ Configuring user authentication and access controls for users and name
+
+2. Access control and user management
+   └─ Chapter 1. Configuring Argo CD RBAC
+
+3. Access control and user management
+   └─ 1.1. Configuring user level access
+
+4. Access control and user management
+   └─ Chapter 2. Configuring SSO for Argo CD using Dex
+
+5. Access control and user management
+   └─ 2.1. Configuration to enable the Dex OpenShift OAuth Connector
+
+6. Access control and user management
+   └─ 2.1.1. Mapping users to specific roles
+
+7. Access control and user management
+   └─ 2.2. Disabling Dex by replacing .spec.sso
+
+8. Access control and user management
+   └─ Chapter 3. Configuring SSO for Argo CD using external OIDC providers
+
+9. Access control and user management
+   └─ 3.1. Understanding OIDC integration approaches for Argo CD
+
+10. Access control and user management
+   └─ 3.2. Prerequisites
+
+   ... and 34 more items
+
+====================================================================================================
+MONITOR & TROUBLESHOOT (30 items total)
+====================================================================================================
+
+1. Observability
+   └─ Using observability features to view Argo CD logs and monitor the perf
+
+2. Observability
+   └─ Chapter 1. Logging
+
+3. Observability
+   └─ 1.1. Viewing Argo CD logs
+
+4. Observability
+   └─ 1.1.1. Storing and retrieving Argo CD logs
+
+5. Observability
+   └─ 1.1.2. Additional resources
+
+6. Observability
+   └─ Chapter 2. Monitoring
+
+7. Observability
+   └─ 2.1. Monitoring with GitOps dashboards
+
+8. Observability
+   └─ 2.1.1. Accessing GitOps monitoring dashboards
+
+9. Observability
+   └─ 2.2. Monitoring Argo CD instances
+
+10. Observability
+   └─ 2.2.1. Prerequisites
+
+   ... and 20 more items
+
+====================================================================================================
+REFERENCE (18 items total)
+====================================================================================================
+
+1. GitOps CLI (argocd) reference
+   └─ Configuring the GitOps CLI and logging in to the Argo CD server in the
+
+2. GitOps CLI (argocd) reference
+   └─ Chapter 1. Configuring the GitOps CLI
+
+3. GitOps CLI (argocd) reference
+   └─ 1.1. Enabling tab completion
+
+4. GitOps CLI (argocd) reference
+   └─ 1.2. Additional resources
+
+5. GitOps CLI (argocd) reference
+   └─ Chapter 2. Logging in to the Argo CD server in the default mode
+
+6. GitOps CLI (argocd) reference
+   └─ 2.1. Logging in to the Argo CD server
+
+7. GitOps CLI (argocd) reference
+   └─ 2.2. Additional resources
+
+8. GitOps CLI (argocd) reference
+   └─ Chapter 3. GitOps argocd CLI reference
+
+9. GitOps CLI (argocd) reference
+   └─ 3.1. Basic syntax
+
+10. GitOps CLI (argocd) reference
+   └─ 3.1.1. Default mode
+
+   ... and 8 more items
