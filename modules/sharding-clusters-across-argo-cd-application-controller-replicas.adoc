@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="sharding-clusters-across-argo-cd-application-controller-replicas"]
+= Scale Argo CD with cluster sharding
+
+You can shard clusters across multiple Argo CD Application Controller replicas if the controller is managing too many clusters and uses too much memory.
+

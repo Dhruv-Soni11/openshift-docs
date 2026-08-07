@@ -1,0 +1,51 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="manage-applicationsets"]
+= Manage ApplicationSets
+:context: manage-applicationsets
+
+toc::[]
+
+[role="_abstract"]
+Manage ApplicationSets to automate the deployment of multiple Argo CD applications across clusters and namespaces. ApplicationSets enable you to generate and manage applications declaratively from a single repository.
+
+.Prerequisites
+* You have a user-defined xref:../deploy/deploy-cluster-configuration-with-argo-cd.adoc#using-argo-cd-instance-to-manage-cluster-scoped-resources_deploy-cluster-configuration-with-argo-cd[cluster-scoped Argo CD instance] in your defined namespace. For example, `spring-petclinic` namespace.
+* You have xref:../deploy/manage-applications-across-namespaces.adoc#managing-apps-in-non-control-plane-namespaces[explicitly enabled and configured] the target namespaces in the `ArgoCD` CR to manage application resources in non-control plane namespaces.
+
+// Manage ApplicationSets
+include::modules/managing-app-sets-in-non-control-plane-namespaces.adoc[leveloffset=+1]
+
+// Enable ApplicationSets in non-control plane namespaces
+include::modules/gitops-enabling-the-application-set-resources-in-non-control-plane-namespaces.adoc[leveloffset=+2]
+
+// Configure ApplicationSet namespaces
+include::modules/gitops-configure-application-set-namespaces-using-names-and-patterns.adoc[leveloffset=+2]
+
+// Enable ApplicationSet in a specific namespace
+include::modules/gitops-enable-application-set-in-a-specific-namespace.adoc[leveloffset=+3]
+
+// Define glob-style wildcard patterns
+include::modules/gitops-define-glob-style-in-wildcard-patterns.adoc[leveloffset=+3]
+
+// Define regular expressions in patterns
+include::modules/gitops-define-regular-expressions-in-patterns.adoc[leveloffset=+3]
+
+// Allow SCM Providers
+include::modules/gitops-allowing-scm-providers.adoc[leveloffset=+2]
+
+// ApplicationSet tokenRef strict mode
+include::modules/gitops-applicationset-tokenref-strict-mode.adoc[leveloffset=+2]
+
+// Configure tokenRef strict mode
+include::modules/gitops-configuring-applicationset-tokenref-strict-mode.adoc[leveloffset=+3]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/#the-applicationset-resource[The `ApplicationSet` resource]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Appset-Any-Namespace/[ApplicationSet in any namespace]
+* xref:../configure/configure-argo-cd-instance-properties.adoc#argo-cd-cr-component-properties[Configure Argo CD custom resource properties]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-SCM-Provider/[SCM Provider Generator]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/[Pull Request Generator]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Appset-Any-Namespace/#tokenref-restrictions[Argo CD — tokenRef restrictions, upstream documentation]
+

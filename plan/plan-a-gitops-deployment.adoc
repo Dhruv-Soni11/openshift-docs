@@ -1,0 +1,1 @@
+../installing_gitops/plan-a-gitops-deployment.adoc

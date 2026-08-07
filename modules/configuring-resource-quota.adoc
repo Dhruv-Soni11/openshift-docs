@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="configuring-resource-quota"]
+= Configure resource allocation and scaling
+
+With the Argo CD custom resource (CR), you can create, update, and delete resource requests and limits for Argo CD workloads.
+

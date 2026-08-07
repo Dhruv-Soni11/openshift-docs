@@ -1,0 +1,56 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="manage-argo-rollouts-lifecycle-and-traffic"]
+= Manage Argo Rollouts lifecycle and traffic
+:context: manage-argo-rollouts-lifecycle-and-traffic
+
+toc::[]
+
+[role="_abstract"]
+Manage Argo Rollouts lifecycle operations and configure traffic routing for progressive deployments. You can deploy, update, promote, and abort rollouts while controlling traffic distribution by using OpenShift Routes or OpenShift Service Mesh.
+
+.Prerequisites
+* You have logged in to the {OCP} cluster as an administrator.
+* You have installed xref:../install/set-up-gitops-for-application-deployment.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You have installed xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-creating-rolloutmanager-custom-resource_understand-and-set-up-argo-rollouts[Argo Rollouts] on your {OCP} cluster.
+* You have installed the xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-installing-argo-rollouts-cli-on-linux_understand-and-set-up-argo-rollouts[Argo Rollouts CLI] on your system.
+
+// Argo Rollouts lifecycle operations
+include::modules/getting-started-with-argo-rollouts.adoc[leveloffset=+1]
+
+// Deploy a Rollout
+include::modules/gitops-deploying-a-rollout.adoc[leveloffset=+2]
+
+// Update the Rollout
+include::modules/gitops-updating-the-rollout.adoc[leveloffset=+2]
+
+// Promote the Rollout
+include::modules/gitops-promoting-the-rollout.adoc[leveloffset=+2]
+
+// Manually abort the Rollout
+include::modules/gitops-manually-aborting-the-rollout.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-openshift-gitops[Install the GitOps Operator]
+* xref:../install/uninstall-gitops-and-clean-up-cluster-resources.adoc#uninstall-gitops-and-clean-up-cluster-resources[Uninstall GitOps and clean up cluster resources]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+* xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-argo-rollouts-cli-overview_understand-and-set-up-argo-rollouts[Argo Rollouts CLI overview]
+
+// Route traffic by using OpenShift Routes
+include::modules/routing-traffic-by-using-argo-rollouts.adoc[leveloffset=+1]
+
+// Configure rollout route traffic
+include::modules/gitops-configure-rollout-route-traffic-using-openshift-routes.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../configure/configure-gitops-resources-and-infrastructure.adoc#configuring-argocd-gitops-cli[Configure shell environment with productivity features]
+* xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-argo-rollouts-cli-overview_understand-and-set-up-argo-rollouts[Argo Rollouts CLI capabilities and usage]
+
+// Route traffic by using OpenShift Service Mesh
+include::modules/routing-traffic-by-using-argo-rollouts-for-openshift-service-mesh.adoc[leveloffset=+1]
+
+// Configure rollout route traffic with Service Mesh
+include::modules/gitops-configure-rollout-route-traffic-using-openshift-service-mesh.adoc[leveloffset=+2]
+

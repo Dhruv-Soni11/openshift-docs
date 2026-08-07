@@ -1,0 +1,49 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="keep-container-images-up-to-date-automatically"]
+= Keep container images up to date automatically
+:context: keep-container-images-up-to-date-automatically
+
+toc::[]
+
+[role="_abstract"]
+Keep container images up to date automatically by using the Argo CD Image Updater. The Image Updater monitors container registries for new image versions and updates Argo CD applications when versions matching your constraints are found.
+
+// Keep container images up to date automatically
+include::modules/using-argo-cd-image-updater.adoc[leveloffset=+1]
+
+// Argo CD Image Updater
+include::modules/gitops-about-argo-cd-image-updater.adoc[leveloffset=+2]
+
+// Enable and configure Image Updater
+include::modules/gitops-enabling-argo-cd-image-updater.adoc[leveloffset=+2]
+
+// ImageUpdater CR and application selection
+include::modules/gitops-image-updater-cr-overview.adoc[leveloffset=+2]
+
+// Update strategies
+include::modules/gitops-image-updater-update-strategies.adoc[leveloffset=+2]
+
+// Write-back methods
+include::modules/gitops-image-updater-write-back-methods.adoc[leveloffset=+2]
+
+// Configure images for Helm and Kustomize applications
+include::modules/gitops-image-updater-helm-applications.adoc[leveloffset=+2]
+
+// Configure container registries and pull secrets
+include::modules/gitops-image-updater-registry-configuration.adoc[leveloffset=+2]
+
+// Configure webhooks for immediate image updates
+include::modules/gitops-image-updater-webhook-configuration.adoc[leveloffset=+2]
+
+// Monitor Image Updater status
+include::modules/gitops-image-updater-monitoring-status.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://argocd-image-updater.readthedocs.io/en/stable/[Argo CD Image Updater upstream documentation]
+* link:https://argocd-operator.readthedocs.io/en/latest/usage/image-updater/[Image Updater in the Argo CD Operator documentation]
+* link:https://github.com/argoproj-labs/argocd-image-updater[Argo CD Image Updater GitHub repository]
+* xref:../configure/deploy-and-manage-argo-cd-instances.adoc#gitops-argo-cd-installation_deploy-and-manage-argo-cd-instances[Installing a user-defined Argo CD instance]
+* xref:../configure/configure-argo-cd-instance-properties.adoc#argo-cd-cr-component-properties[Configure Argo CD custom resource properties]
+

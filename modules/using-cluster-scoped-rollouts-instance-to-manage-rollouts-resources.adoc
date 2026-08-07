@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="using-cluster-scoped-rollouts-instance-to-manage-rollouts-resources"]
+= Cluster-scoped Argo Rollouts
+
+Cluster-scoped installation mode allows a single Argo Rollouts controller instance to manage rollout resources across multiple namespaces, reducing resource consumption compared to deploying separate namespace-scoped controllers.
+

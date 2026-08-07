@@ -1,0 +1,39 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="manage-applications-across-namespaces"]
+= Manage applications across namespaces
+:context: manage-applications-across-namespaces
+
+toc::[]
+
+[role="_abstract"]
+Manage Argo CD applications across multiple namespaces on your {OCP} cluster. You can deploy applications in non-control plane namespaces and configure application links by using the `managed-by-url` annotation.
+
+.Prerequisites
+* You have installed {gitops-title} 1.13.0 or a later version on your {OCP} cluster.
+* You have a user-defined xref:../deploy/deploy-cluster-configuration-with-argo-cd.adoc#using-argo-cd-instance-to-manage-cluster-scoped-resources_deploy-cluster-configuration-with-argo-cd[cluster-scoped Argo CD instance] in your defined namespace, for example, `spring-petclinic` namespace.
+
+// Manage apps in non-control plane namespaces
+include::modules/managing-apps-in-non-control-plane-namespaces.adoc[leveloffset=+2]
+
+// Configure Argo CD CR with target namespaces
+include::modules/gitops-configuring-argo-cd-cr-of-your-user-defined-cluster-scoped-instance-with-target-namespaces.adoc[leveloffset=+3]
+
+// Configure AppProject with target namespaces
+include::modules/gitops-creating-and-configuring-user-defined-appproject-instance-with-target-namespaces.adoc[leveloffset=+3]
+
+// Configure App CR to reference target namespace
+include::modules/gitops-creating-and-configuring-the-app-cr-to-reference-the-target-namespace-and-user-defined-appproject-instance.adoc[leveloffset=+3]
+
+// Manage application links with managed-by-url
+include::modules/managing-application-links-with-managed-by-url-annotation.adoc[leveloffset=+2]
+
+// managed-by-url annotation
+include::modules/gitops-overview-managed-by-url-annotation.adoc[leveloffset=+3]
+
+// Configure managed-by-url annotation
+include::modules/gitops-configuring-managed-by-url-annotation.adoc[leveloffset=+3]
+
+// Managed-by-url annotation reference
+include::modules/gitops-managed-by-url-annotation-reference.adoc[leveloffset=+3]
+

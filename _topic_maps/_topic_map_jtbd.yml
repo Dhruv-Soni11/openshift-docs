@@ -1,0 +1,131 @@
+# This configuration file dictates the hierarchy of topics in OpenShift GitOps.
+# Each file defined here is defined as a topic which has a Name and File.
+---
+Name: What's New
+Dir: whats_new
+Topics:
+  - Name: Release notes
+    File: gitops-release-notes-1-21.adoc
+---
+Name: Discover
+Dir: discover
+Topics:
+  - Name: What is OpenShift GitOps?
+    File: what-is-gitops.adoc
+  - Name: GitOps use cases and scenarios
+    File: explore-gitops-use-cases-and-scenarios.adoc
+---
+Name: Plan
+Dir: plan
+Topics:
+  - Name: Plan a deployment
+    File: plan-a-gitops-deployment.adoc
+  - Name: Choose deployment mode
+    File: choose-your-gitops-deployment-approach.adoc
+---
+Name: Install
+Dir: install
+Topics:
+  - Name: Set up GitOps
+    File: set-up-gitops-for-application-deployment.adoc
+  - Name: Install and configure Argo CD Agent
+    File: install-and-configure-argo-cd-agent.adoc
+  - Name: Deploy applications with Argo CD Agent
+    File: deploy-applications-with-argo-cd-agent.adoc
+  - Name: Uninstall GitOps and clean up cluster resources
+    File: uninstall-gitops-and-clean-up-cluster-resources.adoc
+---
+Name: Get Started
+Dir: get_started
+Topics:
+  - Name: Deploy first app
+    File: deploying-a-spring-boot-application-with-argo-cd.adoc
+---
+Name: Configure
+Dir: configure
+Topics:
+  - Name: Deploy and manage Argo CD instances
+    File: deploy-and-manage-argo-cd-instances.adoc
+  - Name: Configure Argo CD instance properties
+    File: configure-argo-cd-instance-properties.adoc
+  - Name: Configure GitOps resources and infrastructure
+    File: configure-gitops-resources-and-infrastructure.adoc
+  - Name: Scale Argo CD with cluster sharding
+    File: scale-argo-cd-with-cluster-sharding.adoc
+  - Name: Customize the GitOps console
+    File: customize-the-gitops-console.adoc
+  - Name: Keep container images up to date automatically
+    File: keep-container-images-up-to-date-automatically.adoc
+---
+Name: Deploy
+Dir: deploy
+Topics:
+  - Name: Deploy cluster configuration with Argo CD
+    File: deploy-cluster-configuration-with-argo-cd.adoc
+  - Name: Customize cluster permissions
+    File: customize-cluster-permissions.adoc
+  - Name: Deploy and sync applications
+    File: deploy-and-sync-applications.adoc
+  - Name: Manage applications across namespaces
+    File: manage-applications-across-namespaces.adoc
+  - Name: Manage ApplicationSets
+    File: manage-applicationsets.adoc
+---
+Name: Extend
+Dir: extend
+Topics:
+  - Name: Extend Argo CD with plugins and Progressive Sync
+    File: extend-argo-cd-with-plugins-and-progressive-sync.adoc
+  - Name: Manage Progressive Sync deletion and troubleshooting
+    File: manage-progressive-sync-deletion-and-troubleshooting.adoc
+  - Name: Understand and set up Argo Rollouts
+    File: understand-and-set-up-argo-rollouts.adoc
+  - Name: Manage Argo Rollouts lifecycle and traffic
+    File: manage-argo-rollouts-lifecycle-and-traffic.adoc
+  - Name: Configure Argo Rollouts scope and plugins
+    File: configure-argo-rollouts-scope-and-plugins.adoc
+---
+Name: Secure
+Dir: secure
+Topics:
+  - Name: Self-service GitOps
+    File: enable-secure-and-self-service-gitops-operations.adoc
+  - Name: Configure SSO and external authentication
+    File: configure-sso-and-external-authentication.adoc
+  - Name: Manage local users and permissions
+    File: manage-local-users-and-permissions.adoc
+  - Name: Configure secrets management for GitOps
+    File: configure-secrets-management-for-gitops.adoc
+  - Name: Configure HashiCorp Vault and secure annotations
+    File: configure-hashicorp-vault-and-secure-annotations.adoc
+  - Name: Secure communication
+    File: secure-communication-between-gitops-components.adoc
+---
+Name: Observe
+Dir: observe
+Topics:
+  - Name: Monitor Argo CD health and performance
+    File: monitor-argo-cd-health-and-performance.adoc
+  - Name: Monitor application health and configure alerts
+    File: monitor-application-health-and-configure-alerts.adoc
+---
+Name: Troubleshoot
+Dir: troubleshoot
+Topics:
+  - Name: Diagnose and resolve issues
+    File: diagnose-and-resolve-gitops-issues.adoc
+---
+Name: Upgrade
+Dir: upgrade
+Topics:
+  - Name: Administer GitOps
+    File: maintain-gitops-health-across-upgrades-and-infrastructure.adoc
+---
+Name: Reference
+Dir: reference
+Topics:
+  - Name: GitOps terminology and CLI reference
+    File: gitops-terminology-and-cli-reference.adoc
+  - Name: Argo CD custom resource reference
+    File: argo-cd-custom-resource-reference.adoc
+---

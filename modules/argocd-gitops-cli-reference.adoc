@@ -1,0 +1,7 @@
+:_mod-docs-content-type: REFERENCE
+include::_attributes/common-attributes.adoc[]
+[id="argocd-gitops-cli-reference"]
+= {gitops-shortname} argocd CLI reference
+
+The following are the basic {gitops-shortname} `argocd` CLI commands.
+

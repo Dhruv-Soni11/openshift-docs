@@ -1,0 +1,34 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="gitops-terminology-and-cli-reference"]
+= GitOps terminology and CLI reference
+:context: gitops-terminology-and-cli-reference
+
+toc::[]
+
+[role="_abstract"]
+Reference information for {gitops-title} terminology and the {gitops-shortname} `argocd` CLI commands. Use this section to look up Argo CD Agent concepts and CLI syntax.
+
+// GitOps CLI reference
+include::modules/argocd-gitops-cli-reference.adoc[leveloffset=+1]
+
+// Basic syntax
+include::modules/gitops-argocd-cli-basic-syntax.adoc[leveloffset=+2]
+
+// Default mode
+include::modules/logging-in-to-argocd-server-in-default-mode.adoc[leveloffset=+3]
+
+// Global options
+include::modules/gitops-argocd-cli-global-options.adoc[leveloffset=+2]
+
+// Utility commands
+include::modules/gitops-argocd-cli-utility-commands.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-argocd-gitops-cli[Install the GitOps CLI]
+* xref:../configure/configure-gitops-resources-and-infrastructure.adoc#configuring-argocd-gitops-cli[Configure shell environment with productivity features]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#logging-in-to-argocd-server-in-default-mode[Logging in to the Argo CD server in the default mode]
+* link:https://github.com/redhat-developer/gitops-operator/blob/7ac4b2ce179c167b39be259b8d9be37dc280f689/docs/OpenShift%20GitOps%20CLI%20User%20Guide.md#login-related-commands[OpenShift {gitops-shortname} CLI User Guide]
+* link:https://argo-cd.readthedocs.io/en/release-{upstream-ver}/user-guide/commands/argocd/[`argocd` Command Reference]
+

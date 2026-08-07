@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="getting-started-with-argo-rollouts"]
+= Argo Rollouts lifecycle operations
+
+Argo Rollouts supports canary and blue-green deployment strategies. The following examples use a canary strategy to deploy, update, promote, and manually abort rollouts.
+

@@ -1,0 +1,11 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="maintain-gitops-health-across-upgrades-and-infrastructure"]
+= Maintain GitOps health across upgrades and infrastructure
+:context: maintain-gitops-health-across-upgrades-and-infrastructure
+
+toc::[]
+
+[role="_abstract"]
+Maintain {gitops-title} health across upgrades and infrastructure changes. Learn about Operator upgrade mechanisms, pre-upgrade checklists, and post-upgrade validation steps.
+

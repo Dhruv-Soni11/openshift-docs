@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="argo-cd-cr-component-properties"]
+= Configure Argo CD custom resource properties
+
+The Argo CD custom resource (CR) describes the desired state for a given Argo CD cluster and configures the components that make up an Argo CD cluster.
+

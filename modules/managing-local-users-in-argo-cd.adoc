@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="managing-local-users-in-argo-cd"]
+= Managing local users in Argo CD
+
+The Argo CD Operator supports local users and automatically generates and renews API tokens. Administrators can define local users in the Argo CD custom resource (CR), and the {gitops-title} Operator manages their API tokens.
+

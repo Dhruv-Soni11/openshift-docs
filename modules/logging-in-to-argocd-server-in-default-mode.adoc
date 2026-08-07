@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="logging-in-to-argocd-server-in-default-mode"]
+= Logging in to the Argo CD server in the default mode
+
+You can log in to the Argo CD server in the default mode using the {gitops-shortname} `argocd` CLI and your Argo CD credentials to execute commands.
+

@@ -1,0 +1,20 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="deploy-applications-with-argo-cd-agent"]
+= Deploy applications with Argo CD Agent
+:context: deploy-applications-with-argo-cd-agent
+
+toc::[]
+
+[role="_abstract"]
+Deploy Argo CD applications across multiple clusters by using the Argo CD Agent. You can deploy applications in managed mode, where the hub cluster is the source of truth, or in autonomous mode, where the spoke cluster manages the application lifecycle.
+
+// Deploy Argo CD applications
+include::modules/gitops-deploying-argocd-applications.adoc[leveloffset=+1]
+
+// Deploy app in managed mode
+include::modules/gitops-deploy-argocd-application-in-managed-mode.adoc[leveloffset=+2]
+
+// Deploy app in autonomous mode
+include::modules/gitops-deploy-argocd-application-in-autonomous-mode.adoc[leveloffset=+2]
+

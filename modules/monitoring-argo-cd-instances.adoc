@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="monitoring-argo-cd-instances"]
+= Monitoring Argo CD instances
+
+Monitoring Argo CD instances helps you track application health, troubleshoot synchronization issues, and measure deployment performance. The {gitops-title} Operator automatically connects Argo CD instances to the cluster monitoring stack to collect metrics and generate alerts for out-of-sync applications.
+

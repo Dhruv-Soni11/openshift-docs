@@ -1,0 +1,1 @@
+../installing_gitops/uninstall-gitops-and-clean-up-cluster-resources.adoc

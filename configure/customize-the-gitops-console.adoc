@@ -1,0 +1,57 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="customize-the-gitops-console"]
+= Customize the GitOps console
+:context: customize-the-gitops-console
+
+toc::[]
+
+[role="_abstract"]
+Customize the {gitops-title} console experience by configuring the `GitOpsService` custom resource and the GitOps console plugin. The console plugin extends the {OCP} web console with views for Argo CD applications, ApplicationSets, AppProjects, and Argo Rollouts.
+
+.Prerequisites
+* You have access to {OCP} 4.19 or later.
+* You have installed the {gitops-title} Operator.
+
+// Customize the GitOps console experience
+include::modules/configure-resource-requests-and-limits-for-gitops-plugin-components.adoc[leveloffset=+1]
+
+// Enable the GitOpsService custom resource
+include::modules/gitops-enabling-the-gitopsservice-custom-resource.adoc[leveloffset=+2]
+
+// Behavior of resource configuration
+include::modules/gitops-plugin-resource-behavior.adoc[leveloffset=+2]
+
+// GitOps Console plugin
+include::modules/working-with-gitops-console-plugin.adoc[leveloffset=+1]
+
+// GitOps Console interface
+include::modules/gitops-console-ui-overview.adoc[leveloffset=+2]
+
+// Enable Console plugin
+include::modules/gitops-enable-console-plugin.adoc[leveloffset=+2]
+
+// Applications view
+include::modules/gitops-console-applications.adoc[leveloffset=+2]
+
+// ApplicationSets view
+include::modules/gitops-console-applicationsets.adoc[leveloffset=+2]
+
+// AppProjects view
+include::modules/gitops-console-appprojects.adoc[leveloffset=+2]
+
+// Rollouts view
+include::modules/gitops-console-rollouts.adoc[leveloffset=+2]
+
+// Filter resources
+include::modules/gitops-filter-resources.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../get_started/deploying-a-spring-boot-application-with-argo-cd.adoc#deploying-a-spring-boot-application-with-argo-cd[Deploying a Spring Boot application with Argo CD]
+* xref:../deploy/manage-applicationsets.adoc#managing-app-sets-in-non-control-plane-namespaces[Manage ApplicationSets]
+* xref:../secure/enable-secure-and-self-service-gitops-operations.adoc#multitenancy-support-in-gitops[Multitenancy support in GitOps]
+* xref:../extend/understand-and-set-up-argo-rollouts.adoc#using-argo-rollouts-for-progressive-deployment-delivery[Use progressive deployment delivery]
+* link:https://argo-cd.readthedocs.io/en/stable/[Argo CD Documentation]
+* link:https://argo-rollouts.readthedocs.io/en/stable/[Argo Rollouts Documentation]
+

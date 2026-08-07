@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="configuring-argocd-gitops-cli"]
+= Configure shell environment with productivity features
+
+You can configure the {gitops-shortname} `argocd` CLI to enable tab completion.
+

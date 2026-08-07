@@ -1,0 +1,49 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="configure-gitops-resources-and-infrastructure"]
+= Configure GitOps resources and infrastructure
+:context: configure-gitops-resources-and-infrastructure
+
+toc::[]
+
+[role="_abstract"]
+Configure resource allocation, CLI tools, and infrastructure placement for your {gitops-title} deployment. You can set resource requests and limits for Argo CD workloads, enable CLI tab completion, and move GitOps workloads to infrastructure nodes.
+
+// Configure resource allocation and scaling
+include::modules/configuring-resource-quota.adoc[leveloffset=+1]
+
+// Configure workloads with resource requests and limits
+include::modules/gitops-configuring-workloads.adoc[leveloffset=+2]
+
+// Patch Argo CD instance to update resource requirements
+include::modules/gitops-patching-argocd-instance.adoc[leveloffset=+2]
+
+// Remove resource requests
+include::modules/gitops-removing-resource-requirements.adoc[leveloffset=+2]
+
+// Configure shell environment with productivity features
+include::modules/configuring-argocd-gitops-cli.adoc[leveloffset=+1]
+
+// Enabling tab completion
+include::modules/gitops-argocd-cli-enabling-tab-completion.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-argocd-gitops-cli[Install the GitOps CLI]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#logging-in-to-argocd-server-in-default-mode[Logging in to the Argo CD server in the default mode]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#argocd-gitops-cli-reference[Basic {gitops-shortname} argocd commands]
+
+// Configure infrastructure placement
+include::modules/running-gitops-control-plane-workloads-on-infrastructure-nodes.adoc[leveloffset=+1]
+
+// Move GitOps workloads to infrastructure nodes
+include::modules/go-add-infra-nodes.adoc[leveloffset=+2]
+
+// Move GitOps Operator pod to infrastructure nodes
+include::modules/moving-the-gitops-operator-pod-to-infrastructure-nodes.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://docs.openshift.com/container-platform/latest/nodes/scheduling/nodes-scheduler-taints-tolerations.html#nodes-scheduler-taints-tolerations[Controlling pod placement using node taints]
+* link:https://docs.openshift.com/container-platform/latest/machine_management/creating-infrastructure-machinesets.html#creating-infrastructure-machinesets[Creating infrastructure machine sets]
+

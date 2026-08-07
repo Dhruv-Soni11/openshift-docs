@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="managing-application-links-with-managed-by-url-annotation"]
+= Manage application links with managed-by-url
+
+Use the `argocd.argoproj.io/managed-by-url` annotation to specify which Argo CD instance manages an Application resource. This configuration ensures that application links in the user interface resolve to the correct instance in multi-instance environments.
+

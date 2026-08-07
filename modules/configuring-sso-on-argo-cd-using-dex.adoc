@@ -1,0 +1,11 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="configuring-sso-on-argo-cd-using-dex"]
+= Configuring SSO for Argo CD using Dex
+
+After the {gitops-title} Operator is installed, Argo CD automatically creates a user with `admin` permissions. To manage multiple users, cluster administrators can use Argo CD to configure Single Sign-On (SSO).
+[NOTE]
+====
+The `spec.dex` parameter in the ArgoCD CR is no longer supported from {gitops-title} v1.10.0 onwards. Consider using the `.spec.sso` parameter instead.
+====
+

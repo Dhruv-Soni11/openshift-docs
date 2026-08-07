@@ -1,0 +1,11 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="explore-gitops-use-cases-and-scenarios"]
+= Explore GitOps use cases and scenarios
+:context: explore-gitops-use-cases-and-scenarios
+
+toc::[]
+
+[role="_abstract"]
+Learn about common use cases for {gitops-title}, including single-cluster application delivery, multi-cluster fleet management, cluster configuration as code, and progressive rollouts. These scenarios help you identify how GitOps practices can improve your deployment workflows.
+

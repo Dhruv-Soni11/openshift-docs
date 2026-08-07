@@ -1,0 +1,40 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="diagnose-and-resolve-gitops-issues"]
+= Diagnose and resolve GitOps issues
+:context: diagnose-and-resolve-gitops-issues
+
+toc::[]
+
+[role="_abstract"]
+Diagnose and resolve common {gitops-title} issues, including synchronization failures, authentication problems, and resource conflicts. You can also collect diagnostic information by using the `must-gather` tool for Red Hat Support.
+
+// Troubleshoot common GitOps issues
+include::modules/auto-reboot-during-argo-cd-sync-with-machine-configurations.adoc[leveloffset=+1]
+
+// Auto-reboot during Argo CD sync with machine configurations
+include::modules/performance-challenges-in-machine-configurations-and-argo-cd.adoc[leveloffset=+2]
+
+// Troubleshoot Principal-Agent communication
+include::modules/gitops-troubleshooting-argocd-principal-agent.adoc[leveloffset=+2]
+
+// Troubleshoot managed-by-url annotation
+include::modules/gitops-troubleshooting-managed-by-url-annotation.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://developers.redhat.com/articles/2021/12/20/prevent-auto-reboot-during-argo-cd-sync-machine-configs#[Preventing nodes from auto-rebooting during Argo CD sync with machine configs]
+
+// Escalate to Red Hat Support
+include::modules/gathering-gitops-diagnostic-information-for-support.adoc[leveloffset=+1]
+
+// Must-gather tool for GitOps diagnostics
+include::modules/about-must-gather.adoc[leveloffset=+2]
+
+// Collect debugging data for GitOps
+include::modules/collecting-gitops-debugging-data.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://docs.openshift.com/container-platform/latest/support/gathering-cluster-data.html#gathering-data-specific-features_gathering-cluster-data[Gathering data about specific features]
+

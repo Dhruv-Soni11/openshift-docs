@@ -1,0 +1,20 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="argo-cd-custom-resource-reference"]
+= Argo CD custom resource reference
+:context: argo-cd-custom-resource-reference
+
+toc::[]
+
+[role="_abstract"]
+Reference information for Argo CD custom resource (CR) component properties. Use this section to look up configurable fields and settings for the Argo CD CR.
+
+// Argo CD CR properties
+include::modules/gitops-argo-cd-properties.adoc[leveloffset=+2]
+
+// Repo server properties
+include::modules/gitops-repo-server-properties.adoc[leveloffset=+2]
+
+// NotificationsConfiguration CR
+include::modules/proc_configuring-notificationsconfiguration-crd-by-using-the-ocp-cli.adoc[leveloffset=+2]
+

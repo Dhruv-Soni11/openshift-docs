@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="argocd-agent-architecture-overview"]
+= Argo CD Agent architecture
+
+This guide provides a complete reference for the Argo CD Agent architecture, including its hub-and-spoke model, synchronization mechanisms, operational modes, security considerations, namespace management, and known limitations.
+

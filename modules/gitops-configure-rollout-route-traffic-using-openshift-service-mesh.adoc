@@ -4,7 +4,7 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="gitops-configuring-argo-rollouts-route-traffic-using-ossm_{context}"]
-= Configuring Argo Rollouts to route traffic by using OpenShift Service Mesh
+= Configure rollout route traffic with Service Mesh
 
 [role="_abstract"]
 You can use OpenShift Service Mesh to configure Argo Rollouts by creating the following items:
@@ -18,9 +18,9 @@ In the following example procedure, the rollout routes 20% of traffic to a canar
 
 .Prerequisites
 * You are logged in to the {OCP} cluster as an administrator.
-* You installed xref:../installing_gitops/installing-openshift-gitops.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
-* You installed xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-creating-rolloutmanager-custom-resource_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts] on your {OCP} cluster.
-* You installed the xref:../argo_rollouts/using-argo-rollouts-for-progressive-deployment-delivery.adoc#gitops-installing-argo-rollouts-cli-on-linux_using-argo-rollouts-for-progressive-deployment-delivery[Argo Rollouts CLI] on your system.
+* You installed xref:../install/set-up-gitops-for-application-deployment.adoc#installing-openshift-gitops[{gitops-title}] on your {OCP} cluster.
+* You installed xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-creating-rolloutmanager-custom-resource_understand-and-set-up-argo-rollouts[Argo Rollouts] on your {OCP} cluster.
+* You installed the xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-installing-argo-rollouts-cli-on-linux_understand-and-set-up-argo-rollouts[Argo Rollouts CLI] on your system.
 * You installed the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/installing-ossm.html[OpenShift Service Mesh] operator on the cluster and configured the link:https://docs.openshift.com/container-platform/latest/service_mesh/v2x/ossm-create-smcp.html[ServiceMeshControlPlane].
 
 .Procedure

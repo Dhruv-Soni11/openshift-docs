@@ -1,0 +1,49 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="configure-sso-and-external-authentication"]
+= Configure SSO and external authentication
+:context: configure-sso-and-external-authentication
+
+toc::[]
+
+[role="_abstract"]
+Configure Single Sign-On (SSO) for Argo CD by using Dex or OpenID Connect (OIDC) providers. SSO integration enables centralized user authentication and simplifies access management for your Argo CD instances.
+
+.Prerequisites
+* The {gitops-title} Operator is installed on your {OCP} cluster.
+* You have access to the cluster with `cluster-admin` privileges.
+
+// Configure SSO by using Dex
+include::modules/configuring-sso-on-argo-cd-using-dex.adoc[leveloffset=+1]
+
+// Create a new client in Dex
+include::modules/gitops-creating-a-new-client-in-dex.adoc[leveloffset=+2]
+
+// Enable Dex OpenShift OAuth Connector
+include::modules/gitops-configuring-argo-cd-using-dex-github-conector.adoc[leveloffset=+2]
+
+// Map users to specific roles
+include::modules/gitops-dex-role-mappings.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://jqlang.github.io/jq/[`jq` command-line JSON processor documentation]
+* link:https://argoproj.github.io/argo-cd/operator-manual/rbac/[Argo CD upstream documentation, RBAC Configuration section]
+
+// Configure SSO by using OIDC
+include::modules/configuring-sso-for-argo-cd-using-oidc.adoc[leveloffset=+1]
+
+// OIDC integration approaches
+include::modules/gitops_oidc-integration-approaches.adoc[leveloffset=+2]
+
+// Configure direct OIDC integration
+include::modules/gitops_configuring-direct-oidc-integration.adoc[leveloffset=+2]
+
+// Verify OIDC login
+include::modules/gitops_verifying-oidc-login.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/#sso[Argo CD upstream documentation, SSO Configuration section]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/[Argo CD upstream documentation, User Management section]
+

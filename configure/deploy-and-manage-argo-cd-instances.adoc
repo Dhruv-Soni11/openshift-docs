@@ -1,0 +1,57 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="deploy-and-manage-argo-cd-instances"]
+= Deploy and manage Argo CD instances
+:context: deploy-and-manage-argo-cd-instances
+
+toc::[]
+
+[role="_abstract"]
+Deploy and manage Argo CD instances on your {OCP} cluster. You can use the default cluster-scoped instance or create user-defined instances to manage resources in specific namespaces.
+
+// GitOps infrastructure management with Argo CD
+include::modules/gitops-deploy-and-scale-gitops-infrastructure.adoc[leveloffset=+1]
+
+// Deploy Argo CD instances
+include::modules/setting-up-argocd-instance.adoc[leveloffset=+1]
+
+// Install a user-defined Argo CD instance
+include::modules/gitops-argo-cd-installation.adoc[leveloffset=+2]
+
+// Configure common cluster roles for namespace-scoped instances
+include::modules/gitops-configuring-common-cluster-roles-by-specifying-user-defined-cluster-roles-for-namespace-scoped-instances.adoc[leveloffset=+2]
+
+// Enable replicas for Argo CD server and repo server
+include::modules/gitops-enable-replicas-for-argo-cd-server.adoc[leveloffset=+2]
+
+// Deploy resources to a different namespace
+include::modules/gitops-deploy-resources-different-namespaces.adoc[leveloffset=+2]
+
+// Customize the Argo CD console link
+include::modules/gitops-customize-argo-cd-consolelink.adoc[leveloffset=+2]
+
+// Configure ImagePullPolicy
+include::modules/gitops-configuring-imagepullpolicy.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://argocd-operator.readthedocs.io/en/latest/usage/routes/#setting-tls-modes-for-routes[Configuring the route TLS termination]
+* xref:../reference/argo-cd-custom-resource-reference.adoc#argo-cd-properties_argo-cd-custom-resource-reference[Argo CD custom resource properties]
+* link:https://docs.openshift.com/container-platform/latest/rest_api/network_apis/route-route-openshift-io-v1.html#spec-tls[Specification for TLS termination configuration]
+* link:https://argocd-operator.readthedocs.io/en/latest/usage/ha/repo-server[Persistent volumes for repo server storage]
+* xref:../deploy/deploy-cluster-configuration-with-argo-cd.adoc#using-argo-cd-instance-to-manage-cluster-scoped-resources_deploy-cluster-configuration-with-argo-cd[Using an Argo CD instance to manage cluster-scoped resources]
+* xref:../deploy/customize-cluster-permissions.adoc#gitops-disabling-the-creation-of-the-default-cluster-roles-for-the-cluster-scoped-instance_customize-cluster-permissions[Disabling the creation of the default cluster roles for the cluster-scoped instance]
+* link:https://argocd-operator.readthedocs.io/en/stable/reference/argocd/#controller-options[Configuring Argo CD controller options]
+* link:https://argocd-operator.readthedocs.io/en/stable/reference/argocd/#server-options[Configuring Argo CD server options]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../deploy/customize-cluster-permissions.adoc#customizing-permissions-by-creating-user-defined-cluster-roles-for-cluster-scoped-instances[Customize permissions with user-defined cluster roles]
+* xref:../deploy/customize-cluster-permissions.adoc#customizing-permissions-by-creating-aggregated-cluster-roles[Customize permissions with aggregated cluster roles]
+
+// Analyzing the default Argo CD instance
+include::modules/analyzing-the-default-instance-details.adoc[leveloffset=+1]
+
+// Access the default Argo CD instance
+include::modules/access-the-default-argocd-instance.adoc[leveloffset=+1]
+

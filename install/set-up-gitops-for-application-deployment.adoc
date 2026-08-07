@@ -1,0 +1,58 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="set-up-gitops-for-application-deployment"]
+= Set up GitOps for application deployment
+:context: set-up-gitops-for-application-deployment
+
+toc::[]
+
+[role="_abstract"]
+Set up {gitops-title} on your {OCP} cluster by installing the Operator and the `argocd` CLI tool. After installation, you can deploy and manage applications using Argo CD.
+
+.Prerequisites
+* You have access to the {OCP} web console.
+* You are logged in to the {OCP} cluster as an administrator.
+* Your cluster has the Marketplace capability enabled or the Red Hat Operator catalog source configured manually.
+
+[WARNING]
+====
+If you have already installed the Community version of the Argo CD Operator, remove the Argo CD Community Operator before you install the {gitops-title} Operator.
+====
+
+// Install the GitOps Operator
+include::modules/installing-openshift-gitops.adoc[leveloffset=+1]
+
+// Install GitOps by using web console
+include::modules/installing-gitops-operator-in-web-console.adoc[leveloffset=+2]
+
+// Install GitOps by using CLI
+include::modules/installing-gitops-operator-using-cli.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../configure/deploy-and-manage-argo-cd-instances.adoc#setting-up-argocd-instance[Setting up an Argo CD instance]
+* link:https://docs.openshift.com/container-platform/latest/installing/overview/cluster-capabilities.html#marketplace-operator_cluster-capabilities[Marketplace capability]
+
+// Install the GitOps CLI
+include::modules/installing-argocd-gitops-cli.adoc[leveloffset=+1]
+
+// Install GitOps CLI on Linux
+include::modules/gitops-installing-argocd-cli-on-linux.adoc[leveloffset=+2]
+
+// Install GitOps CLI on Linux by using RPM
+include::modules/gitops-installing-argocd-cli-on-linux-using-rpm.adoc[leveloffset=+2]
+
+// Install GitOps CLI on Windows
+include::modules/gitops-installing-argocd-cli-on-windows.adoc[leveloffset=+2]
+
+// Install GitOps CLI on macOS
+include::modules/gitops-installing-argocd-cli-on-macos.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../configure/configure-gitops-resources-and-infrastructure.adoc#configuring-argocd-gitops-cli[Configure shell environment with productivity features]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#logging-in-to-argocd-server-in-default-mode[Logging in to the Argo CD server in the default mode]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#argocd-gitops-cli-reference[Basic {gitops-shortname} argocd commands]
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-openshift-gitops[Install the GitOps Operator]
+* xref:../configure/deploy-and-manage-argo-cd-instances.adoc#setting-up-argocd-instance[Deploy Argo CD instances]
+

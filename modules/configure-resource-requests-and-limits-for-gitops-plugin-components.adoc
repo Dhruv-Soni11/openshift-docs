@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="configure-resource-requests-and-limits-for-gitops-plugin-components"]
+= Customize the GitOps console experience
+
+Configure CPU and memory resource requests and limits for the {gitops-shortname} console plugin and its backend cluster components. Resource allocation is controlled through the `GitOpsService` custom resource (CR) and can be modified during creation or update.
+

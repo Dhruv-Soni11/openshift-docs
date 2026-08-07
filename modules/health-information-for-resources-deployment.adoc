@@ -1,0 +1,8 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="health-information-for-resources-deployment"]
+= Monitoring health information for application resources and deployments
+
+The {gitops-title} *Environments* page in the *Developer* perspective of the {OCP} web console shows a list of the successful deployments of the application environments, along with links to the revision for each deployment.
+The *Application environments* page in the *Developer* perspective of the {OCP} web console displays the health status of application resources, such as routes, synchronization status, deployment configurations, and deployment history.
+

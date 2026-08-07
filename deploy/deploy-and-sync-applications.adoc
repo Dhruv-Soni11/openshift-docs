@@ -1,0 +1,34 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="deploy-and-sync-applications"]
+= Deploy and sync applications
+:context: deploy-and-sync-applications
+
+toc::[]
+
+[role="_abstract"]
+Deploy and synchronize applications on {OCP} clusters by using Argo CD. You can create and manage applications by using the {gitops-shortname} `argocd` CLI in both default and core modes.
+
+// Application delivery and management with Argo CD
+include::modules/gitops-deliver-and-manage-applications.adoc[leveloffset=+1]
+
+// Deploy and manage applications
+include::modules/creating-an-application-using-gitops-argocd-cli.adoc[leveloffset=+1]
+
+// Create app in default mode by using GitOps CLI
+include::modules/gitops-argocd-cli-creating-an-application-in-default-mode.adoc[leveloffset=+2]
+
+// Create app in core mode by using GitOps CLI
+include::modules/gitops-argocd-cli-creating-an-application-in-core-mode.adoc[leveloffset=+2]
+
+// Sync app in default mode
+include::modules/gitops-argocd-cli-synchronizing-an-application-in-default-mode.adoc[leveloffset=+2]
+
+// Sync app in core mode
+include::modules/gitops-argocd-cli-synchronizing-an-application-in-core-mode.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-argocd-gitops-cli[Install the GitOps CLI]
+* xref:../reference/gitops-terminology-and-cli-reference.adoc#argocd-gitops-cli-reference[Basic {gitops-shortname} argocd commands]
+

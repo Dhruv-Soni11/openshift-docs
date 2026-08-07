@@ -1,0 +1,1 @@
+../installing_gitops/choose-your-gitops-deployment-approach.adoc

@@ -1,0 +1,39 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="monitor-application-health-and-configure-alerts"]
+= Monitor application health and configure alerts
+:context: monitor-application-health-and-configure-alerts
+
+toc::[]
+
+[role="_abstract"]
+Monitor application health, view component logs, and configure notification alerts for your {gitops-title} deployments. You can check health information for deployed resources and use the {logging-title} to access Argo CD logs.
+
+// Monitor health information for application resources
+include::modules/health-information-for-resources-deployment.adoc[leveloffset=+1]
+
+// Settings for environment labels and annotations
+include::modules/go-settings-for-environment-labels-and-annotations.adoc[leveloffset=+2]
+
+// Check health information
+include::modules/go-health-monitoring.adoc[leveloffset=+2]
+
+// Verify component health and logs
+include::modules/viewing-argo-cd-logs.adoc[leveloffset=+1]
+
+// Search and filter Argo CD logs
+include::modules/gitops-searching-and-filtering-argo-cd-logs.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* link:https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/logging/about-logging[Installing the {logging-title} using the web console]
+
+// Enable notifications
+include::modules/gitops-argo-cd-notification.adoc[leveloffset=+2]
+
+// Configure notifications across namespaces
+include::modules/gitops-configuring-notifications-any-namespace.adoc[leveloffset=+2]
+
+// Notification behavior across namespaces
+include::modules/gitops-understanding-configuration-notifications-behavior-across-namespaces.adoc[leveloffset=+3]
+

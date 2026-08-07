@@ -1,0 +1,54 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="understand-and-set-up-argo-rollouts"]
+= Understand and set up Argo Rollouts
+:context: understand-and-set-up-argo-rollouts
+
+toc::[]
+
+[role="_abstract"]
+Understand and set up Argo Rollouts for progressive deployment delivery on {OCP}. Argo Rollouts simplifies canary and blue-green deployments by allowing application teams to define rollout strategies declaratively.
+
+.Prerequisites
+* You have access to the cluster with `cluster-admin` privileges.
+* You have access to the {OCP} web console.
+* {gitops-title} 1.9.0 or a newer version is installed on your cluster.
+
+// Why use Argo Rollouts?
+include::modules/gitops-why-use-argo-rollouts.adoc[leveloffset=+1]
+
+// RolloutManager custom resources and specification
+include::modules/gitops-about-argo-rollout-manager-custom-resources-and-spec.adoc[leveloffset=+1]
+
+// Argo Rollouts architecture
+include::modules/gitops-argo-rollouts-architecture-overview.adoc[leveloffset=+1]
+
+// Argo Rollouts CLI capabilities and usage
+include::modules/gitops-argo-rollouts-cli-overview.adoc[leveloffset=+1]
+
+// Use progressive deployment delivery
+include::modules/using-argo-rollouts-for-progressive-deployment-delivery.adoc[leveloffset=+1]
+
+// Create a RolloutManager CR
+include::modules/gitops-creating-rolloutmanager-custom-resource.adoc[leveloffset=+2]
+
+// Delete a RolloutManager CR
+include::modules/gitops-deleting-rolloutmanager-custom-resource.adoc[leveloffset=+2]
+
+// Install Argo Rollouts CLI on Linux
+include::modules/gitops-installing-argo-rollouts-cli-on-linux.adoc[leveloffset=+2]
+
+// Install Argo Rollouts CLI on macOS
+include::modules/gitops-installing-argo-rollouts-cli-on-mac-os.adoc[leveloffset=+2]
+
+// Enable Argo Rollouts UI
+include::modules/gitops-enabling-argo-rollouts-ui-on-an-argo-cd-instance.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../extend/understand-and-set-up-argo-rollouts.adoc#gitops-creating-rolloutmanager-custom-resource_understand-and-set-up-argo-rollouts[RolloutManager custom resource (CR)]
+* xref:../extend/manage-argo-rollouts-lifecycle-and-traffic.adoc#getting-started-with-argo-rollouts[Argo Rollouts lifecycle operations]
+* xref:../install/set-up-gitops-for-application-deployment.adoc#installing-openshift-gitops[Install the GitOps Operator]
+* xref:../install/uninstall-gitops-and-clean-up-cluster-resources.adoc#uninstall-gitops-and-clean-up-cluster-resources[Uninstall GitOps and clean up cluster resources]
+* link:https://argo-rollouts-manager.readthedocs.io/en/latest/crd_reference/[`RolloutManager` Custom Resource specification]
+

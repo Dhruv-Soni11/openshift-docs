@@ -1,0 +1,55 @@
+:_mod-docs-content-type: ASSEMBLY
+include::_attributes/common-attributes.adoc[]
+[id="configure-argo-cd-instance-properties"]
+= Configure Argo CD instance properties
+:context: configure-argo-cd-instance-properties
+
+toc::[]
+
+[role="_abstract"]
+Customize Argo CD instance behavior by configuring the Argo CD custom resource (CR) properties, webhook secrets for Git providers, and the default Argo CD instance settings.
+
+// Configure the default Argo CD instance
+include::modules/configuring-the-default-argocd-instance.adoc[leveloffset=+1]
+
+// Configuring RBAC
+include::modules/configuring-rbac.adoc[leveloffset=+2]
+
+// Configuring permissions
+include::modules/configuring-permissions.adoc[leveloffset=+2]
+
+// Configure Argo CD custom resource properties
+include::modules/argo-cd-cr-component-properties.adoc[leveloffset=+1]
+
+// Configure TLS trust for the repo server
+include::modules/gitops-configure-repo-server-tls-trust.adoc[leveloffset=+2]
+
+// Enable annotation-based resource tracking
+include::modules/con_enabling_annotation_based_resource_tracking_in_argo_cd.adoc[leveloffset=+2]
+
+// Configure annotation tracking in multiple instances
+include::modules/proc_configuring-annotation-based-tracking-in-multiple-argo-cd-instances.adoc[leveloffset=+3]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../configure/deploy-and-manage-argo-cd-instances.adoc#gitops-argo-cd-installation_deploy-and-manage-argo-cd-instances[Installing a user-defined Argo CD instance]
+* link:https://argo-cd.readthedocs.io/en/stable/operator-manual/config-management-plugins/#config-management-plugins[Config Management Plugins]
+
+// Configure webhook secrets for Git providers
+include::modules/configure-webhook-secrets-git-providers.adoc[leveloffset=+1]
+
+// Declarative webhook secrets
+include::modules/gitops-declarative-webhook-secrets-git-providers.adoc[leveloffset=+2]
+
+// Create webhook secrets by using Argo CD CR
+include::modules/gitops-create-webhook-secrets-argocd-cr.adoc[leveloffset=+2]
+
+// Verify webhook secret configuration
+include::modules/gitops-verify-webhook-secret-configuration.adoc[leveloffset=+2]
+
+[role="_additional-resources"]
+== Additional resources
+* xref:../configure/deploy-and-manage-argo-cd-instances.adoc#setting-up-argocd-instance[Deploy Argo CD instances]
+* xref:../configure/configure-argo-cd-instance-properties.adoc#argo-cd-cr-component-properties[Configure Argo CD custom resource properties]
+* link:https://argocd-operator.readthedocs.io/en/latest/usage/webhook-secrets/[Argo CD Webhook Secrets]
+

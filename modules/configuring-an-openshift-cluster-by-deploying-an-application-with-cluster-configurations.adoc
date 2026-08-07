@@ -1,0 +1,7 @@
+:_mod-docs-content-type: CONCEPT
+include::_attributes/common-attributes.adoc[]
+[id="configuring-an-openshift-cluster-by-deploying-an-application-with-cluster-configurations"]
+= Configure cluster with application deployment
+
+With {gitops-title}, you can configure Argo CD to recursively sync the content of a Git directory with an application that contains custom configurations for your cluster.
+

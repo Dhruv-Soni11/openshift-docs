@@ -1,0 +1,1 @@
+../argocd_applications/deploying-a-spring-boot-application-with-argo-cd.adoc
